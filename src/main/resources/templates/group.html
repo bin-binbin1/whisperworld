@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>群组</title>
+  <style>
+    body {
+      height: 700px;
+      margin: 0;
+    }
+    header {
+	position: fixed;
+	width: 100%;
+	height: auto; /* 调整页眉的高度 */
+	top: 0px;
+	right: 0px;
+	bottom: auto;
+	left: 0px;
+	color: #FFFFFF;
+	background-color:#75c8d8;
+	text-align: left;
+	line-height: 3; /* 调整行高 */
+    }
+ 	.nav {
+  	width: 200px; /* 导航栏的宽度 */
+  	height: 100%; /* 导航栏的高度 */
+  	position: fixed; /* 导航栏固定在左边 */
+  	background-color: #d0e4e8; /* 导航栏的背景颜色 */
+  	padding: 20px; /* 导航栏的内边距 */
+	}
+
+/* 定义链接的样式 */
+.nav a {
+  display: block; /* 链接显示为块级元素 */
+  color: black; /* 链接的文字颜色 */
+  text-decoration: none; /* 去掉链接的下划线 */
+  margin-bottom: 10px; /* 链接之间的间距 */
+}
+
+/* 定义链接在鼠标悬停时的样式 */
+.nav a:hover {
+  background-color: #e0e0e0; /* 链接的背景颜色变淡 */
+}
+.nav a.active{
+	background-color:#b6d9d9;
+}
+/* 定义框的样式 */
+.box {
+  width: 300px; /* 框的宽度 */
+  height: 200px; /* 框的高度 */
+  border: 1px solid black; /* 框的边框颜色和粗细 */
+  margin: 20px auto; /* 框的外边距，水平居中，垂直间距为20px */
+}
+
+/* 定义按钮的样式 */
+.button {
+  width: 100px; /* 按钮的宽度 */
+  height: 50px; /* 按钮的高度 */
+  background-color: blue; /* 按钮的背景颜色 */
+  color: white; /* 按钮的文字颜色 */
+  border: none; /* 去掉按钮的边框 */
+  cursor: pointer; /* 鼠标指针变为手形 */
+}
+
+/* 定义按钮在鼠标悬停时的样式 */
+.button:hover {
+  background-color: lightblue; /* 按钮的背景颜色变浅 */
+}
+
+  	aside {
+	position: fixed;
+	width: 225px;
+	height: auto;
+	top: 55px;
+	right: auto;
+	bottom: 30px;
+	left: 0px;
+	background-color: #FFFFFF;
+	text-align: center;
+	line-height: 3;
+    }
+	h2{
+	  font-size:24px;
+	  text-align:center;
+  }
+    section {
+	position: fixed;
+	width: auto;
+	height: auto;
+	top: 55px; /* 调整内容区域的上边距 */
+	right: 0px;
+	bottom: 30px;
+	left: 250px;
+	background-color: #FFFFFF;
+	text-align: center;
+	line-height: 4;
+	 display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #left{
+	  	position: absolute; /* 使用绝对定位 */
+    	top: 0; /* 距离顶部的距离 */
+    	left: 20px; /* 距离左侧的距离 */
+		float:left;
+		width:350px;
+		height: 350px;;
+		border: 1px solid #ccc;
+		border-radius:10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+	#left1{
+        display: none;
+        overflow: auto;
+	  	position: absolute; /* 使用绝对定位 */
+    	top: 350px; /* 距离顶部的距离 */
+    	left: 20px; /* 距离左侧的距离 */
+		float:left;
+		width:350px;
+		height:225px;
+		border: 1px solid #ccc;
+		border-radius:10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+	#right{
+		overflow: auto;
+	    position: absolute; /* 使用绝对定位 */
+    	top: 0; /* 距离顶部的距离 */
+    	right: 50px; /* 距离右侧的距离 */
+		width:800px;
+		height:590px;
+		border: 1px solid #ccc;
+		border-radius:10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+	.signature {
+    padding: 0px;
+	background-color:#b6d9d9;
+    color: black;; /* 设置文字颜色为白色 */
+}
+    .message-block {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        width: 750px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+    #groupInfo {
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+    footer {
+	position: fixed;
+	width: 100%;
+	height: auto; /* 调整页脚的高度 */
+	top: auto;
+	bottom: 0;
+	right: 0;
+	left: 0px;
+	color: #FFFFFF;
+	background-color:#75c8d8;
+	text-align: center;
+	line-height: 4; /* 调整行高 */
+    }
+  </style>
+</head>
+<body>
+<header>
+    <span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">社交网络系统</span>
+  </header>
+<aside>
+	<div class="nav">
+         <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+         <a href="home page.html ">首页</a>    
+         <a href="friend.html">好友</a>
+         <a href="group.html"  class="active">群组</a>
+         <a href="topic.html">话题</a>
+         <a href="personal.html ">个人中心</a>
+         <a href="user.html">退出用户</a>
+	</div>
+	</aside>
+  <section>
+    <div id="left"> <div class="signature">群组</div>
+    <div>
+        <!-- 使用模板引擎循环生成群组数据 -->
+        {% for group in groups %}
+        <div class="group-row" onclick="showGroupInfo('{{ group.id }}')">{{ group.name }}</div>
+        {% endfor %}  
+    </div>
+    </div>
+      <div id="left1">
+        <div class="signature">群卡片</div>
+        <div id="groupInfo"></div>
+    </div>
+    
+    <div id="right"><div class="messageContainer"></div></div>  
+    </section>
+    <script>
+        function showGroupInfo(groupId) {
+            // 获取对应群组的信息，可以通过 AJAX 请求或从数据集中获取
+            var groupData = getGroupData(groupId);
+    
+            // 更新群组信息显示
+            var groupInfoElement = document.getElementById("groupInfo");
+            groupInfoElement.innerHTML = `
+                <p>群名称: ${groupData.name}</p>
+                <p>群号: ${groupData.id}</p>
+                <p>群人数: ${groupData.memberCount}</p>
+                <p>群主ID: ${groupData.ownerId}</p>
+                <p>群管理员: ${groupData.admins}</p>
+                <p>创建时间: ${groupData.creationTime}</p>
+                <p>群背景信息: ${groupData.backgroundInfo}</p>
+            `;
+    
+            // 显示群组信息块
+            var left1Element = document.getElementById("left1");
+            left1Element.style.display = "block";
+    
+            // 获取群组的聊天记录
+            var groupMessages = getGroupMessages(groupId);
+    
+            // 显示聊天记录
+            var messageContainer = document.querySelector(".messageContainer");
+            messageContainer.innerHTML = "";
+    
+            groupMessages.forEach(function(message) {
+                var messageBlock = document.createElement("div");
+                messageBlock.classList.add("message-block");
+                messageBlock.innerHTML = `
+                    <p>消息序号: ${message.messageId}</p>
+                    <p>发送者ID: ${message.senderId}</p>
+                    <p>时间: ${message.timestamp}</p>
+                    <p>${message.content}</p>
+                `;
+    
+                messageContainer.appendChild(messageBlock);
+            });
+        }
+    
+        function getGroupData(groupId) {
+            // 在这里根据groupId从数据库或其他数据源获取群组数据，并返回对应的群组信息对象
+            // 示例：假设有一个名为groupData的对象数组，其中包含了所有群组的数据
+            var groupData = [
+                { id: "1", name: "群组1", memberCount: 10, ownerId: "12345", admins: ["admin1", "admin2"], creationTime: "2023-06-15", backgroundInfo: "群组1的背景信息" },
+                { id: "2", name: "群组2", memberCount: 15, ownerId: "67890", admins: ["admin3", "admin4"], creationTime: "2023-06-16", backgroundInfo: "群组2的背景信息" },
+                // 其他群组数据...
+            ];
+    
+            // 根据groupId查找对应的群组信息
+            var groupInfo = groupData.find(function(group) {
+                return group.id === groupId;
+            });
+    
+            return groupInfo;
+        }
+    
+        function getGroupMessages(groupId) {
+            // 在这里根据groupId从数据库或其他数据源获取群组的聊天记录数据，并返回对应的聊天记录数组
+            // 示例：假设有一个名为groupMessages的对象数组，其中包含了群组的聊天记录数据
+            var groupMessages = [
+                { messageId: 1, senderId: "user1", timestamp: "2023-06-15 10:00:00", content: "这是第一条消息" },
+                { messageId: 2, senderId: "user2", timestamp: "2023-06-15 10:05:00", content: "这是第二条消息" },
+                // 其他聊天记录数据...
+            ];
+    
+            // 根据groupId过滤对应的聊天记录数据
+            var filteredMessages = groupMessages.filter(function(message) {
+                return message.groupId === groupId;
+            });
+    
+            // 根据消息序号排序
+            filteredMessages.sort(function(a, b) {
+                return a.messageId - b.messageId;
+            });
+    
+            return filteredMessages;
+        }
+    </script>
+<footer>欢迎使用社交网络系统</footer>
+</body>
+</html>

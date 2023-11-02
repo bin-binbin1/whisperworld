@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>用户注册</title>
+  <style>
+  body{
+	  font-size:13px;
+    background-image: url(static/5.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+	  overflow: hidden;
+	 }
+  #fromwrapper{
+	  width:450px;
+	  margin:15px auto;
+	  padding:20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+	  background-color:rgba(255, 255, 255, 0.8);;
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  a{
+	  color:#1E7ACE;
+	  text-decoration:none;
+  }
+  a:hover{
+	  color:#000;
+	  text-decoration:underline;
+  }
+  h2{
+	  font-size:24px;
+	  text-align:center;
+  }
+  h4{
+	  color:red;
+	  margin:5px 50px;
+  }
+ label {
+  float: left;
+  width: 120px;
+  text-align: right;
+  margin: 1px;
+  padding: 10px 1px;
+  display: inline-block; /* 将label元素设置为行内块元素 */
+}
+
+input {
+  padding: 1px;
+  margin: 2px;
+  font-size: 13px;
+  vertical-align: middle;
+  height: 28px;
+  width: 200px;
+  display: inline-block; /* 将input元素设置为行内块元素 */
+}
+
+
+    .outer-container {
+      background-color: rgba(255, 255, 255, 0.8);;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-container {
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  .selector{
+	  width:13px;
+  }
+
+  .login-button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  div{
+	  clear:left;
+	  margin-bottom:2px;
+  }
+
+  form b{
+	  color:red;
+  }
+
+  </style>
+  </head>
+  <body>
+    <div id="fromwrapper">
+  <div class="outer-container">
+    <div class="login-container">
+
+      <form method="post" action="/submit2" name="apForm" id="apForm">
+        <h2>用户注册</h2>
+        <h4>*的地方必须填</h4>
+        <div>
+          <label for="Name">用户名</label>
+          <input type="text" name="Name" id="password" placeholder="最少6个字符"/><b>*</b>
+        </div>
+        <div>
+          <label for="password">用户密码</label>
+          <input type="password" name="password" id="password" placeholder="最少6个字符要有数字和字母"/><b>*</b>
+        </div>
+        <div>
+          <label for="confirm_password">重复密码</label>
+          <input type="password" name="confirm_password" id="confirm_password" /><b>*</b>
+        </div>
+        <div>
+          <label for="sex">用户性别</label>
+          <input type="radio" class="selector" name="sex" value="M" />男
+          <input type="radio" class="selector" name="sex" value="F" />女
+        </div>
+        <div>
+          <label for="telephone">用户手机号</label>
+          <input type="text" name="telephone" id="telephone" class="input" /><b>*</b>
+        </div>
+        <div>
+          <label for="birthday">用户生日</label>
+          <input type="date" name="birthday" id="birthday" /><b>*</b>
+        </div>
+      
+        <!-- display error message -->
+        <script>
+          // 获取错误信息
+          var error = "{{ error }}";
+        
+          // 如果有错误信息，则弹出对话框显示
+          if (error) {
+            alert(error);
+          }
+        </script>
+        
+      
+        <!-- submit button -->
+        <button type="submit" class="login-button">注册</button>
+      </form>
+      
+    <p>已有账号？<a href="/">立即登录</a></p>
+  </div>
+  </div>
+</div>
+
+</body>
+</html>

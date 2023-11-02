@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>审核</title>
+  <style>
+    body {
+      height: 700px;
+      margin: 0;
+    }
+
+    header {
+	position: fixed;
+	width: 100%;
+	height: auto; /* 调整页眉的高度 */
+	top: 0px;
+	right: 0px;
+	bottom: auto;
+	left: 0px;
+	color: #FFFFFF;
+  background-color: #75c8d8;
+	text-align: left;
+	line-height: 3; /* 调整行高 */
+    }
+ 	.nav {
+  	width: 200px; /* 导航栏的宽度 */
+  	height: 100%; /* 导航栏的高度 */
+  	position: fixed; /* 导航栏固定在左边 */
+  	background-color: #d0e4e8; /* 导航栏的背景颜色 */
+  	padding: 20px; /* 导航栏的内边距 */
+	}
+
+/* 定义链接的样式 */
+.nav a {
+  display: block; /* 链接显示为块级元素 */
+  color: black; /* 链接的文字颜色 */
+  text-decoration: none; /* 去掉链接的下划线 */
+  margin-bottom: 10px; /* 链接之间的间距 */
+}
+
+/* 定义链接在鼠标悬停时的样式 */
+.nav a:hover {
+  background-color: #e0e0e0; /* 链接的背景颜色变淡 */
+}
+.nav a.active{
+	background-color:#b6d9d9;
+}
+/* 定义框的样式 */
+
+.content-box {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 100%; /* 设置内容框的宽度为外部容器的100% */
+        box-sizing: border-box; /* 确保边框和内边距不会增加内容框的宽度 */
+    }
+/* 定义按钮的样式 */
+.button {
+  width: 100px; /* 按钮的宽度 */
+  height: 50px; /* 按钮的高度 */
+  background-color: #f0f0f0; /* 按钮的背景颜色 */
+  color: black; /* 按钮的文字颜色 */
+  border: none; /* 去掉按钮的边框 */
+  cursor: pointer; /* 鼠标指针变为手形 */
+}
+.buttons-container {
+        margin-top: 10px;
+    }
+/* 定义按钮在鼠标悬停时的样式 */
+.button:hover {
+  background-color: #e0e0e0; /* 按钮的背景颜色变浅 */
+}
+
+  	aside {
+	position: fixed;
+	width: 225px;
+	height: auto;
+	top: 55px;
+	right: auto;
+	bottom: 30px;
+	left: 0px;
+	background-color: #FFFFFF;
+	text-align: center;
+	line-height: 3;
+    }
+	h2{
+	  font-size:24px;
+	  text-align:center;
+  }
+
+  	.outer-container {
+    overflow: auto;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	width: 850px;
+    display: flex;
+    flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	position: absolute;
+	padding: 10px;
+	height:500px;
+}
+    section {
+	position: fixed;
+	width: auto;
+	height: auto;
+	top: 55px; /* 调整内容区域的上边距 */
+	right: 0px;
+	bottom: 30px;
+	left: 250px;
+	background-color: #FFFFFF;
+	text-align: center;
+	line-height: 4;
+	 display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    footer {
+	position: fixed;
+	width: 100%;
+	height: auto; /* 调整页脚的高度 */
+	top: auto;
+	bottom: 0;
+	right: 0;
+	left: 0px;
+	color: #FFFFFF;
+	background-color:#75c8d8;
+	text-align: center;
+	line-height: 4; /* 调整行高 */
+    }
+  </style>
+</head>
+<body>
+<header>
+    <span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">社交网络系统</span>
+  </header>
+<aside>
+	<div class="nav">
+         <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+         <a href="/home1 " >首页</a>   
+         <a href="/examine" class="active">审核</a>
+         <a href="/announce">发布公告</a>
+         <a href="/logout">退出用户</a>
+	</div>
+</aside>
+  <section>
+    <div class="outer-container">
+		<!-- 示例内容框 -->
+		<div id="content-boxes"></div>
+	</div>
+  </section>
+<footer>欢迎使用社交网络系统</footer>
+<script>
+    // 获取内容框容器
+    const contentBoxes = document.querySelector('#content-boxes');
+
+    // 获取内容数据
+    fetch('/judge-content',{method:'POST'})
+        .then(response => response.json())
+        .then(data => {
+            // 遍历数据，创建内容框
+            data.forEach(content => {
+                // 创建内容框
+                const contentBox = document.createElement('div');
+                contentBox.classList.add('content-box');
+
+                // 创建内容段落
+                const contentParagraph = document.createElement('p');
+                contentParagraph.textContent = content;
+                contentBox.appendChild(contentParagraph);
+
+                // 创建按钮容器
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.classList.add('buttons-container');
+                contentBox.appendChild(buttonsContainer);
+
+                // 创建通过按钮
+                const passButton = document.createElement('button');
+                passButton.classList.add('button');
+                passButton.textContent = '通过';
+                passButton.addEventListener('click', () => {
+                    fetch('/judge', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content,
+                            result: 'pass'
+                        })
+                    });
+                });
+                buttonsContainer.appendChild(passButton);
+
+                // 创建不通过按钮
+                const failButton = document.createElement('button');
+                failButton.classList.add('button');
+                failButton.textContent = '不通过';
+                failButton.addEventListener('click', () => {
+                    fetch('/judge', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content,
+                            result: 'fail'
+                        })
+                    });
+                });
+                buttonsContainer.appendChild(failButton);
+
+                // 将内容框添加到容器中
+                contentBoxes.appendChild(contentBox);
+            });
+        });
+</script>
+</body>
+</html>

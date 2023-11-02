@@ -16,7 +16,7 @@ public class MyController {
 
     @GetMapping("/loginpage")
     public String test(Model model){
-        return "static/test";
+        return "test";
     }
 
     @PostMapping("/login")
@@ -26,3 +26,4 @@ public class MyController {
         return "home";
     }
 }
+
