@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/loginpage") // 自定义登录页面的路径
+                .loginPage("/login") // 自定义登录页面的路径
                 .permitAll()
                 .and()
                 .logout()
