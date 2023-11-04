@@ -25,7 +25,7 @@ public class NagigationController {
 
     @GetMapping("/home")
     public String home(Model model){
-        return "home(null";
+        return "home";
     }
 
     @GetMapping("/companion")
@@ -55,6 +55,7 @@ public class NagigationController {
         return "public/welcome";
 
     }
+
 
 }
 

@@ -13,7 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/templates/public/**","/").permitAll() // 允许公开访问的URL
+                .antMatchers("/templates/public/**","/testmysql","/").permitAll() // 允许公开访问的URL
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

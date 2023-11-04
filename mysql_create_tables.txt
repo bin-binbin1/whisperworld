@@ -3,15 +3,15 @@ CREATE DATABASE ww;
 USE ww;
 
 CREATE TABLE users (
-  UserID INT PRIMARY KEY NOT NULL,
-  UserName VARCHAR(20) NOT NULL,
-  UserPassword VARCHAR(15) NOT NULL,
-  UserSex CHAR(1) NOT NULL,
-  URDate DATE NOT NULL,
-  UserPhone VARCHAR(11) NOT NULL,
-  UserState VARCHAR(10) NOT NULL,
-  UserLevel INT NOT NULL,
-  UserBDate DATE NOT NULL
+  userID INT PRIMARY KEY NOT NULL,
+  userName VARCHAR(20) NOT NULL,
+  userPassword VARCHAR(15) NOT NULL,
+  userSex CHAR(1) NOT NULL,
+  urDate DATE NOT NULL,
+  userPhone VARCHAR(11) NOT NULL,
+  userState VARCHAR(10) NOT NULL,
+  userLevel INT NOT NULL,
+  userBDate DATE NOT NULL
 );
 
 CREATE TABLE friends(
@@ -165,14 +165,10 @@ BEGIN
     INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('notifications', 'insert', NOW());
 END;$$
 
-CREATE TRIGGER audits_trigger
-AFTER INSERT ON audits
-FOR EACH ROW
-BEGIN
-    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('audits', 'insert', NOW());
-END;$$
 
 
 
 DELIMITER ;
 
+
+insert into users values(1,"fun",123456,'m',CURDATE(),18114803454,'offline',1,CURDATE());
