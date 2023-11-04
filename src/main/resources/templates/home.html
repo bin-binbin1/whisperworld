@@ -1,10 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html>
 
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<style>
+		body {
+			height: 700px;
+			margin: 0;
+		}
+
+		header {
+			position: fixed;
+			width: 100%;
+			height: auto;
+			/* 调整页眉的高度 */
+			top: 0px;
+			right: 0px;
+			bottom: auto;
+			left: 0px;
+			color: #FFFFFF;
+			background-color: #75c8d8;
+			text-align: left;
+			line-height: 3;
+			/* 调整行高 */
+		}
+
+		.nav {
+			width: 200px;
+			/* 导航栏的宽度 */
+			height: 100%;
+			/* 导航栏的高度 */
+			position: fixed;
+			/* 导航栏固定在左边 */
+			background-color: #d0e4e8;
+			/* 导航栏的背景颜色 */
+			padding: 20px;
+			/* 导航栏的内边距 */
+		}
+
+		/* 定义链接的样式 */
+		.nav a {
+			display: block;
+			/* 链接显示为块级元素 */
+			color: black;
+			/* 链接的文字颜色 */
+			text-decoration: none;
+			/* 去掉链接的下划线 */
+			margin-bottom: 10px;
+			/* 链接之间的间距 */
+		}
+
+		/* 定义链接在鼠标悬停时的样式 */
+		.nav a:hover {
+			background-color: #e0e0e0;
+			/* 链接的背景颜色变淡 */
+		}
+
+		.nav a.active {
+			background-color: #b6d9d9;
+		}
+
+		/* 定义框的样式 */
+		.box {
+			width: 300px;
+			/* 框的宽度 */
+			height: 200px;
+			/* 框的高度 */
+			border: 1px solid black;
+			/* 框的边框颜色和粗细 */
+			margin: 20px auto;
+			/* 框的外边距，水平居中，垂直间距为20px */
+		}
+
+		/* 定义按钮的样式 */
+		.button {
+			width: 100px;
+			/* 按钮的宽度 */
+			height: 50px;
+			/* 按钮的高度 */
+			background-color: blue;
+			/* 按钮的背景颜色 */
+			color: white;
+			/* 按钮的文字颜色 */
+			border: none;
+			/* 去掉按钮的边框 */
+			cursor: pointer;
+			/* 鼠标指针变为手形 */
+		}
+
+		/* 定义按钮在鼠标悬停时的样式 */
+		.button:hover {
+			background-color: lightblue;
+			/* 按钮的背景颜色变浅 */
+		}
+
+		aside {
+			position: fixed;
+			width: 225px;
+			height: auto;
+			top: 55px;
+			right: auto;
+			bottom: 30px;
+			left: 0px;
+			background-color: #FFFFFF;
+			text-align: center;
+			line-height: 3;
+		}
+
+		h2 {
+			font-size: 24px;
+			text-align: center;
+		}
+
+		.outer-container {
+			background-color: white;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			max-width: 800px;
+			margin: 0 auto;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			position: absolute;
+			padding: 10px;
+			display: flex;
+			flex-direction: column;
+			overflow: auto;
+			max-height: 500px;
+		}
+
+		section {
+			position: fixed;
+			width: auto;
+			height: auto;
+			top: 55px;
+			/* 调整内容区域的上边距 */
+			right: 0px;
+			bottom: 30px;
+			left: 250px;
+
+			background-color: #FFFFFF;
+			text-align: center;
+			line-height: 4;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.announcement-container {
+			margin-bottom: 0px;
+		}
+
+		.scrollable-text {
+			overflow: auto;
+			max-height: 400px;
+			width: 90%;
+			padding: 20px;
+		}
+
+		footer {
+			position: fixed;
+			width: 100%;
+			height: auto;
+			/* 调整页脚的高度 */
+			top: auto;
+			bottom: 0;
+			right: 0;
+			left: 0px;
+			color: #FFFFFF;
+			background-color: #75c8d8;
+			text-align: center;
+			line-height: 4;
+			/* 调整行高 */
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">社交网络系统</span>
+	</header>
+	<aside>
+		<div class="nav">
+			<span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+			<a href="/home" class="active">首页</a>
+			<a href="/friend">好友</a>
+			<a href="/topic">话题</a>
+			<a href="/personal">个人中心</a>
+			<a href="/logout">退出用户</a>
+		</div>
+	</aside>
+	<section>
+		<div class="outer-container">
+			<div class="announcement-container">
+				<h2>公告</h2>
+			</div>
+			<div class="scrollable-text">
+				<p>{{notice}}</p>
+
+			</div>
+		</div>
+	</section>
+	<footer>欢迎使用社交网络系统</footer>
+	<script>
+		// 获取公告段落元素
+		const noticeParagraph = document.querySelector('.scrollable-text p');
+
+		// 从服务器获取公告数据
+		fetch('/get-notice')
+			.then(response => response.json())
+			.then(notices => {
+				// 创建文档片段以保存公告元素
+				const fragment = document.createDocumentFragment();
+
+				// 为每条公告创建一个 span 元素
+				notices.forEach((notice, index) => {
+					const span = document.createElement('span');
+					span.textContent = notice;
+					fragment.appendChild(span);
+
+					// 在每条公告后面添加一个换行符，除了最后一条
+					if (index < notices.length - 1) {
+						const br = document.createElement('br');
+						fragment.appendChild(br);
+					}
+				});
+
+				// 将公告元素添加到公告段落中
+				noticeParagraph.appendChild(fragment);
+			});
+
+	</script>
 </body>
+
 </html>

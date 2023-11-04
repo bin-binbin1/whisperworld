@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	<meta charset="UTF-8">
 	<title>个人中心</title>
 	<style>
 		body {
@@ -236,7 +237,7 @@
 						topicDiv.classList.add('topic');
 
 						let topicText = document.createElement('p');
-						topicText.textContent = topic;
+						topicText.textContent = topics;
 						topicDiv.appendChild(topicText);
 
 						let commentButton = document.createElement('button');
@@ -258,11 +259,11 @@
 									headers: {
 										'Content-Type': 'application/json'
 									},
-									body: JSON.stringify({ topic: topic, comment: comment })
+									body: JSON.stringify({ topic: topics, comment: comment })
 								})
 									.then(response => response.text())
 									.then(result => {
-										console.log('Topic: ' + topic);
+										console.log('Topic: ' + topics);
 										console.log('Result: ' + result);
 									});
 							};
@@ -279,11 +280,11 @@
 								headers: {
 									'Content-Type': 'application/json'
 								},
-								body: JSON.stringify({ topic: topic })
+								body: JSON.stringify({ topic: topics })
 							})
 								.then(response => response.text())
 								.then(result => {
-									console.log('Topic: ' + topic);
+									console.log('Topic: ' + topics);
 									console.log('Result: ' + result);
 								});
 						};
