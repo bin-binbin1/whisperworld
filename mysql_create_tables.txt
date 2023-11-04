@@ -1,0 +1,178 @@
+CREATE DATABASE ww;
+
+USE ww;
+
+CREATE TABLE users (
+  UserID INT PRIMARY KEY NOT NULL,
+  UserName VARCHAR(20) NOT NULL,
+  UserPassword VARCHAR(15) NOT NULL,
+  UserSex CHAR(1) NOT NULL,
+  URDate DATE NOT NULL,
+  UserPhone VARCHAR(11) NOT NULL,
+  UserState VARCHAR(10) NOT NULL,
+  UserLevel INT NOT NULL,
+  UserBDate DATE NOT NULL
+);
+
+CREATE TABLE friends(
+ UserID INT PRIMARY KEY NOT NULL,
+ FriendID INT NOT NULL,
+ FOREIGN KEY (UserID) REFERENCES users(UserID)
+);
+
+CREATE TABLE topics (
+  TopicID INT PRIMARY KEY,
+  UserID INT NOT NULL,
+  TopicCommentNum INT NOT NULL,
+  TopicLaunchTime DATETIME NOT NULL,
+  TopicContent VARCHAR(200) NOT NULL,
+  LikeNum INT NOT NULL,
+  FOREIGN KEY (UserID) REFERENCES users(UserID)
+);
+
+CREATE TABLE topic_replies (
+  TopicID INT NOT NULL,
+  TopicCommentPersonID INT NOT NULL,
+  CommentContent VARCHAR(50) NOT NULL,
+  CommentNum INT NOT NULL,
+  PRIMARY KEY (TopicID, CommentNum),
+  FOREIGN KEY (TopicID) REFERENCES topics(TopicID),
+  FOREIGN KEY (TopicCommentPersonID) REFERENCES users(UserID)
+);
+
+CREATE TABLE crowds (
+  GroupID INT NOT NULL,
+  MasterID INT NOT NULL,
+  ManagerID INT NOT NULL,
+  GroupName VARCHAR(10) NOT NULL,
+  CreateDate DATE NOT NULL,
+  GroupNum INT NOT NULL,
+  GroupBackground VARCHAR(50),
+  PRIMARY KEY (GroupID)
+);
+
+CREATE TABLE crowds_messages (
+  GroupID INT NOT NULL,
+  GroupMessageID INT NOT NULL,
+  ConversationContent VARCHAR(50) NOT NULL,
+  UserID INT NOT NULL,
+  SendTime DATETIME NOT NULL,
+  PRIMARY KEY (GroupID, GroupMessageID),
+  FOREIGN KEY (GroupID) REFERENCES crowds(GroupID),
+  FOREIGN KEY (UserID) REFERENCES users(UserID)
+);
+
+CREATE TABLE private_messages (
+  UserID INT NOT NULL,
+  ReceiverID INT NOT NULL,
+  MessageContent VARCHAR(50) NOT NULL,
+  MessageContentID INT NOT NULL,
+  SendTime DATETIME NOT NULL,
+  ReceiveState BOOL NOT NULL,
+  PRIMARY KEY (UserID, ReceiverID, MessageContentID),
+  FOREIGN KEY (UserID) REFERENCES users(UserID),
+  FOREIGN KEY (ReceiverID) REFERENCES users(UserID)
+);
+
+CREATE TABLE supervisors (
+  SupervisorID INT NOT NULL,
+  GrantTime DATE NOT NULL,
+  PRIMARY KEY (SupervisorID)
+);
+
+CREATE TABLE notifications (
+  NotificationID INT NOT NULL,
+  NotificationContent VARCHAR(100) NOT NULL,
+  NotificationTime DATETIME NOT NULL,
+  SupervisorID INT NOT NULL,
+  PRIMARY KEY (NotificationID),
+  FOREIGN KEY (SupervisorID) REFERENCES supervisors(SupervisorID)
+);
+
+
+CREATE TABLE audit_logs (
+  LogID INT PRIMARY KEY AUTO_INCREMENT,
+  Table_Name VARCHAR(50) NOT NULL,
+  Action VARCHAR(10) NOT NULL,
+  Action_Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+DELIMITER $$
+CREATE TRIGGER users_trigger
+AFTER INSERT ON users
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('users', 'insert', NOW());
+END$$
+
+CREATE TRIGGER friends_trigger
+AFTER INSERT ON friends
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('friends', 'insert', NOW());
+END$$
+
+CREATE TRIGGER topics_trigger
+AFTER INSERT ON topics
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('topics', 'insert', NOW());
+END;$$
+
+
+CREATE TRIGGER topic_replies_trigger
+AFTER INSERT ON topic_replies
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('topic_replies', 'insert', NOW());
+    UPDATE topics SET CommentNum = CommentNum + 1 WHERE TopicID = NEW.TopicID;
+END;$$
+
+CREATE TRIGGER crowds_trigger
+AFTER INSERT ON crowds
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('crowds', 'insert', NOW());
+END;$$
+
+CREATE TRIGGER crowds_messages_trigger
+AFTER INSERT ON crowds_messages
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('crowds_messages', 'insert', NOW());
+END;$$
+
+CREATE TRIGGER private_messages_trigger
+AFTER INSERT ON private_messages
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('private_messages', 'insert', NOW());
+END;$$
+
+CREATE TRIGGER supervisors_trigger
+AFTER INSERT ON supervisors
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('supervisors', 'insert', NOW());
+END;$$
+
+CREATE TRIGGER notifications_trigger
+AFTER INSERT ON notifications
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('notifications', 'insert', NOW());
+END;$$
+
+CREATE TRIGGER audits_trigger
+AFTER INSERT ON audits
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('audits', 'insert', NOW());
+END;$$
+
+
+
+DELIMITER ;
+
