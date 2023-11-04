@@ -2,6 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
   <title>个人中心</title>
   <style>
     body {
@@ -171,4 +174,50 @@
   </section>
   <footer>欢迎使用社交网络系统</footer>
 </body>
+<script>
+
+    const express = require('express');
+    const bodyParser = require('body-parser');
+    const app = express();
+    const port = 3000;
+
+    app.use(bodyParser.json());
+
+    // Sample user data
+    let userData = {
+        user_id: 1,
+        username: 'JohnDoe',
+        gender: 'Male',
+        age: 25,
+        birthday: '1998-05-15',
+        phone: '1234567890',
+    };
+
+    // API endpoint to get user data
+    app.get('/api/user/:id', (req, res) => {
+        const userId = parseInt(req.params.id);
+        if (userId === userData.user_id) {
+            res.json(userData);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    });
+
+    // API endpoint to update user data
+    app.put('/api/user/:id', (req, res) => {
+        const userId = parseInt(req.params.id);
+        if (userId === userData.user_id) {
+            userData = { ...userData, ...req.body }; // Update user data
+            res.json(userData);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    });
+
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+
+
+</script>
 </html>
