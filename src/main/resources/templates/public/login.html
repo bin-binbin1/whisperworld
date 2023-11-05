@@ -3,6 +3,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <!-- 引入 Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
   <title>用户登录</title>
   <style>
     body {
@@ -77,22 +81,59 @@
   </style>
 </head>
 <body>
-    <div class ="formwrapper">
+    <div class ="formwrapper" id="app">
       <h2>用户登录</h2>
-      <form action="/login" method="POST">
+      <!-- 使用 v-on:submit 阻止默认的表单提交行为，并调用 handleSubmit 方法 -->
+      <form v-on:submit.prevent="handleSubmit" action="/login" method="POST">
         <div>
           <label for="Name">用户名</label>
-          <input type="text" name="Name" id="password" placeholder="最少6个字符" /><br /><br />
+          <!-- 使用 v-model 将输入框的值绑定到 Vue 实例的 username 属性 -->
+          <input type="text" v-model="username" name="Name" id="username" placeholder="最少6个字符" /><br /><br />
         </div>
         <div>
           <label for="password">密码</label>
-          <input type="password" name="password" id="password" placeholder="最少6个字符要有数字和字母" /><br /><br />
+          <input type="password" v-model="password" name="password" id="password" placeholder="最少6个字符要有数字和字母" /><br /><br />
         </div>
         <button type="submit" class="login-button">登录</button>
       </form>
       <p class="register-link">已有账号？<a href="/register">立即注册</a></p>
     </div>
 
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          username: '',
+          password: ''
+        },
+        methods: {
+          handleSubmit: function() {
+            // Your logic to handle form submission and API call
+            // You can use this.username and this.password to access the entered values
+
+            // Example using Axios
+            axios.post('/login', {
+              username: this.username,
+              password: this.password
+            })
+                    .then(function (response) {
+                      // Handle success
+                      if (response.data.authenticated) {
+                        // Redirect to another page (e.g., dashboard)
+                        window.location.href = '/home';
+                      } else {
+                        // Authentication failed, show an error message
+                        window.alert('Authentication failed. Please try again.');
+                      }
+                    })
+                    .catch(function (error) {
+                      // Handle error
+                      console.log(error);
+                    });
+          }
+        }
+      });
+    </script>
 </body>
 
 </html>
