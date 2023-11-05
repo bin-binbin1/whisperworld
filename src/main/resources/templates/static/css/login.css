@@ -48,7 +48,7 @@ label {
 }
 
 .login-button {
-    background-color: red;
+    background-color: #63BBD0;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -57,7 +57,9 @@ label {
     display: block;
     margin: 0 auto;
 }
-
+button:hover{
+    font-size: 15px;
+}
 .register-link {
     text-align: center;
     margin-top: 20px;
