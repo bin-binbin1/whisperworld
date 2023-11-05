@@ -26,7 +26,8 @@ public class test_sample_c {
     @GetMapping("/api/user/{id}")
     public ResponseEntity<String> getUser(@PathVariable Integer id) {
         System.out.println("successfully called");
-        System.out.println("你好");
+        System.out.println("OK");
+
         User user = userService.getUser(id);
         if (user != null) {
             Map<String, Object> userData = new HashMap<>();

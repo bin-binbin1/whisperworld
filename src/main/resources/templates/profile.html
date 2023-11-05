@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vue User Login</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <title>个人中心</title>
   <style>
     body {
@@ -160,64 +161,61 @@
  <div class="outer-container">
       <div class="announcement-container">
         <h2>个人资料</h2>
+
+
+
+              <div id="app" class="scrollable-text" th:inline="none">
+                  <p>用户ID:{{user_data.user_id}}}</p>
+                  <p>用户名: {{user_data.username}}</p>
+                  <p>性别: {{user_data.gender}}</p>
+                  <p>年龄: {{user_data.age}}</p>
+                  <p>生日: {{user_data.birthday}}</p>
+                  <p>手机号: {{user_data.phone}}</p>
+              </div>
+          <script>
+              new Vue({
+                  el: '#app',
+                  data: {
+                      user_id: 1, // 设置初始用户ID，根据您的实际逻辑进行更改
+                      user_data: {}
+                  },
+                  methods: {
+                      formatBirthday: function(date) {
+                          // 检查日期是否有效
+                          if (date) {
+                              // 使用JavaScript的Date对象来格式化日期
+                              const formattedDate = new Date(date).toLocaleDateString();
+                              return formattedDate;
+                          }
+                          // 如果日期无效，返回空字符串或其他默认值
+                          return '';
+                      },
+                      // 其他方法...
+                  },
+                  mounted() {
+                      // 发起GET请求到您的后端API端点，获取用户数据
+                      axios.get(`/api/user/${this.user_id}`)
+                          .then(response => {
+                              // 更新Vue数据以包括接收到的用户数据
+                              this.user_data = response.data;
+                              // 在此处调用日期格式化方法
+                              this.user_data.birthday = this.formatBirthday(this.user_data.birthday);
+                          })
+                          .catch(error => {
+                              console.error('获取用户数据出错：', error);
+                          });
+                  }
+              });
+
+
+
+          </script>
       </div>
-      <div class="scrollable-text">
-      <p>用户ID:{{user_id}}</p>
-         <p>用户名: {{ user_data.username }}</p>
-        <p>性别: {{ user_data.gender }}</p>
-        <p>年龄: {{ user_data.age }}</p>
-        <p>生日: {{ user_data.birthday }}</p>
-        <p>手机号: {{ user_data.phone }}</p>
-      <p>用户状态：在线</p>
-      </div>
+
+
     </div>
   </section>
+
   <footer>欢迎使用社交网络系统</footer>
 </body>
-<script>
-
-    const express = require('express');
-    const bodyParser = require('body-parser');
-    const app = express();
-    const port = 3000;
-
-    app.use(bodyParser.json());
-
-    // Sample user data
-    let userData = {
-        user_id: 1,
-        username: 'JohnDoe',
-        gender: 'Male',
-        age: 25,
-        birthday: '1998-05-15',
-        phone: '1234567890',
-    };
-
-    // API endpoint to get user data
-    app.get('/api/user/:id', (req, res) => {
-        const userId = parseInt(req.params.id);
-        if (userId === userData.user_id) {
-            res.json(userData);
-        } else {
-            res.status(404).json({ error: 'User not found' });
-        }
-    });
-
-    // API endpoint to update user data
-    app.put('/api/user/:id', (req, res) => {
-        const userId = parseInt(req.params.id);
-        if (userId === userData.user_id) {
-            userData = { ...userData, ...req.body }; // Update user data
-            res.json(userData);
-        } else {
-            res.status(404).json({ error: 'User not found' });
-        }
-    });
-
-    app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-    });
-
-
-</script>
 </html>
