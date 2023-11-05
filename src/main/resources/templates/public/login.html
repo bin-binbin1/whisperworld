@@ -3,93 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>用户登录</title>
-  <style>
-    body {
-      font-size: 13px;
-      background-image: url(/templates/5.png);
-      background-repeat: no-repeat;
-      background-size: cover;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .formwrapper {
-      width: 450px;
-      margin: 15px auto;
-      padding: 20px;
-      text-align: left;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-
-
-
-
-    h2 {
-      font-size: 24px;
-      text-align: center;
-    }
-
-    input {
-      padding: 1px;
-      margin: 2px;
-      font-size: 13px;
-      vertical-align: middle;
-      background-color: rgba(255, 255, 255, 0.8);
-      height: 28px;
-      width: 200px;
-    }
-
-    label {
-      float: left;
-      width: 120px;
-      text-align: right;
-      margin: 1px;
-      padding: 10px 1px;
-    }
-
-    .login-button {
-      background-color: red;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .register-link {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-  </style>
+  <link href="login.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <div class ="formwrapper">
       <h2>用户登录</h2>
       <form action="/login" method="POST">
         <div>
-          <label for="Name">用户名</label>
+          <label for="Name">用户名:</label>
           <input type="text" name="Name" id="password" placeholder="最少6个字符" /><br /><br />
         </div>
         <div>
-          <label for="password">密码</label>
+          <label for="password">密&nbsp;码:</label>
           <input type="password" name="password" id="password" placeholder="最少6个字符要有数字和字母" /><br /><br />
         </div>
         <button type="submit" class="login-button">登录</button>
       </form>
-      <p class="register-link">已有账号？<a href="/register">立即注册</a></p>
+      <p class="register-link">已有账号？<a href="register.html">立即注册</a></p>
     </div>
 
 </body>
