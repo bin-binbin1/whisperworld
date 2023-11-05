@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>退出登录</title>
     <link href="../css/navigation.css" rel="stylesheet" type="text/css">
 </head>
@@ -10,7 +12,7 @@
     <span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">社交网络系统</span>
 </div>
 <aside>
-    <div class="nav">
+    <div class="nav" id="app">
         <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
         <a href="/home ">首页</a>
         <a href="/companion">好友</a>
@@ -21,5 +23,24 @@
     </div>
 </aside>
 <div class="footer">欢迎使用社交网络系统</div>
+<script>
+    new Vue({
+        el: '#app',
+        methods: {
+            logout: function() {
+                // 发起 Axios 请求到后端来删除 session 信息
+                axios.post('/logout')  // 请根据你的后端实际情况修改请求的URL
+                    .then(response => {
+                        // 处理成功响应，例如重定向到登录页面
+                        window.location.href = '/login';
+                    })
+                    .catch(error => {
+                        // 处理错误，例如输出错误信息
+                        console.error('Logout failed:', error);
+                    });
+            }
+        }
+    });
+</script>
 </body>
 </html>

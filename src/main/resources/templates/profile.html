@@ -9,12 +9,14 @@
   <title>个人中心</title>
     <link href="../css/navigation.css" rel="stylesheet" type="text/css">
     <link href="../css/profile.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 <div class="header">
     <span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">社交网络系统</span>
 </div>
 <aside>
+<<<<<<< HEAD
 	<div class="nav">
          <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
         <a href="/home ">首页</a>
@@ -29,60 +31,76 @@
  <div class="outer-container">
       <div class="announcement-container">
         <h2>个人资料</h2>
+=======
+    <div class="nav">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+        <a href="home.html ">首页</a>
+        <a href="companion.html">好友</a>
+        <a href="group.html">群组</a>
+        <a href="topics.html">话题</a>
+        <a href="profile.html "  class="active">个人中心</a>
+        <a href="logout.html">退出登录</a>
+    </div>
+</aside>
+<section>
+    <div class="outer-container">
+        <div class="announcement-container">
+            <h2>个人资料</h2>
+>>>>>>> bf39a472767e4078f2cafe1ef832adc93949d6d1
 
 
 
-              <div id="app" class="scrollable-text" th:inline="none">
-                  <p>用户ID:{{user_data.user_id}}</p>
-                  <p>用户名: {{user_data.username}}</p>
-                  <p>性别: {{user_data.gender}}</p>
-                  <p>年龄: {{user_data.age}}</p>
-                  <p>生日: {{user_data.birthday}}</p>
-                  <p>手机号: {{user_data.phone}}</p>
-              </div>
-          <script>
-              new Vue({
-                  el: '#app',
-                  data: {
-                      user_id: 1, // 设置初始用户ID，根据您的实际逻辑进行更改
-                      user_data: {}
-                  },
-                  methods: {
-                      formatBirthday: function(date) {
-                          // 检查日期是否有效
-                          if (date) {
-                              // 使用JavaScript的Date对象来格式化日期
-                              const formattedDate = new Date(date).toLocaleDateString();
-                              return formattedDate;
-                          }
-                          // 如果日期无效，返回空字符串或其他默认值
-                          return '';
-                      },
-                      // 其他方法...
-                  },
-                  mounted() {
-                      // 发起GET请求到您的后端API端点，获取用户数据
-                      axios.get(`/api/user/${this.user_id}`)
-                          .then(response => {
-                              // 更新Vue数据以包括接收到的用户数据
-                              this.user_data = response.data;
-                              // 在此处调用日期格式化方法
-                              this.user_data.birthday = this.formatBirthday(this.user_data.birthday);
-                          })
-                          .catch(error => {
-                              console.error('获取用户数据出错：', error);
-                          });
-                  }
-              });
+            <div id="app" class="scrollable-text" th:inline="none">
+                <p>用户ID:{{user_data.user_id}}</p>
+                <p>用户名: {{user_data.username}}</p>
+                <p>性别: {{user_data.gender}}</p>
+                <p>年龄: {{user_data.age}}</p>
+                <p>生日: {{user_data.birthday}}</p>
+                <p>手机号: {{user_data.phone}}</p>
+            </div>
+            <script>
+                new Vue({
+                    el: '#app',
+                    data: {
+                        user_id: 1, // 设置初始用户ID，根据您的实际逻辑进行更改
+                        user_data: {}
+                    },
+                    methods: {
+                        formatBirthday: function(date) {
+                            // 检查日期是否有效
+                            if (date) {
+                                // 使用JavaScript的Date对象来格式化日期
+                                const formattedDate = new Date(date).toLocaleDateString();
+                                return formattedDate;
+                            }
+                            // 如果日期无效，返回空字符串或其他默认值
+                            return '';
+                        },
+                        // 其他方法...
+                    },
+                    mounted() {
+                        // 发起GET请求到您的后端API端点，获取用户数据
+                        axios.get(`/api/user/${this.user_id}`)
+                            .then(response => {
+                                // 更新Vue数据以包括接收到的用户数据
+                                this.user_data = response.data;
+                                // 在此处调用日期格式化方法
+                                this.user_data.birthday = this.formatBirthday(this.user_data.birthday);
+                            })
+                            .catch(error => {
+                                console.error('获取用户数据出错：', error);
+                            });
+                    }
+                });
 
 
 
-          </script>
-      </div>
+            </script>
+        </div>
 
 
     </div>
-  </section>
+</section>
 
 <div class="footer">欢迎使用社交网络系统</div>
 </body>
