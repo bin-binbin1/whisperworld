@@ -1,0 +1,99 @@
+.main-content {
+    position: fixed;
+    height: 580px;
+    top: 55px;
+    /* 调整内容区域的上边距 */
+    right: 380px;
+    /* 调整内容区域的右边距，与右侧栏的宽度保持一致 */
+    left: 245px;
+    /* 调整内容区域的左边距，与左侧栏的宽度保持一致 */
+    background-color: #FFFFFF;
+    text-align: center;
+    line-height: 4;
+    display: flex;
+    flex-direction: column;
+}
+.upper-content {
+    flex-grow: 2;
+}
+.lower-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.input-box {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+}
+.input-box input {
+    width: calc(100% - 80px);
+    height: 30px;
+    padding: 5px;
+    font-size: 16px;
+}
+.input-box button {
+    width: 80px;
+}
+.left-sidebar {
+
+    position: fixed;
+    width: 250px;
+    /* 扩大左侧栏的宽度为 250px */
+    height: auto;
+    top: 55px;
+    right: auto;
+    bottom: 30px;
+    left: 0;
+    background-color: #FFFFFF;
+    text-align: center;
+    line-height: 3;
+}
+
+.right-sidebar {
+
+    position: fixed;
+    width: 375px;
+    /* 减小右侧栏的宽度为 375px */
+    height: 590px;
+    /* 调整右侧栏的高度 */
+    top: 55px;
+    right: 0;
+    bottom: 30px;
+    left: auto;
+    background-color: #f0f0f0;
+    text-align: center;
+    line-height: 3;
+    z-index: 1;
+}
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 90%;
+    height: 30px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.search-button {
+    width: 90%;
+    height: 30px;
+    background-color: #75c8d8;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-result {
+    margin-top: 20px;
+}
+
+.chat-item {
+    margin: 0;
+    padding: 5px;
+}

@@ -1,0 +1,71 @@
+section {
+    position: fixed;
+    width: auto;
+    height: auto;
+    top: 55px; /* 调整内容区域的上边距 */
+    right: 0px;
+    bottom: 30px;
+    left: 250px;
+    background-color: #FFFFFF;
+    text-align: center;
+    line-height: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#left{
+    position: absolute; /* 使用绝对定位 */
+    top: 0; /* 距离顶部的距离 */
+    left: 20px; /* 距离左侧的距离 */
+    float:left;
+    width:350px;
+    height: 350px;;
+    border: 1px solid #ccc;
+    border-radius:10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+#left1{
+    display: none;
+    overflow: auto;
+    position: absolute; /* 使用绝对定位 */
+    top: 350px; /* 距离顶部的距离 */
+    left: 20px; /* 距离左侧的距离 */
+    float:left;
+    width:350px;
+    height:225px;
+    border: 1px solid #ccc;
+    border-radius:10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+#right{
+    overflow: auto;
+    position: absolute; /* 使用绝对定位 */
+    top: 0; /* 距离顶部的距离 */
+    right: 50px; /* 距离右侧的距离 */
+    width:800px;
+    height:590px;
+    border: 1px solid #ccc;
+    border-radius:10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.signature {
+    padding: 0px;
+    background-color:#b6d9d9;
+    color: black;; /* 设置文字颜色为白色 */
+}
+.message-block {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 750px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+#groupInfo {
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,83 @@
+body {
+    height: 700px;
+    margin: 0;
+}
+
+.header {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    /* 调整页眉的高度 */
+    top: 0;
+    right: 0;
+    left: 0px;
+    bottom: auto;
+    color: #FFFFFF;
+    background-color: #75c8d8;
+    text-align: left;
+    line-height: 3;
+    /* 调整行高 */
+}
+
+.nav {
+    width: 200px;
+    /* 导航栏的宽度 */
+    height: 100%;
+    /* 导航栏的高度 */
+    position: fixed;
+    /* 导航栏固定在左边 */
+    background-color: #d0e4e8;
+    /* 导航栏的背景颜色 */
+    padding: 20px;
+    /* 导航栏的内边距 */
+}
+
+/* 定义链接的样式 */
+.nav a {
+    display: block;
+    /* 链接显示为块级元素 */
+    color: black;
+    /* 链接的文字颜色 */
+    text-decoration: none;
+    /* 去掉链接的下划线 */
+    margin-bottom: 10px;
+    /* 链接之间的间距 */
+}
+
+/* 定义链接在鼠标悬停时的样式 */
+.nav a:hover {
+    background-color: #e0e0e0;
+    /* 链接的背景颜色变淡 */
+}
+
+.nav a.active {
+    background-color: #b6d9d9;
+}
+aside {
+    position: fixed;
+    width: 225px;
+    height: auto;
+    top: 55px;
+    right: auto;
+    bottom: 30px;
+    left: 0px;
+    background-color: #FFFFFF;
+    text-align: center;
+    line-height: 3;
+}
+
+.footer {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    /* 调整页脚的高度 */
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0px;
+    color: #FFFFFF;
+    background-color: #75c8d8;
+    text-align: center;
+    line-height: 4;
+    /* 调整行高 */
+}

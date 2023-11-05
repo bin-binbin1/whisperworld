@@ -1,0 +1,63 @@
+h2 {
+    font-size: 24px;
+    text-align: center;
+}
+
+section {
+    position: fixed;
+    width: auto;
+    height: auto;
+    top: 55px;
+    /* 调整内容区域的上边距 */
+    right: 0px;
+    bottom: 30px;
+    left: 250px;
+    background-color: #FFFFFF;
+    text-align: center;
+    line-height: 4;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 120px;
+    border: 1px solid #d0e4e8;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
+}
+
+#left1 {
+    position: absolute;
+    top: 150px;
+    left: 0;
+    width: 250px;
+    height: calc(100% - 150px);
+    border: 1px solid #d0e4e8;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
+}
+
+#right {
+    overflow: auto;
+    margin-left: 250px;
+    /* 调整 #right 元素的左边距 */
+    width: calc(100% - 250px);
+    height: calc(100% - 55px);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.signature {
+    padding: 0px;
+    background-color: #d0e4e8;
+    color: black;
+;
+    /* 设置文字颜色为白色 */
+}
