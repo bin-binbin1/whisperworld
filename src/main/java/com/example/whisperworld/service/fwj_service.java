@@ -20,6 +20,7 @@ public class fwj_service {
 
     }
     public int insertUser(User user) {
+        System.out.println(user);
         if(fwjMapper.getSameNameCount(user)>0)
             return 0;
 
