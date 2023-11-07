@@ -6,59 +6,102 @@
   <link href="../static/css/register.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div id="fromwrapper">
+  <div id="fromwrapper">
   <div class="outer-container">
     <div class="login-container">
-
-      <form method="post" action="/submit2" name="apForm" id="apForm">
+      <form @submit.prevent="validate" name="apForm" id="apForm">
         <h2>用户注册</h2>
         <h4>*的地方必须填</h4>
         <div>
           <label for="Name">用户名</label>
-          <input type="text" name="Name" id="password" placeholder="最少6个字符"/><b>*</b>
+          <input v-model="username" type="text" name="Name" id="Name" placeholder="最少6个字符"/><b>*</b>
         </div>
         <div>
           <label for="password">用户密码</label>
-          <input type="password" name="password" id="password" placeholder="最少6个字符要有数字和字母"/><b>*</b>
+          <input v-model="password" type="password" name="password" id="password" placeholder="最少6个字符要有数字和字母"/><b>*</b>
         </div>
         <div>
           <label for="confirm_password">重复密码</label>
-          <input type="password" name="confirm_password" id="confirm_password" /><b>*</b>
+          <input v-model="confirmPassword" type="password" name="confirm_password" id="confirm_password" /><b>*</b>
         </div>
         <div>
-          <label for="sex">用户性别</label>
+          <label>用户性别</label>
           <input type="radio" class="selector" name="sex" value="M" />男
           <input type="radio" class="selector" name="sex" value="F" />女
         </div>
         <div>
           <label for="telephone">用户手机号</label>
-          <input type="text" name="telephone" id="telephone" class="input" /><b>*</b>
+          <input v-model="telephone" type="text" name="telephone" id="telephone" class="input" /><b>*</b>
         </div>
         <div>
           <label for="birthday">用户生日</label>
-          <input type="date" name="birthday" id="birthday" /><b>*</b>
+          <input v-model="birthday" type="date" name="birthday" id="birthday" /><b>*</b>
         </div>
-      
-        <!-- display error message -->
-        <script>
-          // 获取错误信息
-          var error = "{{ error }}";
-        
-          // 如果有错误信息，则弹出对话框显示
-          if (error) {
-            alert(error);
-          }
-        </script>
-        
-      
         <!-- submit button -->
         <button type="submit" class="login-button">注册</button>
       </form>
-      
-    <p>已有账号？<a href="login.html">立即登录</a></p>
-  </div>
+      <p>已有账号？<a href="/login">立即登录</a></p>
+    </div>
   </div>
 </div>
+  <script>
+    new Vue({
+      el: '#formwrapper',
+      data: {
+        username: '',
+        password: '',
+        confirmPassword: '',
+        telephone: '',
+        birthday: ''
+      },
+      methods: {
+        validate: function () {
+          // 账号前端验证
+          if (this.username.length < 6) {
+            alert('用户名至少6个字符');
+            return;
+          }
+          // 检查密码是否符合要求
+          const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+          if (!passwordPattern.test(this.password)) {
+            alert('密码至少6个字符，且必须包含至少一个数字和一个字母');
+            return;
+          }
+          // 重复密码验证
+          if (this.password !== this.confirmPassword) {
+            alert('密码和重复密码不一致');
+            return;
+          }
+          // 如果通过前端验证，可以继续执行提交数据的逻辑
+          this.submitData();
+        },
+        submitData: function () {
+          // 构建用户数据对象，只包含用户名
+          const userData = {
+            username: this.username,
+          };
 
+          // 使用 Axios 发送 POST 请求到后端
+          axios.post('/submit2', userData)
+                  .then(response => {
+                    // 处理后端响应
+                    if (response.data.success) {
+                      // 用户注册成功
+                      alert('用户注册成功');
+                      // 可以重定向到登录页面或其他操作
+                      window.location.href = '/login';
+                    } else {
+                      // 用户已存在，给予提示
+                      alert('用户名已存在，请选择其他用户名');
+                    }
+                  })
+                  .catch(error => {
+                    // 处理请求错误
+                    console.error('Error submitting data:', error);
+                  });
+        }
+      }
+    });
+  </script>
 </body>
 </html>
