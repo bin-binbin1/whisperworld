@@ -19,7 +19,7 @@
         <a href="/group">群组</a>
         <a href="/topics">话题</a>
         <a href="/profile">个人中心</a>
-        <a href="/logout"  class="active">退出登录</a>
+        <a href="/logout"  class="active" @click.prevent="logout>退出登录</a>
     </div>
 </aside>
 <div class="footer">欢迎使用社交网络系统</div>
@@ -32,7 +32,7 @@
                 axios.post('/logout')  // 请根据你的后端实际情况修改请求的URL
                     .then(response => {
                         // 处理成功响应，例如重定向到登录页面
-                        window.location.href = '/login';
+                        window.location.href = '/welcome';
                     })
                     .catch(error => {
                         // 处理错误，例如输出错误信息
