@@ -15,13 +15,13 @@
       <!-- 使用 v-on:submit 阻止默认的表单提交行为，并调用 handleSubmit 方法 -->
       <form v-on:submit.prevent="handleSubmit" action="/login" method="POST">
         <div>
-          <label for="username">用户名:</label>
+          <label for="userName">用户名:</label>
           <!-- 使用 v-model 将输入框的值绑定到 Vue 实例的 username 属性 -->
-          <input type="text" v-model="userName" name="Name" id="username" placeholder="最少6个字符" /><br /><br />
+          <input type="text" v-model="userName" name="Name" id="userName" placeholder="最少6个字符" /><br /><br />
         </div>
         <div>
-          <label for="password">密  码: </label>
-          <input type="password" v-model="userPassword" name="password" id="password" placeholder="最少6个字符要有数字和字母" /><br /><br />
+          <label for="userPassword">密  码: </label>
+          <input type="password" v-model="userPassword" name="password" id="userPassword" placeholder="最少6个字符要有数字和字母" /><br /><br />
         </div>
         <button type="submit" class="login-button">登录</button>
       </form>
@@ -32,8 +32,8 @@
       var app = new Vue({
         el: '#app',
         data: {
-          username: '',
-          password: ''
+          userName: '',
+          userPassword: ''
         },
         methods: {
           handleSubmit: function() {
