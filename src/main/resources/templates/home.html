@@ -3,6 +3,9 @@
 
 <head>
 	<meta charset="UTF-8">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="static/vue/logout.js"></script>
 	<title>首页</title>
 	<link href="static/css/home.css" rel="stylesheet" type="text/css">
 	<link href="static/css/navigation.css" rel="stylesheet" type="text/css">
@@ -20,7 +23,7 @@
 			<a href="/group">群组</a>
 			<a href="/topics">话题</a>
 			<a href="/profile">个人中心</a>
-			<a href="/logout">退出登录</a>
+			<a href="/logout" @click.prevent="logout">退出登录</a>
 		</div>
 	</aside>
 	<section>
