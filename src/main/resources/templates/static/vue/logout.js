@@ -1,5 +1,5 @@
 new Vue({
-    el: '#app',
+    el: '#out',
     methods: {
         logout: function() {
             // 发起 Axios 请求到后端来删除 session 信息
