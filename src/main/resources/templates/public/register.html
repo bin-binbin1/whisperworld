@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<div id="formwrapper">
+<div class="style" id="formwrapper">
     <form @submit.prevent="validate" name="apForm" id="apForm">
         <h2>用户注册</h2>
         <div>
@@ -27,7 +27,7 @@
             <input v-model="confirm_Password" type="password" name="confirm_password" id="confirm_password"/><b>*</b>
         </div>
 
-        <div >
+        <div class="sex">
             <label for="userSex">性 别:</label>
             <input type="radio" class="selector" name="userSex" value="M" v-model="userSex"/>男&nbsp
             <input type="radio" class="selector" name="userSex" value="F" v-model="userSex"/> 女
@@ -45,11 +45,13 @@
         <div class="login-container">
             <button type="submit" class="login-button">注册</button>
         </div>
-    </form>
+
     <div class="foot">
         <p>已有账号？<a href="/login">立即登录</a></p>
         <p>(*为必填)</p></div>
+    </form>
 </div>
+
 <script>
     new Vue({
         el: '#formwrapper',
@@ -94,7 +96,7 @@
                     .then(response => {
                         // 处理后端响应
                         console.log('send success');
-                        if (response.data.success) {
+                        if (success:bool) {
                             // 用户注册成功
                             alert('用户注册成功');
                             // 可以重定向到登录页面或其他操作
