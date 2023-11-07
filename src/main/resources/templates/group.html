@@ -2,6 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="static/vue/logout.js"></script>
   <title>群组</title>
     <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
     <link href="static/css/group.css" rel="stylesheet" type="text/css">
@@ -11,14 +14,14 @@
     <span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">社交网络系统</span>
 </div>
 <aside>
-	<div class="nav">
+	<div class="nav" id="out">
          <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
         <a href="/home ">首页</a>
         <a href="/companion">好友</a>
         <a href="/group"  class="active">群组</a>
         <a href="/topics">话题</a>
         <a href="/profile">个人中心</a>
-        <a href="/logout">退出登录</a>
+        <a href="/logout" @click.prevent="logout">退出登录</a>
 	</div>
 	</aside>
   <section>

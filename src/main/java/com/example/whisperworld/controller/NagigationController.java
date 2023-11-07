@@ -51,8 +51,8 @@ public class NagigationController {
     @GetMapping("/logout")
     public String logout(Model model){
         // 处理session
+        return "public/welcome";
 
-        return "/logout";
 
     }
 

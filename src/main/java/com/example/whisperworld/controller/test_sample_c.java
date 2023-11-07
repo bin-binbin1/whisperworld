@@ -26,7 +26,7 @@ public class test_sample_c {
     @GetMapping("/api/user/{id}")
     public ResponseEntity<String> getUser(@PathVariable Integer id) {
         System.out.println("successfully called");
-        System.out.println("OK");
+        System.out.println("ok");
 
         User user = userService.getUser(id);
         if (user != null) {
