@@ -1,6 +1,5 @@
 body{
-    font-size:13px;
-    background-image: url(../5.png);
+    background-image: url(/static/pictures/3.png);
     background-repeat: no-repeat;
     background-size: cover;
     text-align:center;
@@ -10,30 +9,34 @@ body{
     height: 100vh;
     overflow: hidden;
 }
+p{
+    font-size:14px;
+}
 #fromwrapper{
-    width:450px;
-    margin:15px auto;
-    padding:20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color:rgba(255, 255, 255, 0.8);;
+    #border-radius: 5px;
+    #background-color:rgba(255, 255, 255, 0.8);
+    font-size:16px;
+    width: 420px;
+    margin: 15px auto;
+    padding: 20px;
+    color:#FFFFFF;
+    #border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background:#00000090;
+    text-align:left;
+    justify-content: center;
 }
 a{
     color:#1E7ACE;
     text-decoration:none;
 }
 a:hover{
-    color:#000;
+    color:#cccccc;
     text-decoration:underline;
 }
 h2{
-    font-size:24px;
+    font-size:26px;
     text-align:center;
-}
-h4{
-    color:red;
-    margin:5px 50px;
 }
 label {
     float: left;
@@ -45,53 +48,57 @@ label {
 }
 
 input {
-    padding: 1px;
+    #padding: 1px;
     margin: 2px;
-    font-size: 13px;
+    font-size: 14px;
     vertical-align: middle;
-    height: 28px;
     width: 200px;
-    display: inline-block; /* 将input元素设置为行内块元素 */
+    border:0;
+    border-bottom:2px solid #fff;
+    padding:5px 10px;
+    background:#ffffff00;
+    color:#cccccc;
+    #display: inline-block; /* 将input元素设置为行内块元素 */
 }
-
-
-.outer-container {
-    background-color: rgba(255, 255, 255, 0.8);;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
 .login-container {
-    text-align: center;
+    text-align:center;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.sex{
+    text-align:center;
+    margin-right: 70px;
 }
 .selector{
-    width:13px;
+    width:15px;
 }
 
 .login-button {
-    background-color: red;
-    color: white;
-    border: none;
+    background-image: linear-gradient(to right, #74ebd5 0%, #9face6 100%);
+    width:100px;
+    height:40px;
+    font-size:17px;
+    font-weight:700;
+    color:#fff;
+    border: 0;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+button:hover{
+    font-size: 18px;
+    background-color: #2EA9DF;
 }
 div{
     clear:left;
     margin-bottom:2px;
 }
-
 form b{
-    color:red;
+    color:white;
+}
+.foot{
+    text-align:center;
 }
