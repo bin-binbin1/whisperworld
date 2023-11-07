@@ -52,7 +52,7 @@ public class NagigationController {
     public String logout(Model model){
         // 处理session
 
-        return "logout";
+        return "/logout";
 
     }
 
