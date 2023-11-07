@@ -10,15 +10,15 @@
 </head>
 <body>
 
-<div id="fromwrapper">
+<div id="formwrapper">
     <form @submit.prevent="validate" name="apForm" id="apForm">
         <h2>用户注册</h2>
         <div>
             <label for="userName">用户名:</label>
-            <input v-model="userName" type="text" name="userName" id="userName" placeholder="最少6个字符"/><b>*</b>
+            <input v-model="userName" type="text" name="userName" id="userName"/><b>*</b>
         </div>
         <div>
-            <label for="userPassword">密 码:</label>
+            <label for="userPassword">密 码:</label>git
             <input v-model="userPassword" type="password" name="userPassword" id="userPassword"
                    placeholder="最少6个字符要有数字和字母"/><b>*</b>
         </div>
@@ -29,8 +29,8 @@
 
         <div >
             <label for="userSex">性 别:</label>
-            <input type="radio" class="selector" name="userSex" value="M"/>男&nbsp
-            <input type="radio" class="selector" name="userSex" value="F"/> 女
+            <input type="radio" class="selector" name="userSex" value="M" v-model="userSex"/>男&nbsp
+            <input type="radio" class="selector" name="userSex" value="F" v-model="userSex"/> 女
         </div>
         <div>
             <label for="userPhone">手机号:</label>
@@ -57,16 +57,13 @@
             userName: '',
             userPassword: '',
             confirm_Password: '',
+            userSex: '',
             userPhone: '',
             userBDate: ''
         },
         methods: {
             validate: function () {
-                // 账号前端验证
-                if (this.userName.length < 6) {
-                    alert('用户名至少6个字符');
-                    return;
-                }
+                console.log('called');
                 // 检查密码是否符合要求
                 const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
                 if (!passwordPattern.test(this.userPassword)) {
@@ -85,6 +82,10 @@
                 // 构建用户数据对象，只包含用户名
                 const userData = {
                     userName: this.userName,
+                    userPassword:this.userPassword,
+                    userSex:this.userSex,
+                    userPhone: this.userPhone,
+                    userBDate:this.userBDate
                 };
 
 
@@ -92,6 +93,7 @@
                 axios.post('/register_submit2', userData)
                     .then(response => {
                         // 处理后端响应
+                        console.log('send success');
                         if (response.data.success) {
                             // 用户注册成功
                             alert('用户注册成功');

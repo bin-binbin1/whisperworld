@@ -31,9 +31,9 @@
 			<div class="announcement-container">
 				<h2>公告</h2>
 			</div>
-			<div class="scrollable-text">
-				<p>{{notice}}</p>
-
+			<div class="scrollable-text" id="app">
+				<!-- 使用 v-for 遍历 notices 数组，并按顺序显示公告内容 -->
+				<p v-for="notice in notices" :key="notificationId">{{ notificationContent}}</p>
 			</div>
 		</div>
 	</section>
@@ -41,33 +41,29 @@
 <div class="footer">欢迎使用社交网络系统</div>
 
 	<script>
-		// 获取公告段落元素
-		const noticeParagraph = document.querySelector('.scrollable-text p');
-
-		// 从服务器获取公告数据
-		fetch('/get-notice')
-			.then(response => response.json())
-			.then(notices => {
-				// 创建文档片段以保存公告元素
-				const fragment = document.createDocumentFragment();
-
-				// 为每条公告创建一个 span 元素
-				notices.forEach((notice, index) => {
-					const span = document.createElement('span');
-					span.textContent = notice;
-					fragment.appendChild(span);
-
-					// 在每条公告后面添加一个换行符，除了最后一条
-					if (index < notices.length - 1) {
-						const br = document.createElement('br');
-						fragment.appendChild(br);
-					}
-				});
-
-				// 将公告元素添加到公告段落中
-				noticeParagraph.appendChild(fragment);
-			});
-
+	new vue({
+		el:'#app',
+		data:{
+			notices:[],// 接收后端发来的公告
+		},
+		mounted(){
+			// 在组件挂载后，发送请求获取公告数据
+			this.getNotices();
+		},
+		methods:{
+			geNotices(){
+				// 使用 Axios 或其他方式发送请求获取公告数据
+				axios.get('/api/getNotices')
+						.then(response => {
+							// 获取到公告数据后更新 notices
+							this.notices = response.data.notices;
+						})
+						.catch(error => {
+							console.error('Error getting notices:', error);
+						});
+			},
+		},
+	});
 	</script>
 </body>
 
