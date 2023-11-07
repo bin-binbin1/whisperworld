@@ -12,8 +12,8 @@ import com.example.whisperworld.service.test_sample_s;
 import com.example.whisperworld.entity.User;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class test_sample_c {
             userData.put("user_id", user.getUserID());
             userData.put("username", user.getUserName());
             userData.put("gender", user.getUserSex());
-            userData.put("age", Period.between(LocalDate.now(), user.getUserBDate().toLocalDate()).getYears());
+            userData.put("age", userService.yearsBetween(new Date(),user.getUserBDate()));
             userData.put("birthday", user.getUserBDate());
             userData.put("phone", user.getUserPhone());
 
@@ -49,5 +49,7 @@ public class test_sample_c {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+
     }
 }
