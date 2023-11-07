@@ -10,12 +10,12 @@
 </head>
 <body>
 
-<div id="fromwrapper">
+<div id="formwrapper">
     <form @submit.prevent="validate" name="apForm" id="apForm">
         <h2>用户注册</h2>
         <div>
             <label for="userName">用户名:</label>
-            <input v-model="userName" type="text" name="userName" id="userName" placeholder="最少6个字符"/><b>*</b>
+            <input v-model="userName" type="text" name="userName" id="userName"/><b>*</b>
         </div>
         <div>
             <label for="userPassword">密 码:</label>
@@ -62,11 +62,7 @@
         },
         methods: {
             validate: function () {
-                // 账号前端验证
-                if (this.userName.length < 6) {
-                    alert('用户名至少6个字符');
-                    return;
-                }
+                console.log('called');
                 // 检查密码是否符合要求
                 const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
                 if (!passwordPattern.test(this.userPassword)) {
@@ -92,6 +88,7 @@
                 axios.post('/register_submit2', userData)
                     .then(response => {
                         // 处理后端响应
+                        console.log('send success');
                         if (response.data.success) {
                             // 用户注册成功
                             alert('用户注册成功');
