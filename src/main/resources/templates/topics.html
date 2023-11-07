@@ -6,6 +6,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="static/vue/logout.js"></script>
+	<script src="static/vue/sendtopic.js"></script>
 	<title>话题</title>
 	<link href="static/css/navigation.css" rel="stylesheet" type="text/css">
 	<link href="static/css/topics.css" rel="stylesheet" type="text/css">
@@ -35,90 +36,33 @@
 			<div>
 				<p>留言板</p>
 				<form action="/sendtopic" method="post">
-					<textarea name="message" rows="10" cols="20" placeholder="写点话题吧"></textarea><br><input type="submit"
+					<textarea v-model="topicContent" name="topicContent" rows="10" cols="20" placeholder="写点话题吧"></textarea><br><input type="submit"
 						value="发送">
 				</form>
 			</div>
 		</div>
-		<div id="right">右侧导航栏</div>
+		<div id="right">
+			<div v-for="topic in topics" :key="topic.id">
+				<p>{{ topic.topicContent }}</p>
+				<button @click="toggleCommentForm(topic.id)">评论</button>
+				<button @click="likeTopic(topic.id)">点赞</button>
+
+				<!-- 评论表单，初始状态为隐藏 -->
+				<div v-if="showCommentForm[topic.id]">
+					<textarea v-model="commentText[topic.id]" placeholder="输入评论"></textarea>
+					<button @click="postComment(topic.id)">发表评论</button>
+				</div>
+
+				<!-- 评论列表 -->
+				<div>
+					<p v-for="comment in topic.comments" :key="comment.id">{{ comment.commentContent }}</p>
+				</div>
+			</div>
+		</div>
 	</section>
 <div class="footer">欢迎使用社交网络系统</div>
-	<script>
-		window.onload = function () {
-			fetch('/topics')
-				.then(response => response.json())
-				.then(data => {
-					let right = document.querySelector('#right');
-					right.innerHTML = '';
-					data.forEach(topic => {
-						let topicDiv = document.createElement('div');
-						topicDiv.classList.add('topic');
+<script>
 
-						let topicText = document.createElement('p');
-						topicText.textContent = topics;
-						topicDiv.appendChild(topicText);
-
-						let commentButton = document.createElement('button');
-						commentButton.classList.add('button');
-						commentButton.textContent = '评论';
-						commentButton.onclick = function () {
-							let commentInput = document.createElement('input');
-							commentInput.type = 'text';
-							commentInput.placeholder = '输入评论';
-							topicDiv.appendChild(commentInput);
-
-							let sendButton = document.createElement('button');
-							sendButton.classList.add('button');
-							sendButton.textContent = '发送评论';
-							sendButton.onclick = function () {
-								let comment = commentInput.value;
-								fetch('/sendcomment', {
-									method: 'POST',
-									headers: {
-										'Content-Type': 'application/json'
-									},
-									body: JSON.stringify({ topic: topics, comment: comment })
-								})
-									.then(response => response.text())
-									.then(result => {
-										console.log('Topic: ' + topics);
-										console.log('Result: ' + result);
-									});
-							};
-							topicDiv.appendChild(sendButton);
-						};
-						topicDiv.appendChild(commentButton);
-
-						let likeButton = document.createElement('button');
-						likeButton.classList.add('button');
-						likeButton.textContent = '点赞';
-						likeButton.onclick = function () {
-							fetch('/like', {
-								method: 'POST',
-								headers: {
-									'Content-Type': 'application/json'
-								},
-								body: JSON.stringify({ topic: topics })
-							})
-								.then(response => response.text())
-								.then(result => {
-									console.log('Topic: ' + topics);
-									console.log('Result: ' + result);
-								});
-						};
-						topicDiv.appendChild(likeButton);
-
-						right.appendChild(topicDiv);
-					});
-				});
-		}
-	</script>
-
-
-
-
-
-
+</script>
 </body>
-
 </html>
