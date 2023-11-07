@@ -9,19 +9,24 @@
     /* 调整内容区域的右边距，与右侧栏的宽度保持一致 */
     left: 245px;
     /* 调整内容区域的左边距，与左侧栏的宽度保持一致 */
-    background-color: #b6d9d9;
+    border: 2px solid #ccc;
     text-align: center;
     line-height: 4;
     display: flex;
     flex-direction: column;
 }
+。main-content header{
+    height:50px;
+    border: 2px solid #ccc;
+}
 .upper-content {
     flex-grow: 2;
     height: 300px;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     overflow-y: scroll;
     padding: 10px;
     margin-bottom: 10px;
+    #background-color: #b6d9d9;
 }
 .lower-content {
     flex-grow: 1;
@@ -29,24 +34,25 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #9face6;
+    #background-color: #9face6;
 }
-.input-box {
+.input-box{
     width: 90%;
-    padding: 5px;
     border: 1px solid #ccc;
     #display: flex;
-    background-color: #b6d9d9;
+    #background-color: #b6d9d9;
     justify-content: center;
-}
-.input-box input {
-    width: calc(100% - 80px);
+    #width: calc(100% - 80px);
     height: 30px;
-    padding: 5px;
-    font-size: 16px;
+    #padding: 5px;
+    font-size: 14px;
 }
-.input-box button {
+.send-button {
     width: 80px;
+    background-color: #75c8d8;
+    border: 0;
+    height:30px;
+    cursor: pointer;
 }
 .left-sidebar {
 
