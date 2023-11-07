@@ -33,7 +33,7 @@
 			</div>
 			<div class="scrollable-text" id="app">
 				<!-- 使用 v-for 遍历 notices 数组，并按顺序显示公告内容 -->
-				<p v-for="notice in notices" :key="notificationId">{{ notificationContent}}</p>
+				<p v-for="notice in notices" :key="notificationId">{{ notice.notificationContent}} --{{ notice.notificationTime }}</p>
 			</div>
 		</div>
 	</section>
@@ -51,7 +51,7 @@
 			this.getNotices();
 		},
 		methods:{
-			geNotices(){
+			getNotices(){
 				// 使用 Axios 或其他方式发送请求获取公告数据
 				axios.get('/api/getNotices')
 						.then(response => {
