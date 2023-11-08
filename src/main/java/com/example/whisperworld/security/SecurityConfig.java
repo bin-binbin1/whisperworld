@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
-        http.csrf().ignoringAntMatchers("/register_submit2","/login");//Post
+        http.csrf().ignoringAntMatchers("/register_submit2","/login/submit");//Post
     }
 
     // 其他配置...

@@ -32,9 +32,11 @@ CREATE TABLE topics (
 
 CREATE TABLE topic_replies (
   TopicID INT NOT NULL,
-  TopicCommentPersonID INT NOT NULL,
+  CommentUserID INT NOT NULL,
   CommentContent VARCHAR(50) NOT NULL,
   CommentNum INT NOT NULL,
+  CommentID INT NOT NULL,
+  CommentTime DATETIME NOT NULL,
   PRIMARY KEY (TopicID, CommentNum),
   FOREIGN KEY (TopicID) REFERENCES topics(TopicID),
   FOREIGN KEY (TopicCommentPersonID) REFERENCES users(UserID)

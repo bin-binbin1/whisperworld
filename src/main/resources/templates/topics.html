@@ -47,9 +47,21 @@
 				<p>
 					{{ topic.topicContent }} --{{ topic.topicLaunchTime }}
 					<button @click="likeTopic(topic.id)">点赞{{ updatedTopic.likeNum }}</button>
-					<textarea v-model="topic.commentContent" placeholder="留下你们的评论吧"></textarea>
-					<button  @click="submitComment(topic.id)">提交评论</button>
 				</p>
+				<!-- 显示评论输入框 -->
+				<textarea v-model="topic.commentContent" placeholder="留下你们的评论吧"></textarea>
+				<button  @click="submitComment(topic.id)">提交评论</button>
+				<!-- 显示评论列表 -->
+				<div v-if="topic.showComments">
+					<div v-for="comment in topic.comments" :key="comment.commentId">
+						<p>
+							{{ comment.topicCommentPersonId }} -- {{ comment.commentContent }}
+							<!-- 显示子评论数量按钮 -->
+							<button @click="showComments(comment.id)">评论{{ getCommentNum(comment) }}</button>
+						</p>
+					</div>
+				</div>
+
 
 			</div>
 		</div>
@@ -59,7 +71,12 @@
 	new vue({
 		el:'#right',
 		data:{
-			topics:[],// 接收后端发来的话题
+			topics:[
+				{
+
+					comments: [],
+				},
+			],// 接收后端发来的话题
 			userId:null
 		},
 		mounted(){
