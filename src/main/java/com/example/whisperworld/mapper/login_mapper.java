@@ -9,7 +9,7 @@ public interface login_mapper {
     String login_name(String username);//查找用户名
 
     @Select("SELECT userPassword from users where userName=#{username}")
-    String login_pwd(String username);
+    String login_pwd(String username);//匹配用户密码
 
 
 

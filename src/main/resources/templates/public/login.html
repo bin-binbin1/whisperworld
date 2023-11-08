@@ -47,6 +47,7 @@
             })
                     .then(function (response) {
                       // Handle success
+                      console.log(response.data.authenticated);
                       if (response.data.authenticated) {
                         // Redirect to another page (e.g., dashboard)
                         window.location.href = '/home';
