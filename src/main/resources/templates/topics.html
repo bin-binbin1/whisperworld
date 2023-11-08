@@ -71,7 +71,12 @@
 	new vue({
 		el:'#right',
 		data:{
-			topics:[],// 接收后端发来的话题
+			topics:[
+				{
+
+					comments: [],
+				},
+			],// 接收后端发来的话题
 			userId:null
 		},
 		mounted(){

@@ -25,7 +25,7 @@ public class login_controller {
     public login_controller(login_service loginService){
         this.loginService=loginService;
     }
-    @PostMapping("/login")
+    @PostMapping("/login1")
     public ResponseEntity<String> Login(@RequestBody User user){
         boolean authenticated = loginService.userExist(user);
         System.out.println(user);
