@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface fwj_mapper {
+public interface registerMapper {
 
     @Select("SELECT * FROM users")
     List<User> findAll();
