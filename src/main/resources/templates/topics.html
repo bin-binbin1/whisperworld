@@ -41,28 +41,70 @@
 				</form>
 			</div>
 		</div>
+
 		<div id="right">
 			<div v-for="topic in topics" :key="topic.id">
-				<p>{{ topic.topicContent }}</p>
-				<button @click="toggleCommentForm(topic.id)">评论</button>
-				<button @click="likeTopic(topic.id)">点赞</button>
+				<p>
+					{{ topic.topicContent }} --{{ topic.topicLaunchTime }}
+					<button @click="likeTopic(topic.id)">点赞{{ updatedTopic.likeNum }}</button>
+					<textarea v-model="topic.commentContent" placeholder="留下你们的评论吧"></textarea>
+					<button  @click="submitComment(topic.id)">提交评论</button>
+				</p>
 
-				<!-- 评论表单，初始状态为隐藏 -->
-				<div v-if="showCommentForm[topic.id]">
-					<textarea v-model="commentText[topic.id]" placeholder="输入评论"></textarea>
-					<button @click="postComment(topic.id)">发表评论</button>
-				</div>
-
-				<!-- 评论列表 -->
-				<div>
-					<p v-for="comment in topic.comments" :key="comment.id">{{ comment.commentContent }}</p>
-				</div>
 			</div>
 		</div>
 	</section>
 <div class="footer">欢迎使用社交网络系统</div>
 <script>
+	new vue({
+		el:'#right',
+		data:{
+			topics:[],// 接收后端发来的话题
+			userId:null
+		},
+		mounted(){
+			// 在组件挂载后，发送请求获取话题数据
+			this.getTopics();
+			this.userId = sessionStorage.getItem('userId');
+		},
+		methods:{
+			//获取话题
+			getTopics(){
+				// 使用 Axios 或其他方式发送请求获取话题数据
+				axios.get('/api/getTopics')
+						.then(response => {
+							// 获取到话题数据后更新 topics
+							this.topics = response.data.topics;
+						})
+						.catch(error => {
+							console.error('Error getting notices:', error);
+						});
+			},
+			//点赞更新
+			likeTopic(topicId) {
+				// 检查用户是否已经点赞过该话题
+				const alreadyLiked = this.topics.find((t) => t.id === topicId).likedByUser;
+				if (!alreadyLiked) {
+					// 发送请求给后端，更新点赞数量
+					axios.post('/api/likeTopic', {userId: this.userId, topicId})
+							.then((response) => {
+								// 成功后更新点赞数量,(t)表示数组中的每个元素
+								const updatedTopic = this.topics.find((t) => t.id === topicId);
+								updatedTopic.likedByUser = true;
+								updatedTopic.likeNum = response.data.updatedLikeNum;
+							})
+							.catch((error) => {
+								console.error('点赞时出错:', error);
+							});
+				}else {
+					// 用户已经点赞过该话题，弹出提示框
+					alert('你已经点赞过这个话题了！');
+				}
+			},
+			//评论
 
+		},
+	});
 </script>
 </body>
 </html>

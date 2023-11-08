@@ -13,7 +13,7 @@
     <div class ="formwrapper" id="app">
       <h2>用户登录</h2>
       <!-- 使用 v-on:submit 阻止默认的表单提交行为，并调用 handleSubmit 方法 -->
-      <form v-on:submit.prevent="handleSubmit" action="/login" method="POST">
+      <form v-on:submit.prevent="handleSubmit"  >
         <div>
           <label for="userName">用户名:</label>
           <!-- 使用 v-model 将输入框的值绑定到 Vue 实例的 username 属性 -->
@@ -37,10 +37,6 @@
         },
         methods: {
           handleSubmit: function() {
-            // Your logic to handle form submission and API call
-            // You can use this.username and this.password to access the entered values
-
-            // Example using Axios
             axios.post('/login', {
               userName: this.userName,
               userPassword: this.userPassword
