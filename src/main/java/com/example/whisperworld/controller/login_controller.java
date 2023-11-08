@@ -22,9 +22,9 @@ public class login_controller {
     @PostMapping("/login/submit")
 
     public ResponseEntity<String> Login(@RequestBody User user){
-        //HttpServletRequest request = null;
         boolean authenticated = loginService.userExist(user);
-        System.out.println("success!");
+        System.out.println(user);
+        System.out.println(authenticated);
         Map<String,Object> response = new HashMap<>();
         response.put("authenticated",authenticated);
         ObjectMapper mapper = new ObjectMapper();

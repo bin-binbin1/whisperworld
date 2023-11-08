@@ -14,14 +14,13 @@ public class login_service {
 
     private final login_mapper loginMapper;
     @Autowired
-    public login_service(login_mapper login){
-        this.loginMapper = login;
+    public login_service(login_mapper loginMapper){
+        this.loginMapper = loginMapper;
     }
-    @RequestMapping("/userExist")
+
     public boolean userExist(User user){
         String pwd =loginMapper.login_pwd(user.getUserName());
-     return pwd == user.getUserPassword();
-
+        return pwd.equals(user.getUserPassword());
     }
 
 }
