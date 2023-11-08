@@ -1,7 +1,7 @@
 package com.example.whisperworld.entity;
 
 import lombok.Data;
-
+import java.util.Date;
 @Data
 public class TopicReplies {
     private int topicId;
