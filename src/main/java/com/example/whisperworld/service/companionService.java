@@ -22,7 +22,6 @@ public class companionService {
         return mapper.getFriendsByNAME(prefix);
     }
 
-    public
 
 
 }
