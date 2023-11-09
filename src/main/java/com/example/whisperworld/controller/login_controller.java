@@ -25,7 +25,7 @@ public class login_controller {
     public ResponseEntity<String> Login(@RequestBody User user, ModelMap modelMap){
         boolean authenticated = loginService.userExist(user);
         System.out.println(user);
-        if(authenticated){
+        if(authenticated){//创建session
             modelMap.addAttribute("loginID",user.getUserID());
             modelMap.addAttribute("loginName",user.getUserName());
             modelMap.addAttribute("loginSex", user.getUserSex());
