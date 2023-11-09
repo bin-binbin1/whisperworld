@@ -36,6 +36,5 @@ public class registerService {
         id++;
         return len;
     }
-    
 
 }
