@@ -5,6 +5,8 @@ import com.example.whisperworld.mapper.homeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class homeService {
     private homeMapper mapper;
@@ -13,7 +15,7 @@ public class homeService {
     public homeService(homeMapper mapper){
         this.mapper=mapper;
     }
-    public Notification getAllnotices(){
+    public List<Notification> getAllnotices(){
         return mapper.getAllNotice();
     }
 

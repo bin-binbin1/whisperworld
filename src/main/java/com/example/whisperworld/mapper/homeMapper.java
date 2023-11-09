@@ -4,9 +4,11 @@ import com.example.whisperworld.entity.Notification;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface homeMapper {
 
-    @Select("SELECT * FROM Notification")
-    Notification getAllNotice();
+    @Select("SELECT * FROM Notification ORDER BY notificationId DESC")
+    List<Notification> getAllNotice();
 }
