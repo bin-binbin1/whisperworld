@@ -1,5 +1,6 @@
 package com.example.whisperworld.service;
 
+import com.example.whisperworld.entity.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Service
 public class companionService {
-    private companionMapper mapper;
+    private final companionMapper mapper;
     @Autowired
     public companionService(companionMapper mapper){
         this.mapper=mapper;
@@ -21,7 +22,7 @@ public class companionService {
     public List<String> getFriendsByName(String prefix){
         return mapper.getFriendsByNAME(prefix);
     }
-
+    public List<Messages> getMessages()
 
 
 }
