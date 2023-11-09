@@ -8,15 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SessionAttributes({"loginID","friendID"})
 @RestController
 public class companionController {
 
@@ -27,9 +26,8 @@ public class companionController {
     }
 
     @GetMapping("/api/getAllFriends")
-    public ResponseEntity<String> getAllFriends(Model model) {
-        Integer userId=(Integer) model.getAttribute("loginID");
-        List<String> names=service.getAllFriends(userId);
+    public ResponseEntity<String> getAllFriends(@ModelAttribute Integer loginID) {
+        List<String> names=service.getAllFriends(loginID);
         List<Map<String,Object>> responses = new ArrayList<>();
         for(String name : names){
             Map<String,Object> response = new HashMap<>();
@@ -46,9 +44,9 @@ public class companionController {
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
     @GetMapping("/api/getFriends/{name}")
-    public ResponseEntity<String> getFriendByName(@PathVariable String prefix,Model model){
-        Integer userId=(Integer) model.getAttribute("loginID");
-        List<String> names=service.getFriendsByName(userId,prefix);
+    public ResponseEntity<String> getFriendByName(@PathVariable String prefix,@ModelAttribute Integer loginID){
+
+        List<String> names=service.getFriendsByName(loginID,prefix);
         List<Map<String,Object>> responses = new ArrayList<>();
         for(String name : names){
             Map<String,Object> response = new HashMap<>();
@@ -66,7 +64,26 @@ public class companionController {
     }
 
     @GetMapping("/api/getHistory/{name}")
-    public ResponseEntity<String> getMessages(@PathVariable String name){
-
+    public ResponseEntity<String> getMessages(@PathVariable String name,@ModelAttribute Integer loginID,Model model){
+        return service.getMessages(loginID,name,model);
     }
+    @PostMapping("/api/sendMessages")
+    public ResponseEntity<String> sendMessage(@RequestBody Map<String,Object> params,@ModelAttribute Integer userId,@ModelAttribute Integer friendId){
+        Map<String,Object> response = new HashMap<>();
+        response.put("send",service.sendMessage(params.get("messages").toString()
+                , params.get("friendName").toString()
+                ,userId
+                ,friendId
+        ));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try {
+            json = mapper.writeValueAsString(response);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
+
 }
