@@ -23,6 +23,8 @@ public class login_service {
         return pwd.equals(user.getUserPassword());
     }
     public String sessionLogin(User user, Model model){
+        user.setUserID(loginMapper.login_id(user.getUserName()));
+        user.setUserSex(loginMapper.login_sex(user.getUserName()));
         model.addAttribute("loginID",user.getUserID());
         model.addAttribute("loginName",user.getUserName());
         model.addAttribute("loginSex", user.getUserSex());
