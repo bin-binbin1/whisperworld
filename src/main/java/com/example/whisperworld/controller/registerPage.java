@@ -26,7 +26,6 @@ public class registerPage {
     public ResponseEntity<String> register(@RequestBody User user){
         Map<String,Object> response = new HashMap<>();
         if(registerService.insertUser(user)>0){
-
             response.put("success",true);
         }else{
             response.put("success",false);

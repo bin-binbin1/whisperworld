@@ -22,4 +22,5 @@ public interface registerMapper {
 
     @Select("SELECT count(*) FROM users WHERE userName=#{userName}")
     int getSameNameCount(User user);
+
 }
