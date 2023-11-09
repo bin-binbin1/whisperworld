@@ -19,10 +19,13 @@ public class companionService {
     public List<String> getAllFriends(Integer userId){
         return mapper.getAllFriends(userId);
     }
-    public List<String> getFriendsByName(String prefix){
+    public List<String> getFriendsByName(Integer userId,String prefix){
         return mapper.getFriendsByNAME(prefix);
     }
-    public List<Messages> getMessages()
+    public List<Messages> getMessages(){
+
+    }
+
 
 
 }
