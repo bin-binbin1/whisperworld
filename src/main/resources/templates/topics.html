@@ -43,21 +43,19 @@
 		</div>
 
 		<div id="right">
-			<div v-for="topic in topics" :key="topic.id">
+			<div v-for="topic in topics" :key="topicId">
 				<p>
-					{{ topic.topicContent }} --{{ topic.topicLaunchTime }}
-					<button @click="likeTopic(topic.id)">点赞{{ updatedTopic.likeNum }}</button>
+					{{ topic.username }} -- {{ topic.topicContent }} -- {{ topic.topicLaunchTime }}
+					<button @click="likeTopic(topicId)">点赞</button>
 				</p>
 				<!-- 显示评论输入框 -->
 				<textarea v-model="topic.commentContent" placeholder="留下你们的评论吧"></textarea>
-				<button  @click="submitComment(topic.id)">提交评论</button>
+				<button  @click="submitComment(topicId)">提交评论</button>
 				<!-- 显示评论列表 -->
 				<div v-if="topic.showComments">
 					<div v-for="comment in topic.comments" :key="comment.commentId">
 						<p>
-							{{ comment.topicCommentPersonId }} -- {{ comment.commentContent }}
-							<!-- 显示子评论数量按钮 -->
-							<button @click="showComments(comment.id)">评论{{ getCommentNum(comment) }}</button>
+							{{ comment.topicCommentusername }} -- {{ comment.commentContent }} -- {{ comment.commentTime }}
 						</p>
 					</div>
 				</div>
@@ -77,12 +75,13 @@
 					comments: [],
 				},
 			],// 接收后端发来的话题
-			userId:null
 		},
 		mounted(){
 			// 在组件挂载后，发送请求获取话题数据
-			this.getTopics();
-			this.userId = sessionStorage.getItem('userId');
+			this.refreshData();
+			setInterval(this.refreshData,60000);
+			//在后端获取userid转换为username
+
 		},
 		methods:{
 			//获取话题
@@ -119,7 +118,23 @@
 				}
 			},
 			//评论
-
+			getComments() {
+				this.topics.forEach(topic => { //遍历 topics 数组中的每个话题
+					// 使用 Axios发送请求获取评论数据
+					axios.get('/api/getComments', {topicId:topic.topicId})
+							.then(response => {
+								// 获取到评论数据后更新话题的评论列表
+								topic.comments = response.data.comments;
+							})
+							.catch(error => {
+								console.error('获取评论数据失败:', error);
+							});
+				});
+			},
+			refreshData(){
+				this.getTopics();
+				this.getComments();
+			},
 		},
 	});
 </script>
