@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,13 +25,12 @@ public class login_controller {
         this.loginService=loginService;
     }
     @PostMapping("/login/submit")
-    public ResponseEntity<String> Login(@RequestBody User user, Model model){
+    public ResponseEntity<String> Login(@RequestBody User user, HttpSession session){
         boolean authenticated = loginService.userExist(user);
         System.out.println(user);
         if(authenticated){//创建session
-            String test = loginService.sessionLogin(user, model);
+            String test = loginService.sessionLogin(session, user);
             System.out.println(test);
-            System.out.println("IDcontroller:" + user.getUserID());
         }
         Map<String,Object> response = new HashMap<>();
         response.put("authenticated",authenticated);

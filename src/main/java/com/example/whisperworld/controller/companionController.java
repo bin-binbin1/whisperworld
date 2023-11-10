@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +72,7 @@ public class companionController {
     }
     @MessageMapping("/sendMessages")
     @SendTo("/response/Msg")
-    public String sendMessage(@RequestBody Map<String,Object> params,@ModelAttribute Integer userId,@ModelAttribute Integer friendId){
+    public String sendMessage(@Payload Map<String,Object> params, @ModelAttribute Integer userId, @ModelAttribute Integer friendId){
         Map<String,Object> response = new HashMap<>();
         response.put("send",service.sendMessage(params.get("messages").toString()
                 , params.get("friendName").toString()

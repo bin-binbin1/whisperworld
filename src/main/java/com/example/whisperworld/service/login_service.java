@@ -5,10 +5,14 @@ import com.example.whisperworld.mapper.login_mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-@SessionAttributes({"loginID","loginName","loginSex"})
+import javax.servlet.http.HttpSession;
+import java.awt.desktop.SystemEventListener;
+
 @Service
 public class login_service {
 
@@ -22,16 +26,10 @@ public class login_service {
         String pwd =loginMapper.login_pwd(user.getUserName());
         return pwd.equals(user.getUserPassword());
     }
-    public String sessionLogin(User user, Model model){
+    public String sessionLogin(HttpSession session, User user){
         user.setUserID(loginMapper.login_id(user.getUserName()));
-        user.setUserSex(loginMapper.login_sex(user.getUserName()));
-        model.addAttribute("loginID",user.getUserID());
-        model.addAttribute("loginName",user.getUserName());
-        model.addAttribute("loginSex", user.getUserSex());
-        System.out.println("IDservice:" + user.getUserID());
-        System.out.println("testID:" + model.getAttribute("loginID"));
-        System.out.println("testName:" + model.getAttribute("loginName"));
-        System.out.println("testSex:" + model.getAttribute("loginSex"));
+        session.setAttribute("loginID",user.getUserID());
         return "success";
     }
+
 }
