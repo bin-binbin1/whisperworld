@@ -4,17 +4,13 @@ import com.example.whisperworld.entity.PrivateMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.whisperworld.mapper.companionMapper;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
-@SessionAttributes({"loginID","friendID"})
+
 @Service
 public class companionService {
     private final companionMapper mapper;
@@ -38,9 +34,9 @@ public class companionService {
         msg.setMessageContentId(mapper.getMsgCount(msg));
         return mapper.insertMessage(msg)!=0;
     }
-    public String getMessages(Integer userId, String name, Model model){
+    public String getMessages(Integer userId, String name, HttpSession session){
         Integer receiverId=mapper.getIDByName(name);
-        model.addAttribute("friendID",receiverId);
+        session.setAttribute("friendID",receiverId);
         List<PrivateMessage> getMsg=mapper.getMessagesFromA2B(receiverId,userId);
         List<PrivateMessage> sendMsg=mapper.getMessagesFromA2B(userId,receiverId);
         for(PrivateMessage msg:getMsg){//显示收到消息

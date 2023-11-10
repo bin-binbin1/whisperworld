@@ -33,7 +33,7 @@
 			</div>
 			<div class="scrollable-text" id="app" th:inline="none">
 				<!-- 使用 v-for 遍历 notices 数组，并按顺序显示公告内容 -->
-				<p v-for="notice in notices" :key="notificationId">{{ notice.notificationContent}} --{{ notice.notificationTime }}</p>
+				<p v-for="notice in notices" :key="notice.notificationId">{{ notice.notificationContent}} -- {{ notice.notificationTime }}</p>
 			</div>
 		</div>
 	</section>
@@ -56,7 +56,8 @@
 				axios.get('/api/getNotices')
 						.then(response => {
 							// 获取到公告数据后更新 notices
-							this.notices = response.data.notices;
+							this.notices = response.data;
+							this.notices.notificationTime = new Date(this.notices.notificationTime).toLocaleDateString();
 						})
 						.catch(error => {
 							console.error('Error getting notices:', error);

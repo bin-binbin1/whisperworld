@@ -14,12 +14,12 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SessionAttributes({"loginID","friendID"})
 @RestController
 public class companionController {
     @Autowired
@@ -67,8 +67,8 @@ public class companionController {
 
     @MessageMapping("/getHistory/{name}")
     @SendTo("/response/History")
-    public String getMessages(@PathVariable String name,@ModelAttribute Integer loginID,Model model){
-        return service.getMessages(loginID,name,model);
+    public String getMessages(@PathVariable String name, @ModelAttribute Integer loginID, HttpSession session){
+        return service.getMessages(loginID,name,session);
     }
     @MessageMapping("/sendMessages")
     @SendTo("/response/Msg")
