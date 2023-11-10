@@ -29,7 +29,6 @@ public class login_controller {
         if(authenticated){//创建session
             String test = loginService.sessionLogin(user, model);
             System.out.println(test);
-            System.out.println("IDcontroller:" + user.getUserID());
         }
         Map<String,Object> response = new HashMap<>();
         response.put("authenticated",authenticated);

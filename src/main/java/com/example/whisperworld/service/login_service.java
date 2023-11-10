@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-@SessionAttributes({"loginID","loginName","loginSex"})
+@SessionAttributes({"loginID"})
 @Service
 public class login_service {
 
@@ -24,14 +24,7 @@ public class login_service {
     }
     public String sessionLogin(User user, Model model){
         user.setUserID(loginMapper.login_id(user.getUserName()));
-        user.setUserSex(loginMapper.login_sex(user.getUserName()));
         model.addAttribute("loginID",user.getUserID());
-        model.addAttribute("loginName",user.getUserName());
-        model.addAttribute("loginSex", user.getUserSex());
-        System.out.println("IDservice:" + user.getUserID());
-        System.out.println("testID:" + model.getAttribute("loginID"));
-        System.out.println("testName:" + model.getAttribute("loginName"));
-        System.out.println("testSex:" + model.getAttribute("loginSex"));
         return "success";
     }
 }
