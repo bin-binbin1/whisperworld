@@ -48,11 +48,10 @@
         </div>
       </div>
       <div class="lower-content">
-        <form>
-          <input type="text" class="input-box" placeholder="输入消息" name="message">
+        <form @submit.prevent="sendMessage">
+          <input type="text" class="input-box" placeholder="输入消息" v-model="newMessage" name="message">
           <button type="submit" class="send-button">发送</button>
         </form>
-
       </div>
     </div>
   </div>
@@ -62,31 +61,70 @@
       data:{
         name:'',
         friendNames: [],  // 添加friendNames数组
-        Messages: []  // 保留Messages数组
+        Messages: [],  // 保留Messages数组
+        websocket:null,
+        currentFriend: '', // 添加一个新的数据项来保存当前选定的好友的名字
+        newMessage: '' // 添加新的数据项来保存用户输入的消息
+      },
+      created: function() {
+        // 在 Vue 实例创建时建立 WebSocket 连接
+        this.connectWebSocket();
       },
       methods:{
-        getFriends: function() {
-          axios.get('/api/getFriends', {
-            params: {
+        connectWebSocket: function() {
+          // 建立 WebSocket 连接
+          this.websocket = new WebSocket('ws://localhost:8080');
+
+          this.websocket.onopen = () => {
+            // WebSocket 连接成功后发送获取好友列表的消息
+            this.websocket.send(JSON.stringify({
+              type: 'getFriends',
               name: this.name
+            }));
+          };
+          this.websocket.onmessage = (event) => {
+            // 处理从 WebSocket 收到的消息
+            const data = JSON.parse(event.data);
+            if (data.type === 'chatHistory') {
+              this.Messages = data.messages;
+            } else if (data.type === 'friendList') {
+              // 清空之前的好友列表
+              this.friendNames = [];
+              // 存储新的好友列表到 friendNames 数组
+              this.friendNames = data.friendList;
             }
-          })
-                  .then(response => {
-                    this.friendNames = response.data.map(friend => friend.name); // 存储好友名字到friendNames数组
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
+          };
+        },
+        getFriends: function() {
+          // 发送获取好友列表的消息
+          this.websocket.send(JSON.stringify({
+            type: 'getFriends',
+            name: this.name
+          }));
         },
         showHistory: function(friendName) {
-          // 根据好友名字发送请求获取聊天历史记录，并更新Messages数组
-          axios.get('/api/getHistory', {friendName})
-                  .then(response => {
-                    this.Messages = response.data;
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
+          // 发送获取聊天历史记录的消息
+          this.websocket.send(JSON.stringify({
+            type: 'getHistory',
+            friendName: friendName
+          }));
+          // 更新当前选定的好友名字
+          this.currentFriend = friendName;
+        },
+        sendMessage: function () {
+          // 检查消息是否为空
+          if (this.newMessage.trim() === '') {
+            return;
+          }
+          // 发送消息到后端
+          this.websocket.send(JSON.stringify({
+            type: 'sendMessage',
+            friendName: this.currentFriend, // 替换为你要发送消息的好友的名字
+            message: this.newMessage
+          }));
+
+          // 清空输入框
+          this.newMessage = '';
         }
       }
     });
