@@ -7,12 +7,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@SessionAttributes({"loginID","loginName","loginSex"})
+
 @RestController
 public class login_controller {
 
@@ -22,13 +23,13 @@ public class login_controller {
         this.loginService=loginService;
     }
     @PostMapping("/login/submit")
-    public ResponseEntity<String> Login(@RequestBody User user, ModelMap modelMap){
+    public ResponseEntity<String> Login(@RequestBody User user, Model model){
         boolean authenticated = loginService.userExist(user);
         System.out.println(user);
         if(authenticated){//创建session
-            modelMap.addAttribute("loginID",user.getUserID());
-            modelMap.addAttribute("loginName",user.getUserName());
-            modelMap.addAttribute("loginSex", user.getUserSex());
+            String test = loginService.sessionLogin(user, model);
+            System.out.println(test);
+            System.out.println("IDcontroller:" + user.getUserID());
         }
         Map<String,Object> response = new HashMap<>();
         response.put("authenticated",authenticated);

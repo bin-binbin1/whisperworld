@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="header">
-    <span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">社交网络系统</span>
+    <span style="margin-left: 10px;">whisperworld</span>
 </div>
 <aside>
 	<div class="nav" id="out">
@@ -63,7 +63,7 @@
                     },
                     mounted() {
                         // 发起GET请求到您的后端API端点，获取用户数据
-                        axios.get(`/api/user/${this.user_id}`)
+                        axios.get(`/api/profile`)
                             .then(response => {
                                 // 更新Vue数据以包括接收到的用户数据
                                 this.user_data = response.data;

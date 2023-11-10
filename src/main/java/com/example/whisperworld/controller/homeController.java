@@ -24,24 +24,24 @@ public class homeController {
         this.service=service;
     }
 
-    @GetMapping
+    @GetMapping("/api/getNotices")
     public ResponseEntity<String> Login(){
-        List<Map<String, Object>> noticeMaps = new ArrayList<>();
+        List<Map<String, Object>> responses = new ArrayList<>();
 
         // 遍历通知对象数组，并将每个对象的值添加到 Map 中
         List<Notification> notices=service.getAllnotices();
         for (Notification notice : notices) {
-            Map<String, Object> noticeMap = new HashMap<>();
-            noticeMap.put("notificationId", notice.getNotificationId());
-            noticeMap.put("notificationContent", notice.getNotificationContent());
-            noticeMap.put("notificationTime", notice.getNotificationTime());
+            Map<String, Object> response = new HashMap<>();
+            response.put("notificationId", notice.getNotificationId());
+            response.put("notificationContent", notice.getNotificationContent());
+            response.put("notificationTime", notice.getNotificationTime());
 
-            noticeMaps.add(noticeMap);
+            responses.add(response);
         }
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
-            json = mapper.writeValueAsString(noticeMaps); // 将Map对象转换为JSON字符串
+            json = mapper.writeValueAsString(responses); // 将Map对象转换为JSON字符串
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
