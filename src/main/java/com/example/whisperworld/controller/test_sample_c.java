@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@SessionAttributes({"loginID"})
 @RestController
 public class test_sample_c {
 
