@@ -31,7 +31,7 @@
 			<div class="announcement-container">
 				<h2>公告</h2>
 			</div>
-			<div class="scrollable-text" id="app">
+			<div class="scrollable-text" id="app" th:inline="none">
 				<!-- 使用 v-for 遍历 notices 数组，并按顺序显示公告内容 -->
 				<p v-for="notice in notices" :key="notificationId">{{ notice.notificationContent}} --{{ notice.notificationTime }}</p>
 			</div>
@@ -41,7 +41,7 @@
 <div class="footer">欢迎使用社交网络系统</div>
 
 	<script>
-	new vue({
+	new Vue({
 		el:'#app',
 		data:{
 			notices:[],// 接收后端发来的公告

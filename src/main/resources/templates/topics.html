@@ -42,7 +42,7 @@
 			</div>
 		</div>
 
-		<div id="right">
+		<div id="right" th:inline="none">
 			<div v-for="topic in topics" :key="topicId">
 				<p>
 					{{ topic.username }} -- {{ topic.topicContent }} -- {{ topic.topicLaunchTime }}

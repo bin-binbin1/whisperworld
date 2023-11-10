@@ -28,337 +28,70 @@
       </div>
     </div>
 
-    <div class="right-sidebar">
+    <div class="right-sidebar" id="search" th:inline="none">
       <div><span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">好友列表</span></div>
+
       <div class="search-box">
-        <input type="text" class="search-input" id="search-input" placeholder="搜索">
-        <button class="search-button">搜索</button>
+        <input type="text" class="search-input" v-model="name" placeholder="搜索">
+        <button class="search-button" @click="getFriends">搜索</button>
       </div>
-      <!-- 其他导航链接 -->
-      <div id="search-result" class="search-result"></div> /*相当于好友列表*/
+
+      <div id="search-result" class="search-result">
+        <button v-for="friendName in friendNames" :key="friendName" @click="showHistory(friendName)">{{ friendName }}</button>
+      </div>
     </div>
     <div class="main-content">
       <header>好友</header>
       <div class="upper-content" id="chat-content">
-        <!-- Content provided by backend python -->
-        聊天框
+        <div v-for="message in Messages" :key="message.id">
+          {{ message.self}} -- {{ message.content }} - {{ message.time }} -- {{ message.receiveState }}
+        </div>
       </div>
       <div class="lower-content">
-        <form action="/get-data" method="GET">
+        <form>
           <input type="text" class="input-box" placeholder="输入消息" name="message">
           <button type="submit" class="send-button">发送</button>
         </form>
 
       </div>
     </div>
-
-
   </div>
-  <div class="footer">欢迎使用社交网络系统</div>
   <script>
-
-
-
-    // 为搜索按钮添加点击事件监听器
-    var searchButton = document.getElementsByClassName('search-button')[0];
-    searchButton.addEventListener('click', function () {
-      console.log('Search button clicked');
-      // 在这里处理搜索按钮点击事件
-      var keyword = document.getElementById("search-input").value;
-
-      // 创建XMLHttpRequest对象
-      var xhr = new XMLHttpRequest();
-
-      // 设置请求方法和URL
-      xhr.open("POST", "/search", true);
-
-      // 设置请求头
-      xhr.setRequestHeader("Content-Type", "application/json");
-
-      // 监听响应
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var response = JSON.parse(xhr.responseText);
-          if (response.results === 'empty') {
-            // 处理空结果
-            var searchResultElement = document.getElementById('search-result');
-            searchResultElement.innerHTML = '没有找到匹配的结果';
-          } else {
-            displayResults(response.results);
-          }
-        }
-      };
-      // 发送请求
-      xhr.send(JSON.stringify({ keyword: keyword }));
-    });
-
-    //  有问题，记得来修改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // 为聊天按钮添加点击事件监听器
-    var chatButton = document.getElementsByClassName('chat-button')[0];
-    chatButton.addEventListener('click', function () {
-      // 在这里处理聊天按钮点击事件
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "/chat", true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var responseText = xhr.responseText;
-          console.log(responseText); // 打印服务器返回的数据
-
-          try {
-            var response = JSON.parse(responseText);
-            var chat = response;
-
-            // 在这里更新页面内容
-            var chatDiv = document.querySelector('.upper-content'); // 修改选择器
-            chatDiv.innerHTML = ""; // 清空聊天内容
-            for (var i = 0; i < chat.length; i++) {
-              var chatItem = document.createElement('pre'); // 使用 pre 元素
-              chatItem.textContent = chat[i];
-              chatDiv.appendChild(chatItem);
-
-              // 在每个 pre 元素后面插入一个 br 元素来换行
-              var br = document.createElement('br');
-              chatDiv.appendChild(br);
+    new Vue({
+      el:'#search',
+      data:{
+        name:'',
+        friendNames: [],  // 添加friendNames数组
+        Messages: []  // 保留Messages数组
+      },
+      methods:{
+        getFriends: function() {
+          axios.get('/api/getFriends', {
+            params: {
+              name: this.name
             }
-          } catch (e) {
-            // 响应内容不是JSON格式
-            var chatDiv = document.querySelector('.chat-content');
-            chatDiv.innerHTML = responseText;
-          }
+          })
+                  .then(response => {
+                    this.friendNames = response.data.map(friend => friend.name); // 存储好友名字到friendNames数组
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+        },
+        showHistory: function(friendName) {
+          // 根据好友名字发送请求获取聊天历史记录，并更新Messages数组
+          axios.get('/api/getHistory', {friendName})
+                  .then(response => {
+                    this.Messages = response.data;
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
         }
-      };
-      xhr.send(JSON.stringify({ friendName: 'FRIEND_NAME' }));
-    });
-
-
-
-
-    // 为发送按钮添加点击事件监听器
-    var sendButton = document.getElementsByClassName('send-button')[0];
-    sendButton.addEventListener('click', function () {
-      console.log('Send button clicked'); // 添加 log 语句
-
-      // 在这里处理发送按钮点击事件
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/get-data", true);
-      xhr.onreadystatechange = function () {
-        console.log('Ready state changed:', xhr.readyState); // 添加 log 语句
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log('Response received:', xhr.responseText); // 添加 log 语句
-          var response = JSON.parse(xhr.responseText);
-          var data = response.data;
-
-          // 在这里更新页面内容
-          var upperContentDiv = document.querySelector('.upper-content');
-          upperContentDiv.innerHTML = ""; // 清空内容
-          for (var i = 0; i < data.length; i++) {
-            var dataItem = document.createElement('p');
-            dataItem.textContent = data[i];
-            upperContentDiv.appendChild(dataItem);
-          }
-        }
-      };
-      xhr.send();
-    });
-
-
-
-    // 为添加好友按钮添加点击事件监听器
-    var addFriendButton = document.getElementsByClassName('add-friend-button')[0];
-    addFriendButton.addEventListener('click', function () {
-      // 在这里处理添加好友按钮点击事件
-      var friendName = document.querySelector('.friend-name-input').value;
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "/add-friend", true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(JSON.stringify({ friendName: friendName }));
-    });
-
-
-    function displayResults(results) {
-      var resultDiv = document.getElementById("search-result");
-      resultDiv.innerHTML = ""; // 清空搜索结果
-
-      for (var i = 0; i < results.length; i++) {
-        var resultItem = document.createElement("div"); // 创建<div>元素
-
-        var resultText = document.createElement("span"); // 创建<span>元素
-        resultText.textContent = results[i].text; // 设置<span>元素的文本内容
-        resultItem.appendChild(resultText); // 将<span>元素添加到<div>元素中
-
-        var resultButton = document.createElement("button"); // 创建<button>元素
-        resultButton.textContent = results[i].buttonValue; // 设置<button>元素的文本内容
-        if (results[i].buttonValue === '添加好友') {
-          resultButton.classList.add('add-friend-button'); // 添加 add-friend-button 类
-        } else if (results[i].buttonValue === '聊天') {
-          resultButton.classList.add('chat-button'); // 添加 chat-button 类
-        }
-        resultItem.appendChild(resultButton); // 将<button>元素添加到<div>元素中
-
-        resultDiv.appendChild(resultItem); // 将<div>元素添加到结果容器中
-      }
-
-      // 为所有添加好友按钮添加点击事件监听器
-      var addFriendButtons = document.getElementsByClassName('add-friend-button');
-      for (var i = 0; i < addFriendButtons.length; i++) {
-        var button = addFriendButtons[i];
-        button.addEventListener('click', function () {
-          console.log('Add friend button clicked');
-          // 在这里处理添加好友按钮的点击事件
-          var friendName = this.previousSibling.textContent;
-          addFriend(friendName);
-        });
-      }
-
-      // 为所有聊天按钮添加点击事件监听器
-      var chatButtons = document.getElementsByClassName('chat-button');
-      for (var i = 0; i < chatButtons.length; i++) {
-        var button = chatButtons[i];
-        button.addEventListener('click', function (event) {
-          console.log('Chat button clicked');
-          // 在这里处理聊天按钮的点击事件
-
-          // 更新当前选中的好友名称
-          currentFriendName = event.target.previousSibling.textContent;
-
-          // 调用 chat 函数
-          chat(currentFriendName);
-        });
-      }
-
-    }
-
-    function chat(friendName) {
-      console.log('Chatting with:', friendName);
-
-      // 创建XMLHttpRequest对象
-      var xhr = new XMLHttpRequest();
-
-      // 设置请求方法和URL
-      xhr.open("POST", "/chat", true);
-
-      // 设置请求头
-      xhr.setRequestHeader("Content-Type", "application/json");
-
-      // 监听响应
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log('Chat started successfully');
-          var response = JSON.parse(xhr.responseText);
-          var chatContent = response;
-          displayChatContent(chatContent);
-        }
-      };
-
-      // 发送请求
-      xhr.send(JSON.stringify({ friendName: friendName }));
-    }
-
-
-    // 创建一个全局变量来存储当前选中的好友名称
-    var currentFriendName = '';
-
-    // 为所有聊天按钮添加点击事件监听器
-    var chatButtons = document.getElementsByClassName('chat-button');
-    for (var i = 0; i < chatButtons.length; i++) {
-      var button = chatButtons[i];
-      button.addEventListener('click', function (event) {
-        console.log('Chat button clicked');
-        // 在这里处理聊天按钮的点击事件
-
-        // 更新当前选中的好友名称
-        currentFriendName = event.target.previousSibling.textContent;
-
-        // 调用 chat 函数
-        chat(currentFriendName);
-      });
-    }
-
-    // 获取表单元素
-    var form = document.querySelector('form');
-
-    // 为表单添加提交事件监听器
-    form.addEventListener('submit', function (event) {
-      // 阻止表单的默认提交行为
-      event.preventDefault();
-
-      // 获取输入框中的内容
-      var message = document.querySelector('input[name="message"]').value;
-
-      // 检查输入框中的内容是否为空或过长
-      if (message === '') {
-        // 输入框内容为空
-        alert('警告：输入不能为空');
-      } else if (message.length > 50) {
-        // 输入框内容过长
-        alert('警告：输入过长');
-      } else if (currentFriendName === '') {
-        // 当前没有选中好友
-        alert('警告：未选择好友');
-      } else {
-        // 输入框内容符合要求
-        // 允许表单提交
-
-        // 创建XMLHttpRequest对象
-        var xhr = new XMLHttpRequest();
-
-        // 设置请求方法和URL
-        xhr.open("GET", "/get-data?message=" + message, true);
-
-        // 监听响应
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log('Data received successfully');
-            // 在这里处理服务器返回的数据
-            // ...
-
-            // 调用 chat 函数刷新页面内容
-            chat(currentFriendName);
-          }
-        };
-
-        // 发送请求
-        xhr.send();
       }
     });
-
-
-
-
-
-    function displayChatContent(chatContent) {
-      var chatDiv = document.getElementById('chat-content');
-      chatDiv.innerHTML = chatContent;
-    }
-
-    function addFriend(friendName) {
-      // 创建XMLHttpRequest对象
-      var xhr = new XMLHttpRequest();
-
-      // 设置请求方法和URL
-      xhr.open("POST", "/add-friend", true);
-
-      // 设置请求头
-      xhr.setRequestHeader("Content-Type", "application/json");
-
-      // 监听响应
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log('Friend added successfully');
-          alert('添加好友成功！');
-        }
-      };
-
-      // 发送请求
-      xhr.send(JSON.stringify({ friendName: friendName }));
-    }
-
-
-
-
-
   </script>
+  <div class="footer">欢迎使用社交网络系统</div>
 </body>
 
 </html>
