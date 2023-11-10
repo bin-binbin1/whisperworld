@@ -4,14 +4,13 @@ import com.example.whisperworld.service.companionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jmx.support.ObjectNameManager;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.ui.Model;
+import org.springframework.session.Session;
+import org.springframework.session.SessionRepository;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -20,16 +19,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 public class companionController {
     @Autowired
     private companionService service;
+    @Autowired
+    private SessionRepository<? extends Session> sessionRepository;
 
     @MessageMapping("/getAllFriends")
     @SendTo("/response/friends")
-    public String getAllFriends(@SessionAttribute("loginID") String loginID) {
-
-        List<String> names=service.getAllFriends(Integer.parseInt(loginID));
+    public String getAllFriends(@Header("simpSessionId") String sessionId) {
+        // 从session存储中获取session
+        Session session = sessionRepository.findById(sessionId);
+        Integer loginID = null;
+        if (session != null) {
+            // 从session中获取loginID
+            loginID= session.getAttribute("loginID");
+            // 你的代码
+        }
+        System.out.println("loginID="+loginID);
+        List<String> names=service.getAllFriends(loginID);
         List<Map<String,Object>> responses = new ArrayList<>();
         for(String name : names){
             Map<String,Object> response = new HashMap<>();

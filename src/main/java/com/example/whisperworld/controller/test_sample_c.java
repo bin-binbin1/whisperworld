@@ -21,12 +21,8 @@ public class test_sample_c {
     private test_sample_s userService;
 
     @GetMapping("/api/profile")
-    public ResponseEntity<String> getUser(@SessionAttribute("loginID") String loginID) {
-
-        System.out.println(loginID);
-        System.out.println("ok");
-
-        User user = userService.getUser(Integer.parseInt(loginID));
+    public ResponseEntity<String> getUser(@SessionAttribute("loginID") Integer loginID) {
+        User user = userService.getUser(loginID);
         if (user != null) {
             Map<String, Object> userData = new HashMap<>();
             userData.put("user_id", user.getUserID());
