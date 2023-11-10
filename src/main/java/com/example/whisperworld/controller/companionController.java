@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.support.ObjectNameManager;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +21,12 @@ import java.util.Map;
 @SessionAttributes({"loginID","friendID"})
 @RestController
 public class companionController {
-
-    private companionService service;
     @Autowired
-    public companionController(companionService service){
-        this.service=service;
-    }
+    private companionService service;
 
-    @GetMapping("/api/getAllFriends")
-    public ResponseEntity<String> getAllFriends(@ModelAttribute Integer loginID) {
+    @MessageMapping("/getAllFriends")
+    @SendTo("/response/friends")
+    public String getAllFriends(@ModelAttribute Integer loginID) {
         List<String> names=service.getAllFriends(loginID);
         List<Map<String,Object>> responses = new ArrayList<>();
         for(String name : names){
@@ -41,10 +41,11 @@ public class companionController {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(json, HttpStatus.OK);
+        return json;
     }
-    @GetMapping("/api/getFriends/{name}")
-    public ResponseEntity<String> getFriendByName(@PathVariable String prefix,@ModelAttribute Integer loginID){
+    @MessageMapping("/getFriends/{prefix}")
+    @SendTo("/response/friends")
+    public String getFriendByName(@PathVariable String prefix,@ModelAttribute Integer loginID){
 
         List<String> names=service.getFriendsByName(loginID,prefix);
         List<Map<String,Object>> responses = new ArrayList<>();
@@ -60,15 +61,17 @@ public class companionController {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(json, HttpStatus.OK);
+        return json;
     }
 
-    @GetMapping("/api/getHistory/{name}")
-    public ResponseEntity<String> getMessages(@PathVariable String name,@ModelAttribute Integer loginID,Model model){
+    @MessageMapping("/getHistory/{name}")
+    @SendTo("/response/History")
+    public String getMessages(@PathVariable String name,@ModelAttribute Integer loginID,Model model){
         return service.getMessages(loginID,name,model);
     }
-    @PostMapping("/api/sendMessages")
-    public ResponseEntity<String> sendMessage(@RequestBody Map<String,Object> params,@ModelAttribute Integer userId,@ModelAttribute Integer friendId){
+    @MessageMapping("/sendMessages")
+    @SendTo("/response/Msg")
+    public String sendMessage(@RequestBody Map<String,Object> params,@ModelAttribute Integer userId,@ModelAttribute Integer friendId){
         Map<String,Object> response = new HashMap<>();
         response.put("send",service.sendMessage(params.get("messages").toString()
                 , params.get("friendName").toString()
@@ -83,7 +86,7 @@ public class companionController {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(json, HttpStatus.OK);
+        return json;
     }
 
 }

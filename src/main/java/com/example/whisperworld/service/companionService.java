@@ -38,7 +38,7 @@ public class companionService {
         msg.setMessageContentId(mapper.getMsgCount(msg));
         return mapper.insertMessage(msg)!=0;
     }
-    public ResponseEntity<String> getMessages(Integer userId, String name, Model model){
+    public String getMessages(Integer userId, String name, Model model){
         Integer receiverId=mapper.getIDByName(name);
         model.addAttribute("friendID",receiverId);
         List<PrivateMessage> getMsg=mapper.getMessagesFromA2B(receiverId,userId);
@@ -75,7 +75,7 @@ public class companionService {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(json, HttpStatus.OK);
+        return json;
     }
     public Map<String,Object> getOneMessageResponse(PrivateMessage msg,boolean self){
         Map<String,Object> response;
