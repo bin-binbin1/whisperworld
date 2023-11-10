@@ -173,4 +173,4 @@ END;$$
 DELIMITER ;
 
 
-insert into users values(1,"fun",123456,'m',CURDATE(),18114803454,'offline',1,CURDATE());
+insert into users values(1,"fun",123456,'m',CURDATE(),18114803454,'offline',0   ,CURDATE());

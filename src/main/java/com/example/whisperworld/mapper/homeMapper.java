@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface homeMapper {
 
-    @Select("SELECT * FROM Notification ORDER BY notificationId DESC")
+    @Select("SELECT * FROM notifications ORDER BY notificationId DESC")
     List<Notification> getAllNotice();
 }
