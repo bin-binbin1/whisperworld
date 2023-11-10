@@ -66,7 +66,7 @@
 	</section>
 <div class="footer">欢迎使用社交网络系统</div>
 <script>
-	new vue({
+	new Vue({
 		el:'#right',
 		data:{
 			topics:[
@@ -90,7 +90,7 @@
 				axios.get('/api/getTopics')
 						.then(response => {
 							// 获取到话题数据后更新 topics
-							this.topics = response.data.topics;
+							this.topics = response.data;
 						})
 						.catch(error => {
 							console.error('Error getting notices:', error);
@@ -107,7 +107,7 @@
 								// 成功后更新点赞数量,(t)表示数组中的每个元素
 								const updatedTopic = this.topics.find((t) => t.id === topicId);
 								updatedTopic.likedByUser = true;
-								updatedTopic.likeNum = response.data.updatedLikeNum;
+								updatedTopic.likeNum = response.data;
 							})
 							.catch((error) => {
 								console.error('点赞时出错:', error);
@@ -124,7 +124,7 @@
 					axios.get('/api/getComments', {topicId:topic.topicId})
 							.then(response => {
 								// 获取到评论数据后更新话题的评论列表
-								topic.comments = response.data.comments;
+								topic.comments = response.data;
 							})
 							.catch(error => {
 								console.error('获取评论数据失败:', error);

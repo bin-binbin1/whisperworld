@@ -37,16 +37,20 @@
         },
         methods: {
           handleSubmit: function() {
-            console.log('called');
             axios.post('/login/submit', {
               userName: this.userName,
               userPassword: this.userPassword
             })
                     .then(function (response) {
                       // Handle success
-                      console.log(response.data.authenticated);
                       if (response.data.authenticated) {
-                        // Redirect to another page (e.g., dashboard)
+                        // 登录成功后执行WebSocket的相关操作
+                        this.websocket = new WebSocket('ws://localhost:8080'); // 替换为你的WebSocket地址
+                        this.websocket.onopen = function() {
+                          console.log('WebSocket connection opened.');
+                          // 在这里执行你的onopen逻辑
+                        };
+
                         window.location.href = '/home';
                       } else {
                         // Authentication failed, show an error message
