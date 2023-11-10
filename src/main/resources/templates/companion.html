@@ -2,134 +2,118 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="static/vue/logout.js"></script>
-  <title>好友</title>
-  <link href="static/css/companion.css" rel="stylesheet" type="text/css">
-  <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="static/vue/logout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <title>好友</title>
+    <link href="static/css/companion.css" rel="stylesheet" type="text/css">
+    <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-  <div class="header">
+<div class="header">
     <span style="margin-left: 10px;">whisperworld</span>
-  </div>
-  <div>
+</div>
+<div>
     <div class="left-sidebar">
-      <div class="nav" id="out">
-        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
-        <a href="/home ">首页</a>
-        <a href="/companion"  class="active">好友</a>
-        <a href="/group">群组</a>
-        <a href="/topics">话题</a>
-        <a href="/profile">个人中心</a>
-        <a href="/logout" @click.prevent="logout">退出登录</a>
-      </div>
-    </div>
-
-    <div class="right-sidebar" id="search" th:inline="none">
-      <div><span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">好友列表</span></div>
-
-      <div class="search-box">
-        <input type="text" class="search-input" v-model="name" placeholder="搜索">
-        <button class="search-button" @click="getFriends">搜索</button>
-      </div>
-
-      <div id="search-result" class="search-result">
-        <button v-for="friendName in friendNames" :key="friendName" @click="showHistory(friendName)">{{ friendName }}</button>
-      </div>
-    </div>
-    <div class="main-content">
-      <header>好友</header>
-      <div class="upper-content" id="chat-content">
-        <div v-for="message in Messages" :key="message.id">
-          {{ message.self}} -- {{ message.content }} - {{ message.time }} -- {{ message.receiveState }}
+        <div class="nav" id="out">
+            <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+            <a href="/home ">首页</a>
+            <a href="/companion" class="active">好友</a>
+            <a href="/group">群组</a>
+            <a href="/topics">话题</a>
+            <a href="/profile">个人中心</a>
+            <a href="/logout" @click.prevent="logout">退出登录</a>
         </div>
-      </div>
-      <div class="lower-content">
-        <form @submit.prevent="sendMessage">
-          <input type="text" class="input-box" placeholder="输入消息" v-model="newMessage" name="message">
-          <button type="submit" class="send-button">发送</button>
-        </form>
-      </div>
     </div>
-  </div>
-  <script>
+    <div id="app" th:inline="none">
+        <div class="right-sidebar">
+            <div><span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">好友列表</span></div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" v-model="name" placeholder="搜索">
+                <button class="search-button" @click="getFriends">搜索</button>
+            </div>
+
+            <div id="search-result" class="search-result">
+                <button v-for="friendName in friendNames" :key="friendName" @click="showHistory(friendName)">
+                    {{ friendName }}
+                </button>
+            </div>
+        </div>
+        <div class="main-content">
+            <header>好友</header>
+            <div class="upper-content" id="chat-content">
+                <div v-for="message in Messages" :key="message.id">
+                    {{ message.self}} -- {{ message.content }} - {{ message.time }} -- {{ message.receiveState }}
+                </div>
+            </div>
+            <div class="lower-content">
+                <form @submit.prevent="submitMessage">
+                    <input type="text" class="input-box" placeholder="输入消息" v-model="newMessage" name="message">
+                    <button type="submit" class="send-button" >发送</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
     new Vue({
-      el:'#search',
-      data:{
-        name:'',
-        friendNames: [],  // 添加friendNames数组
-        Messages: [],  // 保留Messages数组
-        websocket:null,
-        currentFriend: '', // 添加一个新的数据项来保存当前选定的好友的名字
-        newMessage: '' // 添加新的数据项来保存用户输入的消息
-      },
-      created: function() {
-        // 在 Vue 实例创建时建立 WebSocket 连接
-        this.connectWebSocket();
-      },
-      methods:{
-        connectWebSocket: function() {
-          // 建立 WebSocket 连接
-          this.websocket = new WebSocket('ws://localhost:8080');
+        el: '#app',
+        data: {
+            stompClient: null,
+            name: '',
+            friendNames: [],
+            Messages: [],
+            currentFriend: '',
+            newMessage: ''
+        },
+        created() {
+            const socket = new SockJS('http://localhost:8080/websocket-endpoint');
+            this.stompClient = Stomp.over(socket);
+            this.stompClient.connect({}, () => {
+                console.log('connected to server');
 
-          this.websocket.onopen = () => {
-            // WebSocket 连接成功后发送获取好友列表的消息
-            this.websocket.send(JSON.stringify({
-              type: 'getFriends',
-              name: this.name
-            }));
-          };
-          this.websocket.onmessage = (event) => {
-            // 处理从 WebSocket 收到的消息
-            const data = JSON.parse(event.data);
-            if (data.type === 'chatHistory') {
-              this.Messages = data.messages;
-            } else if (data.type === 'friendList') {
-              // 清空之前的好友列表
-              this.friendNames = [];
-              // 存储新的好友列表到 friendNames 数组
-              this.friendNames = data.friendList;
+                this.stompClient.subscribe('/response/friends', (data) => {
+                    this.friendNames = JSON.parse(data.body);
+                });
+
+                this.stompClient.subscribe('/response/History', (data) => {
+                    this.Messages = JSON.parse(data.body);
+                });
+
+                this.stompClient.subscribe('/response/Msg', (data) => {
+                    this.Messages.push(JSON.parse(data.body));
+                });
+
+                this.stompClient.send('/send/getAllFriends', {});
+
+            });
+        },
+        methods: {
+            getFriends() {
+                this.stompClient.send('/send/getFriends/' + this.name, {});
+            },
+            getHistory() {
+                this.stompClient.send('/send/getHistory/' + this.currentFriend, {});
+            },
+            sendMessage() {
+                this.stompClient.send('/send/sendMessages', {}, this.newMessage);
+            },
+            submitMessage() {
+                if (this.newMessage.trim() !== '') {
+                    this.sendMessage();
+                    this.newMessage = '';
+                }
             }
-          };
         },
-        getFriends: function() {
-          // 发送获取好友列表的消息
-          this.websocket.send(JSON.stringify({
-            type: 'getFriends',
-            name: this.name
-          }));
-        },
-        showHistory: function(friendName) {
-          // 发送获取聊天历史记录的消息
-          this.websocket.send(JSON.stringify({
-            type: 'getHistory',
-            friendName: friendName
-          }));
-          // 更新当前选定的好友名字
-          this.currentFriend = friendName;
-        },
-        sendMessage: function () {
-          // 检查消息是否为空
-          if (this.newMessage.trim() === '') {
-            return;
-          }
-          // 发送消息到后端
-          this.websocket.send(JSON.stringify({
-            type: 'sendMessage',
-            friendName: this.currentFriend, // 替换为你要发送消息的好友的名字
-            message: this.newMessage
-          }));
-
-          // 清空输入框
-          this.newMessage = '';
-        }
-      }
     });
-  </script>
-  <div class="footer">欢迎使用社交网络系统</div>
+
+</script>
+<div class="footer">欢迎使用社交网络系统</div>
 </body>
 
 </html>

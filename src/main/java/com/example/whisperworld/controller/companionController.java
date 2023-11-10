@@ -27,8 +27,9 @@ public class companionController {
 
     @MessageMapping("/getAllFriends")
     @SendTo("/response/friends")
-    public String getAllFriends(@ModelAttribute Integer loginID) {
-        List<String> names=service.getAllFriends(loginID);
+    public String getAllFriends(@SessionAttribute("loginID") String loginID) {
+
+        List<String> names=service.getAllFriends(Integer.parseInt(loginID));
         List<Map<String,Object>> responses = new ArrayList<>();
         for(String name : names){
             Map<String,Object> response = new HashMap<>();
@@ -46,8 +47,8 @@ public class companionController {
     }
     @MessageMapping("/getFriends/{prefix}")
     @SendTo("/response/friends")
-    public String getFriendByName(@PathVariable String prefix,@ModelAttribute Integer loginID){
-
+    public String getFriendByName(@PathVariable String prefix,@SessionAttribute("loginID") Integer loginID){
+        System.out.println("loginID"+loginID);
         List<String> names=service.getFriendsByName(loginID,prefix);
         List<Map<String,Object>> responses = new ArrayList<>();
         for(String name : names){
@@ -67,7 +68,7 @@ public class companionController {
 
     @MessageMapping("/getHistory/{name}")
     @SendTo("/response/History")
-    public String getMessages(@PathVariable String name, @ModelAttribute Integer loginID, HttpSession session){
+    public String getMessages(@PathVariable String name, @SessionAttribute("loginID") Integer loginID, HttpSession session){
         return service.getMessages(loginID,name,session);
     }
     @MessageMapping("/sendMessages")
