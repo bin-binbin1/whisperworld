@@ -1,7 +1,7 @@
 new Vue({
     el: '#left1',
     data:{
-        message:''
+        topicContent:''
     },
     methods: {
         handleSubmit: function() {

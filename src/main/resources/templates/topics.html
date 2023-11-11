@@ -36,8 +36,8 @@
 			<div>
 				<p>留言板</p>
 				<form  @submit.prevent="handleSubmit">
-					<textarea v-model="topicContent" name="topicContent" rows="10" cols="20" placeholder="写点话题吧"></textarea><br><input type="submit"
-						value="发送">
+					<textarea v-model="topicContent" name="topicContent" rows="10" cols="20" placeholder="写点话题吧"></textarea><br>
+					<button type="submit" class="send-button" >发送</button>
 				</form>
 			</div>
 		</div>
