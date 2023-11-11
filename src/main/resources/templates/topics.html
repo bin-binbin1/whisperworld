@@ -6,7 +6,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="static/vue/logout.js"></script>
-	<script src="static/vue/sendtopic.js"></script>
+	<script src="static/vue/left_topic.js"></script>
 	<title>话题</title>
 	<link href="static/css/navigation.css" rel="stylesheet" type="text/css">
 	<link href="static/css/topics.css" rel="stylesheet" type="text/css">
@@ -35,15 +35,15 @@
 		<div id="left1">
 			<div>
 				<p>留言板</p>
-				<form action="/sendtopic" method="post">
-					<textarea v-model="topicContent" name="topicContent" rows="10" cols="20" placeholder="写点话题吧"></textarea><br><input type="submit"
-						value="发送">
+				<form  @submit.prevent="handleSubmit">
+					<textarea v-model="topicContent" name="topicContent" rows="10" cols="20" placeholder="写点话题吧"></textarea><br>
+					<button type="submit" class="send-button" >发送</button>
 				</form>
 			</div>
 		</div>
 
 		<div id="right" th:inline="none">
-			<div v-for="topic in topics" :key="topicId">
+			<div v-for="topic in topics" :key="topic.topicId">
 				<p>
 					{{ topic.username }} -- {{ topic.topicContent }} -- {{ topic.topicLaunchTime }}
 					<button @click="likeTopic(topicId)">点赞</button>
@@ -89,7 +89,7 @@
 				// 使用 Axios 或其他方式发送请求获取话题数据
 				axios.get('/api/getTopics')
 						.then(response => {
-							// 获取到话题数据后更新 topics
+							// 为每个话题对象指定唯一的 topicId
 							this.topics = response.data;
 						})
 						.catch(error => {
