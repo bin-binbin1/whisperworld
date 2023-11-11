@@ -69,9 +69,19 @@
             friendNames: [],
             Messages: [],
             currentFriend: '',
-            newMessage: ''
+            newMessage: '',
+            userID: '',
+            friendID: ''
         },
         created() {
+            axios.get('/api/getCurrentID')
+                .then(response => {
+                    this.data=response.data;
+                    console.log('userID:',this.data.userID);
+                })
+                .catch(error =>{
+                    console.error(error);
+                })
             const socket = new SockJS('http://localhost:8080/websocket-endpoint');
             this.stompClient = Stomp.over(socket);
             this.stompClient.connect({}, () => {
