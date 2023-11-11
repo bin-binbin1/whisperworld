@@ -6,6 +6,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="static/vue/logout.js"></script>
+	<script src="static/vue/friendrequest.js"></script>
 	<title>首页</title>
 	<link href="static/css/home.css" rel="stylesheet" type="text/css">
 	<link href="static/css/navigation.css" rel="stylesheet" type="text/css">
@@ -34,6 +35,17 @@
 			<div class="scrollable-text" id="app" th:inline="none">
 				<!-- 使用 v-for 遍历 notices 数组，并按顺序显示公告内容 -->
 				<p v-for="notice in notices" :key="notice.notificationId">{{ notice.notificationContent}} -- {{ notice.notificationTime }}</p>
+			</div>
+			<div class="announcement-container">
+				<h2>加好友请求</h2>
+			</div>
+			<div class="scrollable-text" id="friend" th:inline="none">
+				<!-- 使用 v-for 遍历 friendRequests 数组，并按顺序显示加好友请求内容 -->
+				<div v-for="request in friendRequests" :key="request.requestId">
+					<p>{{ request.senderUsername}} 请求添加你为好友</p>
+					<button @click="handleDecision(request.requestId, true)">添加</button>
+					<button @click="handleDecision(request.requestId, false)">拒绝</button>
+				</div>
 			</div>
 		</div>
 	</section>
