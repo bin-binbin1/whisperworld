@@ -90,7 +90,7 @@
 				axios.get('/api/getTopics')
 						.then(response => {
 							// 为每个话题对象指定唯一的 topicId
-							this.topics = response.data.map(topic => ({ ...topic, topicId: generateUniqueId() }));
+							this.topics = response.data;
 						})
 						.catch(error => {
 							console.error('Error getting notices:', error);
