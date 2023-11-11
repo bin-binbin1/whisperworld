@@ -25,7 +25,7 @@ public class companionService {
     public List<String> getFriendsByName(Integer userId,String prefix){
         return mapper.getFriendsByNAME(prefix);
     }
-    public boolean sendMessage(String content,String friendName,Integer userId,Integer friendId){
+    public boolean sendMessage(String content,Integer userId,Integer friendId){
         PrivateMessage msg = new PrivateMessage();
         msg.setMessageContent(content);
         msg.setSendTime(new Date());
@@ -34,9 +34,8 @@ public class companionService {
         msg.setMessageContentId(mapper.getMsgCount(msg));
         return mapper.insertMessage(msg)!=0;
     }
-    public String getMessages(Integer userId, String name, HttpSession session){
-        Integer receiverId=mapper.getIDByName(name);
-        session.setAttribute("friendID",receiverId);
+    public String getMessages(Integer userId, Integer receiverId){
+
         List<PrivateMessage> getMsg=mapper.getMessagesFromA2B(receiverId,userId);
         List<PrivateMessage> sendMsg=mapper.getMessagesFromA2B(userId,receiverId);
         for(PrivateMessage msg:getMsg){//显示收到消息
@@ -83,6 +82,9 @@ public class companionService {
         return response;
     }
 
+    public Integer getNameByID(String name){
+        return mapper.getIDByName(name);
+    }
 
 
 }
