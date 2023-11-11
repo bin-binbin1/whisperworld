@@ -30,7 +30,6 @@ public class login_service {
         else{
             return pwd.equals(user.getUserPassword());
         }
-
     }
     public String sessionLogin(HttpSession session, User user){
         user.setUserID(loginMapper.login_id(user.getUserName()));

@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class topicService {
     private int topicid;
+    private int replieid;
     private final topicsMapper topicsMapper;
 
     @Autowired
@@ -34,17 +35,24 @@ public class topicService {
         topics.setTopicLaunchTime(new Date());
         topics.setLikeNum(0);
         topics.setTopicCommentNum(0);
-        if(postTopic_(topics)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return postTopicId(topics);
     }
-    private synchronized boolean postTopic_(Topics topics){
+    private synchronized boolean postTopicId(Topics topics){//生成话题号
         topics.setTopicId(topicid);
         topicid++;
         //发送失败判断
+        return true;
+    }
+
+    public boolean postComment(TopicReplies topicreplie){//发布评论
+        topicreplie.setCommentTime(new Date());
+        return postCommentId(topicreplie);
+    }
+    private synchronized boolean postCommentId(TopicReplies topicreplie){//生成评论号
+        topicreplie.setCommentNum(topicsMapper.topicRepliesNum(topicreplie));
+        topicreplie.setCommentId(replieid);
+        replieid++;
+        //判断失败
         return true;
     }
 

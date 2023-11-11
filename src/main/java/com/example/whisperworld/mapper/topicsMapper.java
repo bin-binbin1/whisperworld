@@ -30,6 +30,9 @@ public interface topicsMapper {
     @Insert("INSERT INTO topics_replies VALUES(#{topicId},#{commentUserId},#{commentId},#{commentTime},#{commentContent},#{commentNum})")
     int topicRepliesLaunch(TopicReplies topicReplies);//发表评论
 
+    @Select("SELECT count(*) FROM topics_replies WHERE topicId=#{topicId} ")
+    int topicRepliesNum(TopicReplies topicReplies);//获取话题的评论个数
+
     @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE userId=#{userid} AND TopicID=#{topicid}")
     @Select("SELECT likeNum from topics WHERE TopicID=#{topicid}")
     int updateLikeNum(Topics topic);//点赞+1

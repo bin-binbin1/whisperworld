@@ -6,6 +6,7 @@ import com.example.whisperworld.service.topicService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.listener.Topic;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,20 @@ public class topicsController {
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
+    @PostMapping("/api/sendcomment")//发布评论
+    public ResponseEntity<String> sendCommend(@RequestBody TopicReplies topicreplie, @SessionAttribute("loginID") Integer loginID){
+        //前端传递 topicId
+        topicreplie.setCommentUserId(loginID);
+        boolean response = topicService.postComment(topicreplie);
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try {
+            json = mapper.writeValueAsString(response); // 将Map对象转换为JSON字符串
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
 
 
     @PostMapping("/api/likeTopic")//点赞

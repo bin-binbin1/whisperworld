@@ -53,8 +53,8 @@ public class NagigationController {
     }
 
     @GetMapping("/logout")
-    public String logout(SessionStatus sessionStatus){
-        sessionStatus.setComplete();//清空session
+    public String logout(HttpSession session){
+        session.invalidate();//清空session
         return "public/welcome";
     }
 
