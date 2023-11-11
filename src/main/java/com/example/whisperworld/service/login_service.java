@@ -24,7 +24,13 @@ public class login_service {
 
     public boolean userExist(User user){
         String pwd =loginMapper.login_pwd(user.getUserName());
-        return pwd.equals(user.getUserPassword());
+        if(pwd == null){
+            return false;
+        }
+        else{
+            return pwd.equals(user.getUserPassword());
+        }
+
     }
     public String sessionLogin(HttpSession session, User user){
         user.setUserID(loginMapper.login_id(user.getUserName()));
