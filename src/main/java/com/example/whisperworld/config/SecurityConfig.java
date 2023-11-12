@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/public/**", "/login/submit","/register_submit2", "/static/**","/websocket-endpoint/**").permitAll() // 允许公开访问的URL
+                .antMatchers("/public/**","/","/welcome","/login", "/login/submit","/register_submit2", "/static/**","/websocket-endpoint/**").permitAll() // 允许公开访问的URL
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
