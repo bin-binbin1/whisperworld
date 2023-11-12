@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <title>欢迎页面</title>
     <link href="../static/css/welcome.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<div id="container">
 <div id="left">
     <p>欢迎来到</p>
     <p>&nbsp&nbsp&nbsp低语世界</p>
@@ -18,5 +21,33 @@
     <a href="">帮助</a>
     <a href="">反馈</a>
 </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const backgrounds = [
+            "url('../templates/static/pictures/2.png')",
+            "url('../templates/static/pictures/3.png')",
+            "url('../templates/static/pictures/2.png')"
+        ];
+
+
+
+        function changeBackground() {
+            let currentBackgroundIndex = 0;
+
+            document.body.style.backgroundImage = backgrounds[currentBackgroundIndex];
+
+            // 切换到下一个背景图片
+            currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
+        }
+
+        // 初始更改背景
+        changeBackground();
+
+        // 每隔秒更换一次背景
+        setInterval(changeBackground, 1000);
+    });
+</script>
+
 </body>
 </html>
