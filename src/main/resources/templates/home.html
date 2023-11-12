@@ -28,7 +28,8 @@
 		</div>
 	</aside>
 	<section>
-		<div class="outer-container">
+		<div class="container">
+		<div class="outer-container1">
 			<div class="announcement-container">
 				<h2>公告</h2>
 			</div>
@@ -38,8 +39,11 @@
 					<p>{{ notice.notificationContent}} -- {{ notice.notificationTime }}</p>
 				</div>
 			</div>
-			<div class="announcement-container">
-				<h2>加好友请求</h2>
+		</div>
+
+		<div class="outer-container2">
+		    <div class="announcement-container">
+				<h2>好友请求</h2>
 			</div>
 			<div class="scrollable-text" id="friend" th:inline="none">
 				<!-- 使用 v-for 遍历 friendRequests 数组，并按顺序显示加好友请求内容 -->
@@ -49,6 +53,7 @@
 					<button @click="handleDecision(request.requestId, false)">拒绝</button>
 				</div>
 			</div>
+		</div>
 		</div>
 	</section>
 
