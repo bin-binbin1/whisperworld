@@ -38,8 +38,11 @@ public class topicService {
         return postTopicId(topics);
     }
     private synchronized boolean postTopicId(Topics topics){//生成话题号
-        topics.setTopicId(topicid);
-        topicid++;
+        System.out.println("直接生成：" + topicid);
+        topicid = topicsMapper.countTopics();
+        topics.setTopicId(++topicid);
+        System.out.println("调用体中：" + topics.getTopicId());
+        topicsMapper.postTopic(topics);
         //发送失败判断
         return true;
     }
@@ -51,12 +54,14 @@ public class topicService {
     private synchronized boolean postCommentId(TopicReplies topicreplie){//生成评论号
         topicreplie.setCommentNum(topicsMapper.topicRepliesNum(topicreplie));
         topicreplie.setCommentId(replieid);
+        topicsMapper.postTopicReplies(topicreplie);
         replieid++;
         //判断失败
         return true;
     }
 
     public int likeTopic(Topics topic){//更新点赞
+        topicsMapper.addLikeNum(topic);
         return topicsMapper.updateLikeNum(topic);
     }
 

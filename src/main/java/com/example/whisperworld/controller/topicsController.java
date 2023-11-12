@@ -34,7 +34,9 @@ public class topicsController {
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
     @GetMapping("/api/getComments")//获取全部评论
-    public ResponseEntity<String> showComments(@RequestBody Topics topic){
+    public ResponseEntity<String> showComments(@RequestParam("topicId") int topicid){
+        Topics topic = new Topics();
+        topic.setTopicId(topicid);
         List<TopicReplies>response = topicService.showTopicReplies(topic);
         ObjectMapper mapper = new ObjectMapper();
         String json="";
@@ -48,7 +50,11 @@ public class topicsController {
 
 
     @PostMapping("/api/sendtopic")//发布话题
-    public ResponseEntity<String> sendTopic(@RequestBody Topics topic, @SessionAttribute("loginID") Integer loginID){
+    public ResponseEntity<String> sendTopic(@RequestParam("topicContent") String topicContent, @SessionAttribute("loginID") Integer loginID){
+        System.out.println(topicContent);
+        System.out.println(loginID);
+        Topics topic = new Topics();
+        topic.setTopicContent(topicContent);
         topic.setUserId(loginID);
         boolean response = topicService.postTopic(topic);
         ObjectMapper mapper = new ObjectMapper();
@@ -62,8 +68,10 @@ public class topicsController {
     }
 
     @PostMapping("/api/sendcomment")//发布评论
-    public ResponseEntity<String> sendCommend(@RequestBody TopicReplies topicreplie, @SessionAttribute("loginID") Integer loginID){
+    public ResponseEntity<String> sendCommend(@RequestParam("topicId")int topicid,@RequestParam("commentContent")String commentContent, @SessionAttribute("loginID") Integer loginID){
         //前端传递 topicId
+        TopicReplies topicreplie = new TopicReplies();
+        topicreplie.setTopicId(topicid);
         topicreplie.setCommentUserId(loginID);
         boolean response = topicService.postComment(topicreplie);
         ObjectMapper mapper = new ObjectMapper();
@@ -78,7 +86,10 @@ public class topicsController {
 
 
     @PostMapping("/api/likeTopic")//点赞
-    public ResponseEntity<String> likeTopic(@RequestBody Topics topic){
+    public ResponseEntity<String> likeTopic(@RequestParam("userId")int userid,@RequestParam("topicId")int topicid){
+        Topics topic = new Topics();
+        topic.setUserId(userid);
+        topic.setTopicId(topicid);
         int response = topicService.likeTopic(topic);
         ObjectMapper mapper = new ObjectMapper();
         String json="";
@@ -89,9 +100,5 @@ public class topicsController {
         }
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
-
-
-
-
 
 }

@@ -25,16 +25,18 @@ public interface topicsMapper {
     List<TopicReplies> topicReplies(Topics topics);//查找话题的所有评论并按照发表时间降序排序
 
     @Insert("INSERT INTO topics VALUES(#{topicId},#{userId},#{topicCommentNum},#{topicLaunchTime},#{TopicContent},#{likeNum})")
-    int topicLaunch(Topics topic);//发布话题
+    int postTopic(Topics topic);//发布话题
 
     @Insert("INSERT INTO topics_replies VALUES(#{topicId},#{commentUserId},#{commentId},#{commentTime},#{commentContent},#{commentNum})")
-    int topicRepliesLaunch(TopicReplies topicReplies);//发表评论
+    int postTopicReplies(TopicReplies topicReplies);//发表评论
 
     @Select("SELECT count(*) FROM topics_replies WHERE topicId=#{topicId} ")
     int topicRepliesNum(TopicReplies topicReplies);//获取话题的评论个数
 
     @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE userId=#{userid} AND TopicID=#{topicid}")
+    boolean addLikeNum(Topics topic);//点赞+1
+
     @Select("SELECT likeNum from topics WHERE TopicID=#{topicid}")
-    int updateLikeNum(Topics topic);//点赞+1
+    int updateLikeNum(Topics topic);//获取点赞数
 
 }
