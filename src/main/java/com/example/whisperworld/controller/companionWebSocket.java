@@ -5,11 +5,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -21,9 +24,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@Component
+@Controller
 @ServerEndpoint("/websocket-endpoint/{userId}")
-public class companionWebSocket {
+public class companionWebSocket extends TextWebSocketHandler {
     private Session session;
     private Integer userID;
     private static CopyOnWriteArraySet<companionWebSocket> webSockets =new CopyOnWriteArraySet<>();
@@ -31,7 +34,6 @@ public class companionWebSocket {
     private static ConcurrentHashMap<String,Session> sessionPool = new ConcurrentHashMap<String,Session>();
     @Autowired
     private companionService service;
-
 
     @OnOpen
     public void onOpen(Session session, @PathParam(value="userId") Integer userId) {

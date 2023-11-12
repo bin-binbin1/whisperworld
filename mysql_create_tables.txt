@@ -5,7 +5,7 @@ USE ww;
 CREATE TABLE users (
   userID INT PRIMARY KEY NOT NULL,
   userName VARCHAR(20) NOT NULL,
-  userPassword VARCHAR(15) NOT NULL,
+  userPassword VARCHAR(61) NOT NULL,
   userSex CHAR(1) NOT NULL,
   urDate DATE NOT NULL,
   userPhone VARCHAR(11) NOT NULL,
