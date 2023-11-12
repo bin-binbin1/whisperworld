@@ -6,7 +6,7 @@ new Vue({
     methods: {
         handleSubmit: function() {
             const topicContent = this.topicContent; // 获取textarea的值
-
+            console.log(' successful');
             // 使用Axios将数据发送到后端
             axios.post('/api/sendtopic', { topicContent })
                 .then(response => {

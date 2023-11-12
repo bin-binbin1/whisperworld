@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
 }
-。main-content header{
+.main-content header{
     height:50px;
     border: 2px solid #ccc;
 }
@@ -106,8 +106,10 @@
     cursor: pointer;
 }
 
-.search-result {
-    margin-top: 20px;
+
+.search-result button {
+    display: block;
+    margin-bottom: 20px; /* 调整垂直间距 */
 }
 
 .chat-item {

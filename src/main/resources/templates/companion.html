@@ -111,7 +111,7 @@
                         });
 
                         // Send a request to get all friends
-                        this.stompClient.send('/send/getAllFriends', {});
+                        this.getAllFriends();
                     });
                 })
                 .catch(error => {
@@ -141,7 +141,12 @@
         methods: {
             getFriends() {
                 console.log("friendprefix"+this.friendprefix);
+                // Clear existing friends before making a new request
+                this.friendNames = [];
                 this.stompClient.send('/send/getFriends' ,{}, this.friendprefix);
+            },
+            getAllFriends() {
+                this.stompClient.send('/send/getAllFriends', {});
             },
             showHistory() {
                 this.stompClient.send('/send/getHistory' ,{}, this.currentFriend);
