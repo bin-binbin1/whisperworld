@@ -41,15 +41,27 @@
             <div id="search-result" class="search-result">
                 <p v-for="friendName in friendNames" :key="friendName" >
                     {{ friendName }}
-                    <button @click="handleFriendAction(friendName)">聊天/申请好友</button>
+                    <button @click="handleFriendAction(friendName)">聊天</button>
                 </p>
+            </div>
+
+            <div class="add-box">
+                <input type="text" class="search-input"  placeholder="添加好友">
+                <button class="search-button" >搜索</button>
             </div>
         </div>
         <div class="main-content">
             <header>好友</header>
             <div class="upper-content" id="chat-content">
                 <div v-for="message in Messages" :key="message.id">
-                    {{ message.self}} -- {{ message.content }} - {{ message.time }} -- {{ message.receiveState }}
+                    <div v-if="message.self" id="self" class="message">
+                        <!-- 表示自己发的内容 -->
+                        {{ message.content }} - {{ message.time }} - {{ message.receiveState }}
+                    </div>
+                    <div v-else id="friend" class="message">
+                        <!-- 表示对方发的内容 -->
+                        {{ message.content }} - {{ message.time }} - {{ message.receiveState }}
+                    </div>
                 </div>
             </div>
             <div class="lower-content">
@@ -84,9 +96,9 @@
                     console.log(this.data);
                     const socket = new SockJS(`http://localhost:8080/websocket-endpoint/`+this.data.userID);
 
-                        console.log('WebSocket connection established.');
+                    console.log('WebSocket connection established.');
 
-                        // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
+                    // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
                     this.stompClient = Stomp.over(socket);
 
                     this.stompClient.connect({}, () => {
