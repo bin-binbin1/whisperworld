@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 public class homeController {
 
-    private homeService service;
+    private final homeService service;
     @Autowired
     public homeController(homeService service){
         this.service=service;
@@ -54,15 +54,17 @@ public class homeController {
         System.out.println(data);
         ObjectMapper objectMapper = new ObjectMapper();
         String name="";
-        String content="";
+        String decision ="";
         try {
             JsonNode jsonNode = objectMapper.readTree(data);
             name = jsonNode.get("senderUsername").asText();
-            content = jsonNode.get("decision").asText();
+            decision = jsonNode.get("decision").asText();
         } catch (JsonProcessingException e1){
             e1.printStackTrace();
         }
-        return null;
+        boolean result= service.setFriendApply(userId,name,Boolean.parseBoolean(decision));
+        return  ResponseEntity.ok(""+result);
+
     }
     @GetMapping("/api/getFriendRequests")
     public ResponseEntity<String> getFriendRequests(@SessionAttribute("loginID") Integer userId){
@@ -70,7 +72,6 @@ public class homeController {
 
         List<Map<String, Object>> responses = new ArrayList<>();
 
-        // 遍历通知对象数组，并将每个对象的值添加到 Map 中
         List<String> names=service.getAllRequestFriendName(userId);
         for (String name : names) {
             Map<String, Object> response = new HashMap<>();
