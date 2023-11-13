@@ -39,9 +39,10 @@
             </div>
 
             <div id="search-result" class="search-result">
-                <button v-for="friendName in friendNames" :key="friendName" @click="showHistory(friendName)">
+                <p v-for="friendName in friendNames" :key="friendName" >
                     {{ friendName }}
-                </button>
+                    <button @click="handleFriendAction(friendName)">聊天/申请好友</button>
+                </p>
             </div>
         </div>
         <div class="main-content">
@@ -150,6 +151,24 @@
             },
             getAllFriends() {
                 this.stompClient.send('/send/getAllFriends', {});
+            },
+            handleFriendAction(friendName) {
+                // 检查 friendName 是否已经在 friendNames 数组中
+                const isFriend = this.friendNames.includes(friendName);
+
+                if (isFriend) {
+                    // 如果用户已经是好友，开始聊天
+                    this.showHistory(friendName);
+                } else {
+                    // 如果不是好友，发送好友请求
+                    this.sendFriendRequest(friendName);
+                }
+            },
+
+            sendFriendRequest(friendName) {
+                // 在这里实现发送好友请求的逻辑
+                console.log(`向 ${friendName} 发送好友请求`);
+                // 添加发送好友请求的 Axios 或 WebSocket 逻辑
             },
             showHistory(friendName) {
                 this.friendName=friendName;
