@@ -3,18 +3,18 @@ package com.example.whisperworld.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.whisperworld.mapper.test_sample_m;
+import com.example.whisperworld.mapper.profileMapper;
 import com.example.whisperworld.entity.User;
 
 import java.util.Calendar;
 import java.util.Date;
 
 @Service
-public class test_sample_s {
-    private final test_sample_m userMapper;
+public class profileService {
+    private final profileMapper userMapper;
 
     @Autowired
-    public test_sample_s(test_sample_m userMapper) {
+    public profileService(profileMapper userMapper) {
         this.userMapper = userMapper;
     }
 

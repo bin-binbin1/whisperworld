@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 @Mapper
-public interface test_sample_m {
+public interface profileMapper {
 
     @Select("select * from users where userID = #{id}")
     User getUserById(Integer id);

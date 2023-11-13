@@ -90,7 +90,7 @@
                             let response = JSON.parse(data.body);
                             if (response.requestType === '/response/friends') {
                                 // 假设 response.data 是一个数组
-                                this.friendNames = response.data.map(item => item.friendNames);
+                                this.$set(this, 'friendNames', response.data.map(item => item.friendNames));
                             }
                             console.log(this.friendNames);
                         });
@@ -99,7 +99,7 @@
                         this.stompClient.subscribe('/user/queue/'+this.userID+'/History', (data) => {
                             let response = JSON.parse(data.body);
                             if (response.requestType === '/response/History') {
-                                this.Messages = response.data;
+                                this.$set(this, 'Messages', response.data);
                             }
                         });
 
