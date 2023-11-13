@@ -19,15 +19,15 @@ new Vue({
                     console.error('Error getting friend requests:', error);
                 });
         },
-        handleDecision(requestId, decision) {
+        handleDecision(senderUsername, decision) {
             // 发送请求给后端，处理添加/拒绝好友请求的逻辑
-            axios.post('/api/handleFriendRequest', { requestId, decision })
+            axios.post('/api/handleFriendRequest', { senderUsername, decision })
                 .then(response => {
-                    console.log('Handle friend request:', requestId, decision);
+                    console.log('Handle friend request:', senderUsername, decision);
                     // 根据后端响应来更新前端数据
                     if (response.data) {
                         // 示例：在前端删除已处理的好友请求
-                        this.friendRequests = this.friendRequests.filter(request => request.requestId !== requestId);
+                        this.friendRequests = this.friendRequests.filter(request => request.senderUsername !== senderUsername);
                     } else {
                         console.error('Failed to handle friend request:', response.data.error);
                     }

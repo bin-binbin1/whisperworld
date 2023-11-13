@@ -19,4 +19,8 @@ public class homeService {
         return mapper.getAllNotice();
     }
 
+    public List<String> getAllRequestFriendName(Integer userId){
+        return mapper.getFriendNames(userId);
+    }
+
 }

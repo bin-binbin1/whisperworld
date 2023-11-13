@@ -47,10 +47,10 @@
 			</div>
 			<div class="scrollable-text" id="friend" th:inline="none">
 				<!-- 使用 v-for 遍历 friendRequests 数组，并按顺序显示加好友请求内容 -->
-				<div v-for="request in friendRequests" :key="request.requestId">
+				<div v-for="request in friendRequests" :key="request.senderUsername">
 					<p>{{ request.senderUsername}} 请求添加你为好友</p>
-					<button @click="handleDecision(request.requestId, true)">添加</button>
-					<button @click="handleDecision(request.requestId, false)">拒绝</button>
+					<button @click="handleDecision(request.senderUsername, true)">添加</button>
+					<button @click="handleDecision(request.senderUsername, false)">拒绝</button>
 				</div>
 			</div>
 		</div>
