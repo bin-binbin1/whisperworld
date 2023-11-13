@@ -70,11 +70,10 @@
 }
 
 .right-sidebar {
-
     position: fixed;
     width: 375px;
     /* 减小右侧栏的宽度为 375px */
-    height: 590px;
+    height: 580px;
     /* 调整右侧栏的高度 */
     top: 55px;
     right: 0;
@@ -88,25 +87,26 @@
 
 .search-box {
     margin-bottom: 20px;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 .search-input {
-    width: 90%;
-    height: 30px;
-    padding: 5px;
+    width: 50%;
+    height: 28px;
+    #margin-left: 5px;
+    padding-left: 5px;
     font-size: 16px;
 }
-
 .search-button {
-    width: 90%;
+    width: 30%;
     height: 30px;
     background-color: #75c8d8;
     color: white;
-    border: none;
+    border: 0;
+    border-radius:10px;
     cursor: pointer;
 }
-
-
 .search-result button {
     font-size: 16px;
     width: 90%;
@@ -116,7 +116,10 @@
     display: block;
     margin-bottom: 10px; /* 调整垂直间距 */
 }
-
+.add-box{
+    margin-bottom: 0;
+    #background-color: #75c8d8;
+}
 .chat-item {
     margin: 0;
     padding: 5px;

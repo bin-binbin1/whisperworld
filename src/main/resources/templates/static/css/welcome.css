@@ -1,26 +1,27 @@
 body{
-    margin:auto;
+    #margin:auto;
     #height:100%;
-}
-#container{
-    width:1550px;
-    height:680px;
-    #min-width:1200px;
     background-image: url(/static/pictures/1.png);
     background-repeat: no-repeat;
     background-size: cover;
+    transform: scale(1);
+    #background-attachment: fixed; /* 背景图像固定 */
+    margin: 0; /* 确保没有默认的body边距 */
     text-align:center;
     display: flex;
-    transition: background-image 1s ease; /* 添加渐变过渡效果 */
     justify-content: center;
+    align-items:center;
+    #transition: background-image 1s ease; /* 添加渐变过渡效果 */
 }
 #left{
-    #position: absolute;
-    float:left;
+    position: fixed;
+    top: 10px; /* 距离顶部的距离 */
+    left: 20px; /* 距离左侧的距离 */
+    #float:left;
     width:450px;
     height:600px;
     line-height:40px;
-    text-align:center;
+    text-align:left;
     font-size:65px;
     letter-spacing: 15px;
     font-style:oblique;
@@ -34,16 +35,13 @@ body{
     line-height:0;
 }
 #login-box{
-    #position: absolute;
-    margin:auto;
-    float:right;
+    position:fixed;
     width:120px;
     height:50px;
-    margin-left: 270px;
-    margin-top:25%;
+    left: 46.5%;
+    top: 400px;
     text-align:center;
     #background:#d0e4e8;
-    #padding-top:10px;
 }
 #login-box button{
     #margin-top:20px;
@@ -63,12 +61,13 @@ body{
     color:#63BBD0
 }
 #right{
-    float:right;
+    position:fixed;
     width:300px;
-    #margin-left:320px;
-    margin-right: 30px;
+    right:10px;
+    top:0;
     padding-top:20px;
     text-align:right;
+    #background-color: #75c8d8;
 }
 #right a{
     color:white;
