@@ -2,89 +2,134 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script src="static/vue/logout.js"></script>
-	<script src="static/vue/friendrequest.js"></script>
-	<title>首页</title>
-	<link href="static/css/home.css" rel="stylesheet" type="text/css">
-	<link href="static/css/navigation.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="static/vue/logout.js"></script>
+    <title>首页</title>
+    <link href="static/css/home.css" rel="stylesheet" type="text/css">
+    <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 <div class="header">
-	<span style="margin-left: 10px;font-weight: bold;">whisperworld</span>
+    <span style="margin-left: 10px;font-weight: bold;">whisperworld</span>
 </div>
-	<aside>
-		<div class="nav" id="out">
-			<span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
-			<a href="/home"  class="active">首页</a>
-			<a href="/companion">好友</a>
-			<a href="/group">群组</a>
-			<a href="/topics">话题</a>
-			<a href="/profile">个人中心</a>
-			<a href="/logout" @click.prevent="logout">退出登录</a>
-		</div>
-	</aside>
-	<section>
-		<div class="container">
-		<div class="outer-container1">
-			<div class="announcement-container">
-				<h2>公告</h2>
-			</div>
-			<div class="scrollable-text" id="app" th:inline="none">
-				<!-- 使用 v-for 遍历 notices 数组，并按顺序显示公告内容 -->
-				<div v-for="notice in notices" :key="notice.notificationId">
-					<p>{{ notice.notificationContent}} -- {{ notice.notificationTime }}</p>
-				</div>
-			</div>
-		</div>
+<aside>
+    <div class="nav" id="out">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+        <a href="/home" class="active">首页</a>
+        <a href="/companion">好友</a>
+        <a href="/group">群组</a>
+        <a href="/topics">话题</a>
+        <a href="/profile">个人中心</a>
+        <a href="/logout" @click.prevent="logout">退出登录</a>
+    </div>
+</aside>
+<section>
+    <div class="container"  id="app" th:inline="none">
+        <div class="outer-container1">
+            <div class="announcement-container">
+                <h2>公告</h2>
+            </div>
+            <div class="scrollable-text">
+                <!-- 使用 v-for 遍历 notices 数组，并按顺序显示公告内容 -->
+                <div v-for="notice in notices" :key="notice.notificationId">
+                    <p> {{ notice.notificationContent }} -- {{ notice.notificationTime }}</p>
+                </div>
+            </div>
+        </div>
 
-		<div class="outer-container2">
-		    <div class="announcement-container">
-				<h2>好友请求</h2>
-			</div>
-			<div class="scrollable-text" id="friend" th:inline="none">
-				<!-- 使用 v-for 遍历 friendRequests 数组，并按顺序显示加好友请求内容 -->
-				<div v-for="request in friendRequests" :key="request.senderUsername">
-					<p>{{ request.senderUsername}} 请求添加你为好友</p>
-					<button @click="handleDecision(request.senderUsername, true)">添加</button>
-					<button @click="handleDecision(request.senderUsername, false)">拒绝</button>
-				</div>
-			</div>
-		</div>
-		</div>
-	</section>
+        <div class="outer-container2">
+            <div class="announcement-container">
+                <h2>好友请求</h2>
+            </div>
+            <div class="scrollable-text">
+                <!-- 使用 v-for 遍历 friendRequests 数组，并按顺序显示加好友请求内容 -->
+                <div v-for="request in friendRequests" :key="request.requestID">
+                    <p> {{ request.senderUsername }} 请求添加你为好友</p>
+                    <button @click="handleDecision(request.senderUsername, true)">添加</button>
+                    <button @click="handleDecision(request.senderUsername, false)">拒绝</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div class="footer">欢迎使用社交网络系统</div>
 
-	<script>
-	new Vue({
-		el:'#app',
-		data:{
-			notices:[],// 接收后端发来的公告
-		},
-		mounted(){
-			// 在组件挂载后，发送请求获取公告数据
-			this.getNotices();
-		},
-		methods:{
-			getNotices(){
-				// 使用 Axios 或其他方式发送请求获取公告数据
-				axios.get('/api/getNotices')
-						.then(response => {
-							// 获取到公告数据后更新 notices
-							this.notices = response.data;
-							this.notices.notificationTime = new Date(this.notices.notificationTime).toLocaleDateString();
-						})
-						.catch(error => {
-							console.error('Error getting notices:', error);
-						});
-			},
-		},
-	});
-	</script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            notices: [], // 接收后端发来的公告
+            friendRequests: [ // 接收后端发来的加好友请求
+                {
+                    senderUsername: 'fun', // 这个值是字符串
+                    decision: null, // 这个值是bool，要么给true/false，要么就null
+                    requestID: 1,
+                },
+                {
+                    senderUsername: 'lcl', // 这个值是字符串
+                    decision: null, // 这个值是bool，要么给true/false，要么就null
+                    requestID: 2,
+                }
+            ],
+        },
+        mounted() {
+            // 在组件挂载后，发送请求获取公告数据和加好友请求数据
+            this.getNotices();
+            this.getFriendRequests();
+        },
+        methods: {
+            getNotices() {
+                // 使用 Axios 或其他方式发送请求获取公告数据
+                axios.get('/api/getNotices')
+                    .then(response => {
+                        // 获取到公告数据后更新 notices
+                        this.notices = response.data;
+                        this.notices.notificationTime = new Date(this.notices.notificationTime).toLocaleDateString();
+                    })
+                    .catch(error => {
+                        console.error('Error getting notices:', error);
+                    });
+            },
+            getFriendRequests() {
+                // 使用 Axios 或其他方式发送请求获取加好友请求数据
+                axios.get('/api/getFriendRequests')
+                    .then(response => {
+                        // 获取到加好友请求数据后更新 friendRequests
+                        this.friendRequests = response.data;
+                        console.log(this.friendRequests);
+                    })
+                    .catch(error => {
+                        console.error('Error getting friend requests:', error);
+                    });
+            },
+            handleDecision(senderUsername, decision) {
+                // 发送请求给后端，处理添加/拒绝好友请求的逻辑
+                console.log(senderUsername);
+                console.log(decision);
+                axios.post('/api/handleFriendRequest', { senderUsername, decision })
+                    .then(response => {
+                        console.log('Handle friend request:', senderUsername, decision);
+                        // 根据后端响应来更新前端数据
+                        if (response.data) {
+                            // 示例：在前端删除已处理的好友请求
+                            this.friendRequests = this.friendRequests.filter(request => request.senderUsername !== senderUsername);
+                            console.log(this.friendRequests);
+                        } else {
+                            console.error('Failed to handle friend request:', response.data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error handling friend request:', error);
+                    });
+            }
+        },
+    });
+
+</script>
 </body>
 
 </html>
