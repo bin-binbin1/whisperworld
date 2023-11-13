@@ -15,9 +15,12 @@ CREATE TABLE users (
 );
 
 CREATE TABLE friends(
- UserID INT PRIMARY KEY NOT NULL,
+ UserID INT NOT NULL,
  FriendID INT NOT NULL,
- FOREIGN KEY (UserID) REFERENCES users(UserID)
+ STATE BOOL NOT NULL,
+ FOREIGN KEY (UserID) REFERENCES users(UserID),
+ FOREIGN KEY (UserID) REFERENCES users(UserID),
+ PRIMARY KEY (UserID,FriendID)
 );
 
 CREATE TABLE topics (
@@ -34,12 +37,11 @@ CREATE TABLE topic_replies (
   TopicID INT NOT NULL,
   CommentUserID INT NOT NULL,
   CommentContent VARCHAR(50) NOT NULL,
-  CommentNum INT NOT NULL,
   CommentID INT NOT NULL,
   CommentTime DATETIME NOT NULL,
-  PRIMARY KEY (TopicID, CommentNum),
+  PRIMARY KEY (TopicID, CommentID),
   FOREIGN KEY (TopicID) REFERENCES topics(TopicID),
-  FOREIGN KEY (TopicCommentPersonID) REFERENCES users(UserID)
+  FOREIGN KEY (CommentUserID) REFERENCES users(UserID)
 );
 
 CREATE TABLE crowds (
