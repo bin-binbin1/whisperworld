@@ -22,7 +22,7 @@ public class NagigationController {
         return "public/login";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/public/register")
     public String register(Model model){
         return "public/register";
     }

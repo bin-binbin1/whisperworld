@@ -25,17 +25,17 @@ public interface topicsMapper {
     @Select("SELECT * FROM topic_replies WHERE TopicID=#{topicId} ORDER BY CommentTime ")
     List<TopicReplies> topicReplies(Topics topics);//查找话题的所有评论并按照发表时间降序排序
 
-    @Insert("INSERT INTO topics VALUES(#{topicId},#{userId},#{topicCommentNum},#{topicLaunchTime},#{TopicContent},#{likeNum})")
-    int postTopic(Topics topic);//发布话题
+    @Insert("INSERT INTO topics VALUES(#{topicId},#{userId},#{topicCommentNum},#{topicLaunchTime},#{topicContent},#{likeNum})")
+    void postTopic(Topics topic);//发布话题
 
     @Insert("INSERT INTO topic_replies VALUES(#{topicId},#{commentUserId},#{commentContent},#{commentId},#{commentTime})")
-    int postTopicReplies(TopicReplies topicReplies);//发表评论
+    void postTopicReplies(TopicReplies topicReplies);//发表评论
 
     @Select("SELECT count(*) FROM topic_replies WHERE topicID=#{topicId} ")
     int topicRepliesNum(TopicReplies topicReplies);//获取话题的评论个数
 
-    @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE userID=#{userId} AND TopicID=#{topicId}")
-    boolean addLikeNum(Topics topic);//点赞+1
+    @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE UserID=#{userId} AND TopicID=#{topicId}")
+    void addLikeNum(int userId, int topicId);//点赞+1
 
     @Select("SELECT likeNum from topics WHERE TopicID=#{topicId}")
     int updateLikeNum(Topics topic);//获取点赞数
@@ -46,6 +46,9 @@ public interface topicsMapper {
     @Select("SELECT userName FROM users WHERE userID=#{userId}")
     String getNameByID(Integer userId);
 
-    @Select("SELECT EXISTS(SELECT * FROM likes WHERE TopicID=#{topicid} AND LikeUserID=#{userId})")
-    boolean isDumplicateLike(Integer topicid, Integer userid);
+    @Select("SELECT EXISTS(SELECT * FROM likes WHERE TopicID=#{topicId} AND LikeUserID=#{userId})")
+    boolean isDumplicateLike(Integer topicId, Integer userId);
+
+    @Insert("INSERT likes VALUES(#{topicId},#{likeuserid})")
+    void addlikeUser(Integer topicId, Integer likeuserid);//添加点赞用户
 }

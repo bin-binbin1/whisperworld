@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.whisperworld.service.test_sample_s;
+import com.example.whisperworld.service.profileService;
 import com.example.whisperworld.entity.User;
 
 import java.util.Date;
@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class test_sample_c {
+public class profileController {
 
     @Autowired
-    private test_sample_s userService;
+    private profileService userService;
 
     @GetMapping("/api/profile")
     public ResponseEntity<String> getUser(@SessionAttribute("loginID") Integer loginID) {

@@ -23,7 +23,7 @@ public class companionService {
         return mapper.getAllFriends(userId);
     }
     public List<String> getFriendsByName(Integer userId,String prefix){
-        return mapper.getFriendsByNAME(prefix);
+        return mapper.getFriendsByNAME(userId, prefix);
     }
     public boolean sendMessage(String content,Integer userId,Integer friendId){
         PrivateMessage msg = new PrivateMessage();

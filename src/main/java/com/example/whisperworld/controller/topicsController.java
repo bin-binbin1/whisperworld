@@ -67,10 +67,8 @@ public class topicsController {
 
 
     @PostMapping("/api/sendtopic")//发布话题
-    public ResponseEntity<String> sendTopic(@RequestParam("topicContent") String topicContent, @SessionAttribute("loginID") Integer loginID){
+    public ResponseEntity<String> sendTopic(@RequestBody Topics topic, @SessionAttribute("loginID") Integer loginID){
         System.out.println("发布话题");
-        Topics topic = new Topics();
-        topic.setTopicContent(topicContent);
         topic.setUserId(loginID);
         boolean response = topicService.postTopic(topic);
         ObjectMapper mapper = new ObjectMapper();
@@ -115,5 +113,4 @@ public class topicsController {
         }
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
-
 }

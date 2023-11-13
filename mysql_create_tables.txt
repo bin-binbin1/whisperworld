@@ -5,7 +5,7 @@ USE ww;
 CREATE TABLE users (
   userID INT PRIMARY KEY NOT NULL,
   userName VARCHAR(20) NOT NULL,
-  userPassword VARCHAR(15) NOT NULL,
+  userPassword VARCHAR(61) NOT NULL,
   userSex CHAR(1) NOT NULL,
   urDate DATE NOT NULL,
   userPhone VARCHAR(11) NOT NULL,
@@ -15,9 +15,12 @@ CREATE TABLE users (
 );
 
 CREATE TABLE friends(
- UserID INT PRIMARY KEY NOT NULL,
+ UserID INT NOT NULL,
  FriendID INT NOT NULL,
- FOREIGN KEY (UserID) REFERENCES users(UserID)
+ STATE BOOL NOT NULL,
+ FOREIGN KEY (UserID) REFERENCES users(UserID),
+ FOREIGN KEY (UserID) REFERENCES users(UserID),
+ PRIMARY KEY (UserID,FriendID)
 );
 
 CREATE TABLE topics (
@@ -41,7 +44,7 @@ CREATE TABLE topic_replies (
   FOREIGN KEY (CommentUserID) REFERENCES users(UserID)
 );
 
-CREATE TABLE likes(show 
+CREATE TABLE likes(
  TopicID INT NOT NULL,
  LikeUserID INT NOT NULL,
  PRIMARY KEY (TopicID, LikeUserID),

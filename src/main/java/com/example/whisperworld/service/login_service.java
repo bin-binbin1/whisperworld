@@ -3,6 +3,10 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.User;
 import com.example.whisperworld.mapper.login_mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,29 +16,33 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.awt.desktop.SystemEventListener;
+import java.util.ArrayList;
 
 @Service
-public class login_service {
+public class login_service implements UserDetailsService {
 
     private final login_mapper loginMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     public login_service(login_mapper loginMapper){
         this.loginMapper = loginMapper;
     }
 
-    public boolean userExist(User user){
-        String pwd =loginMapper.login_pwd(user.getUserName());
-        if(pwd == null){
-            return false;
-        }
-        else{
-            return pwd.equals(user.getUserPassword());
-        }
-    }
-    public String sessionLogin(HttpSession session, User user){
-        user.setUserID(loginMapper.login_id(user.getUserName()));
-        session.setAttribute("loginID",user.getUserID());
-        return "success";
-    }
 
+    public Integer getLoginID(String username){
+        return loginMapper.login_id(username);
+    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 通过用户名获取用户信息
+        User user = loginMapper.login_pwd(Integer.parseInt(username));
+        if (user == null) {
+            // 如果用户不存在，返回一个具有特殊权限的UserDetails对象
+            return new org.springframework.security.core.userdetails.User("", "", new ArrayList<>());
+        }
+
+        return new org.springframework.security.core.userdetails.User(user.getUserID().toString(), user.getUserPassword(), new ArrayList<>());
+    }
 }
