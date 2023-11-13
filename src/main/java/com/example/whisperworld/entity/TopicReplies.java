@@ -9,5 +9,4 @@ public class TopicReplies {
     private int commentId;
     private Date commentTime;
     private String commentContent;
-    private int commentNum;
 }

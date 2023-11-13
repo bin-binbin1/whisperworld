@@ -34,12 +34,19 @@ CREATE TABLE topic_replies (
   TopicID INT NOT NULL,
   CommentUserID INT NOT NULL,
   CommentContent VARCHAR(50) NOT NULL,
-  CommentNum INT NOT NULL,
   CommentID INT NOT NULL,
   CommentTime DATETIME NOT NULL,
-  PRIMARY KEY (TopicID, CommentNum),
+  PRIMARY KEY (TopicID, CommentID),
   FOREIGN KEY (TopicID) REFERENCES topics(TopicID),
-  FOREIGN KEY (TopicCommentPersonID) REFERENCES users(UserID)
+  FOREIGN KEY (CommentUserID) REFERENCES users(UserID)
+);
+
+CREATE TABLE likes(show 
+ TopicID INT NOT NULL,
+ LikeUserID INT NOT NULL,
+ PRIMARY KEY (TopicID, LikeUserID),
+ FOREIGN KEY (TopicID) REFERENCES topics(TopicID),
+ FOREIGN KEY (LikeUserID) REFERENCES users(UserID)
 );
 
 CREATE TABLE crowds (
@@ -129,7 +136,7 @@ AFTER INSERT ON topic_replies
 FOR EACH ROW
 BEGIN
     INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('topic_replies', 'insert', NOW());
-    UPDATE topics SET CommentNum = CommentNum + 1 WHERE TopicID = NEW.TopicID;
+    UPDATE topics SET TopicCommentNum = TopicCommentNum + 1 WHERE TopicID = NEW.TopicID;
 END;$$
 
 CREATE TRIGGER crowds_trigger

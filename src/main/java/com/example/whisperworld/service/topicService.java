@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class topicService {
     private int topicid;
-    private int replieid;
     private final topicsMapper topicsMapper;
 
     @Autowired
@@ -39,8 +38,8 @@ public class topicService {
     }
     private synchronized boolean postTopicId(Topics topics){//生成话题号
         System.out.println("直接生成：" + topicid);
-        topicid = topicsMapper.countTopics();
-        topics.setTopicId(++topicid);
+        topicid = topicsMapper.countTopics();//查询当前的话题数目
+        topics.setTopicId(++topicid);//
         System.out.println("调用体中：" + topics.getTopicId());
         topicsMapper.postTopic(topics);
         //发送失败判断
@@ -52,17 +51,23 @@ public class topicService {
         return postCommentId(topicreplie);
     }
     private synchronized boolean postCommentId(TopicReplies topicreplie){//生成评论号
-        topicreplie.setCommentNum(topicsMapper.topicRepliesNum(topicreplie));
-        topicreplie.setCommentId(replieid);
+
+        topicreplie.setCommentId(topicsMapper.getCommentNumByID(topicreplie.getTopicId()));
         topicsMapper.postTopicReplies(topicreplie);
-        replieid++;
+
         //判断失败
         return true;
     }
 
-    public int likeTopic(Topics topic){//更新点赞
-        topicsMapper.addLikeNum(topic);
+    public int likeTopic(Topics topic, Integer userId){//更新点赞
+        if(!topicsMapper.isDumplicateLike(topic.getTopicId(), userId)){//判断是否已点过赞
+            topicsMapper.addLikeNum(topic);
+        }
         return topicsMapper.updateLikeNum(topic);
+
     }
 
+    public String getNameByID(Integer userId){
+        return topicsMapper.getNameByID(userId);
+    }
 }
