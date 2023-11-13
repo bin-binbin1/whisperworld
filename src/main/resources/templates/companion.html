@@ -38,16 +38,21 @@
                 <button class="search-button" @click="getFriends">搜索</button>
             </div>
 
-            <div id="search-result" class="search-result">
-                <p v-for="friendName in friendNames" :key="friendName" >
+            <div class="search-result">
+                <button v-for="friendName in friendNames" :key="friendName" @click="showHistory(friendName)">
                     {{ friendName }}
-                    <button @click="handleFriendAction(friendName)">聊天</button>
-                </p>
+                </button>
             </div>
 
             <div class="add-box">
-                <input type="text" class="search-input"  placeholder="添加好友">
-                <button class="search-button" >搜索</button>
+                <input type="text" class="search-input" v-model="searchInput" placeholder="添加好友">
+                <button class="search-button" @click="searchFriends">搜索</button>
+            </div>
+            <div class="search-result">
+                <p v-for="result in searchResults" :key="result.friendName">
+                    {{ result.friendName }}
+                    <button @click="showHistory(result.friendName)">聊天</button>
+                </p>
             </div>
         </div>
         <div class="main-content">
@@ -85,6 +90,11 @@
             friendprefix:'',
             friendID:'',
             friendName:'',
+            searchInput: '', // 新增搜索输入变量
+            searchResults: [{
+                friendID: 1,
+                friendName:'lcl'
+            }], // 新增搜索结果变量
         },
         created() {
             axios.get('/api/getCurrentID')
@@ -164,19 +174,19 @@
             getAllFriends() {
                 this.stompClient.send('/send/getAllFriends', {});
             },
-            handleFriendAction(friendName) {
-                // 检查 friendName 是否已经在 friendNames 数组中
-                const isFriend = this.friendNames.includes(friendName);
-
-                if (isFriend) {
-                    // 如果用户已经是好友，开始聊天
-                    this.showHistory(friendName);
-                } else {
-                    // 如果不是好友，发送好友请求
-                    this.sendFriendRequest(friendName);
-                }
+            searchFriends() {
+                // 发送搜索请求
+                axios.post('/api/searchFriends', { searchInput: this.searchInput })
+                    .then(response => {
+                        // 获取搜索结果并更新searchResults
+                        this.searchResults = response.data;
+                        // 清空搜索输入框
+                        this.searchInput = '';
+                    })
+                    .catch(error => {
+                        console.error('Error searching friends:', error);
+                    });
             },
-
             sendFriendRequest(friendName) {
                 // 在这里实现发送好友请求的逻辑
                 console.log(`向 ${friendName} 发送好友请求`);
