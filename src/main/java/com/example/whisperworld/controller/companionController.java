@@ -1,8 +1,13 @@
 package com.example.whisperworld.controller;
 
+import com.example.whisperworld.entity.PrivateMessage;
 import com.example.whisperworld.service.companionService;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +79,7 @@ public class companionController extends TextWebSocketHandler {
 
     @GetMapping("/api/getCurrentID")
     public ResponseEntity<String> getUserID(@SessionAttribute("loginID") Integer userID){
+        System.out.println("userID:"+userID.toString());
         Map<String,Object> response = new HashMap<>();
         response.put("userID",userID);
         ObjectMapper mapper = new ObjectMapper();
@@ -135,25 +141,37 @@ public class companionController extends TextWebSocketHandler {
     @MessageMapping("/getHistory")
     public void getMessages(@RequestParam String name, Principal principal){
         String json = service.getMessages(Integer.parseInt(principal.getName()),service.getNameByID(name));
-        messagingTemplate.convertAndSend("/user/queue/"+principal.getName()+"/friends",json);
+        messagingTemplate.convertAndSend("/user/queue/"+principal.getName()+"/History",json);
     }
-//    @MessageMapping("/sendMessages")
-//    public String sendMessage(@Payload Map<String,Object> params,Principal principal){
-//        Map<String,Object> response = new HashMap<>();
-//        response.put("send",service.sendMessage(params.get("messages").toString()
-//                , params.get("friendName").toString()
-//                ,userId
-//                ,friendId
-//        ));
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        String json="";
-//        try {
-//            json = mapper.writeValueAsString(response);
-//        }catch (JsonProcessingException e){
-//            e.printStackTrace();
-//        }
-//        return json;
-//    }
+    @MessageMapping("/sendMessages")
+    public void sendMessage(@RequestParam String message, Principal principal){
+        System.out.println(message);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String name="";
+        String content="";
+        try {
+            JsonNode jsonNode = objectMapper.readTree(message);
+            name = jsonNode.get("friendName").asText();
+            content = jsonNode.get("messageContent").asText();
+        } catch (JsonProcessingException e1){
+            e1.printStackTrace();
+        }
+                Map<String,Object> response = new HashMap<>();
+        Integer friendId = service.getNameByID(name);
+        Integer userId =Integer.parseInt(principal.getName());
+        response.put("send",service.sendMessage(content
+                ,userId
+                ,friendId
+        ));
+        System.out.println(response.get("send"));
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try {
+            json = mapper.writeValueAsString(response);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        messagingTemplate.convertAndSend("/user/queue"+principal.getName()+"/Msg",json);
+    }
 
 }

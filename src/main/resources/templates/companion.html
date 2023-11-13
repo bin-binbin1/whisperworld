@@ -70,12 +70,17 @@
             newMessage: '',
             userID: '',
             friendprefix:'',
+            friendID:'',
+            friendName:'',
         },
         created() {
             axios.get('/api/getCurrentID')
                 .then(response => {
                     this.data = response.data;
-
+                    console.log("userID:"+this.data);
+                    console.log("userIDDD"+this.data.userID);
+                    console.log(this);
+                    console.log(this.data);
                     const socket = new SockJS(`http://localhost:8080/websocket-endpoint/`+this.data.userID);
 
                         console.log('WebSocket connection established.');
@@ -86,28 +91,22 @@
                     this.stompClient.connect({}, () => {
                         console.log('Connected to server');
 
-                        this.stompClient.subscribe('/user/queue/'+this.userID+'/friends', (data) => {
+                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/friends', (data) => {
                             let response = JSON.parse(data.body);
-                            if (response.requestType === '/response/friends') {
-                                // 假设 response.data 是一个数组
-                                this.$set(this, 'friendNames', response.data.map(item => item.friendNames));
-                            }
-                            console.log(this.friendNames);
+                            this.$set(this, 'friendNames', response.map(item => item.friendNames));
                         });
 
 
-                        this.stompClient.subscribe('/user/queue/'+this.userID+'/History', (data) => {
+
+                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/History', (data) => {
                             let response = JSON.parse(data.body);
-                            if (response.requestType === '/response/History') {
-                                this.$set(this, 'Messages', response.data);
-                            }
+                            this.$set(this, 'Messages', response);
+                            console.log("History"+response);
                         });
 
-                        this.stompClient.subscribe('/user/queue/'+this.userID+'/Msg', (data) => {
+                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/Msg', (data) => {
                             let response = JSON.parse(data.body);
-                            if (response.requestType === '/response/Msg') {
-                                this.Messages.push(response.data);
-                            }
+                            this.Messages.push(response);
                         });
 
                         // Send a request to get all friends
@@ -140,21 +139,31 @@
         },
         methods: {
             getFriends() {
-                console.log("friendprefix"+this.friendprefix);
+
                 // Clear existing friends before making a new request
                 this.friendNames = [];
-                this.stompClient.send('/send/getFriends' ,{}, this.friendprefix);
+                if(this.friendprefix === ''){
+                    this.getAllFriends();
+                }else{
+                    this.stompClient.send('/send/getFriends' ,{}, this.friendprefix);
+                }
             },
             getAllFriends() {
                 this.stompClient.send('/send/getAllFriends', {});
             },
-            showHistory() {
-                this.stompClient.send('/send/getHistory' ,{}, this.currentFriend);
+            showHistory(friendName) {
+                this.friendName=friendName;
+                this.stompClient.send('/send/getHistory' ,{}, friendName);
             },
             sendMessage() {
-                this.stompClient.send('/send/sendMessages', {}, this.newMessage);
+                var data={
+                    "messageContent":this.newMessage,
+                    "friendName":this.friendName,
+                };
+                this.stompClient.send('/send/sendMessages', {}, JSON.stringify(data));
             },
             submitMessage() {
+
                 if (this.newMessage.trim() !== '') {
                     this.sendMessage();
                     this.newMessage = '';

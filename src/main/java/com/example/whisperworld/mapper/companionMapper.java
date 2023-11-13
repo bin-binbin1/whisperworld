@@ -18,7 +18,7 @@ public interface companionMapper {
     @Select("SELECT MessageContent,SendTime,ReceiveState FROM private_messages WHERE UserID=#{userId} and ReceiverID=#{receiverId} ORDER BY MessageContentID DESC")
     List<PrivateMessage> getMessagesFromA2B(Integer userId,Integer receiverId);
 
-    @Insert("INSERT INTO private_messages VALUES(#{UserID},#{ReceiverID},#{MessageContent},#{MessageContentID},#{SendTime},#{ReceiverState})")
+    @Insert("INSERT INTO private_messages VALUES(#{userId},#{receiverId},#{messageContent},#{messageContentId},#{sendTime},#{receiveState})")
     int insertMessage(PrivateMessage msg);
 
     @Select("SELECT userID FROM users WHERE userName=#{name}")
