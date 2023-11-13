@@ -108,9 +108,13 @@
             },
             handleDecision(senderUsername, decision) {
                 // 发送请求给后端，处理添加/拒绝好友请求的逻辑
-                console.log(senderUsername);
-                console.log(decision);
-                axios.post('/api/handleFriendRequest', { 'senderUsername':senderUsername, 'decision':decision })
+                let request=JSON.stringify({ 'senderUsername':senderUsername, 'decision':decision });
+                console.log(request);
+                axios.post('/api/handleFriendRequest', request,{
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                     .then(response => {
                         console.log('Handle friend request:', senderUsername, decision);
                         // 根据后端响应来更新前端数据

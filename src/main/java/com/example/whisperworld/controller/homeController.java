@@ -2,6 +2,7 @@ package com.example.whisperworld.controller;
 
 import com.example.whisperworld.entity.Notification;
 import com.example.whisperworld.service.homeService;
+import com.example.whisperworld.specialClasses.friendRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,19 +51,9 @@ public class homeController {
     }
 
     @PostMapping("/api/handleFriendRequest")
-    public ResponseEntity<String> solveFriendRequests(@SessionAttribute("loginID") Integer userId, @RequestParam String data){
-        System.out.println(data);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String name="";
-        String decision ="";
-        try {
-            JsonNode jsonNode = objectMapper.readTree(data);
-            name = jsonNode.get("senderUsername").asText();
-            decision = jsonNode.get("decision").asText();
-        } catch (JsonProcessingException e1){
-            e1.printStackTrace();
-        }
-        boolean result= service.setFriendApply(userId,name,Boolean.parseBoolean(decision));
+    public ResponseEntity<String> solveFriendRequests(@SessionAttribute("loginID") Integer userId, @RequestBody friendRequest request){
+
+        boolean result= service.setFriendApply(userId,request.getSenderUsername(),request.isDecision());
         return  ResponseEntity.ok(""+result);
 
     }

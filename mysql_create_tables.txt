@@ -209,3 +209,4 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 insert into users values(0,"fun",123456,'m',CURDATE(),18114803454,'offline',0,CURDATE());
 insert into supervisors values(0,CURDATE());
 insert into notifications values (0,"今天我最帅",CURDATE(),0);
+
