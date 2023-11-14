@@ -49,9 +49,9 @@
                 <button class="search-button" @click="searchFriends">搜索</button>
             </div>
             <div class="search-result">
-                <p v-for="result in searchResults" :key="result.friendName">
-                    {{ result.friendName }}
-                    <button @click="showHistory(result.friendName)">聊天</button>
+                <p v-for="result in searchResults" :key="result.userName">
+                    {{ result.friendNames }}
+                    <button @click="sendFriendRequest(result.friendNames)">发送申请</button>
                 </p>
             </div>
         </div>
@@ -83,7 +83,7 @@
         el: '#app',
         data: {
             stompClient: null,
-            friendNames: ["default","default2"],
+            friendNames: null,
             Messages: [],
             newMessage: '',
             userID: '',
@@ -91,23 +91,13 @@
             friendID:'',
             friendName:'',
             searchInput: '', // 新增搜索输入变量
-            searchResults: [{
-                friendID: 1,
-                friendName:'lcl'
-            }], // 新增搜索结果变量
+            searchResults: null, // 新增搜索结果变量
         },
         created() {
             axios.get('/api/getCurrentID')
                 .then(response => {
                     this.data = response.data;
-                    console.log("userID:"+this.data);
-                    console.log("userIDDD"+this.data.userID);
-                    console.log(this);
-                    console.log(this.data);
                     const socket = new SockJS(`http://localhost:8080/websocket-endpoint/`+this.data.userID);
-
-                    console.log('WebSocket connection established.');
-
                     // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
                     this.stompClient = Stomp.over(socket);
 
@@ -139,30 +129,26 @@
                 .catch(error => {
                     console.error(error);
                 });
+
         },
         beforeDestroy() {
             // 断开WebSocket连接
             this.stompClient.subscriptions.forEach(subscription => {
                 subscription.unsubscribe();
             });
-
-            // 断开WebSocket连接
-            if (this.stompClient !== null && this.stompClient.connected) {
-                this.stompClient.disconnect();
-                axios.delete(`/api/removeSession/`+this.data.userID)
-                    .then(response => {
-                        console.log(response.data);
-                        // 处理删除成功的逻辑，如果需要的话
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        // 处理删除失败的逻辑，如果需要的话
-                    });
-            }
         },
         methods: {
+            formatDate: function(date) {
+                // 检查日期是否有效
+                if (date) {
+                    // 使用JavaScript的Date对象来格式化日期
+                    const formattedDate = new Date(date).toLocaleDateString();
+                    return formattedDate;
+                }
+                // 如果日期无效，返回空字符串或其他默认值
+                return '';
+            },
             getFriends() {
-
                 // Clear existing friends before making a new request
                 this.friendNames = [];
                 if(this.friendprefix === ''){
@@ -176,7 +162,12 @@
             },
             searchFriends() {
                 // 发送搜索请求
-                axios.post('/api/searchFriends', { searchInput: this.searchInput })
+                let prefix = this.searchInput;
+                if(prefix === ''){
+                    alert('请输入用户姓名');
+                    return;
+                }
+                axios.get('/api/searchFriends/'+prefix )
                     .then(response => {
                         // 获取搜索结果并更新searchResults
                         this.searchResults = response.data;
@@ -187,10 +178,15 @@
                         console.error('Error searching friends:', error);
                     });
             },
-            sendFriendRequest(friendName) {
-                // 在这里实现发送好友请求的逻辑
-                console.log(`向 ${friendName} 发送好友请求`);
-                // 添加发送好友请求的 Axios 或 WebSocket 逻辑
+            sendFriendRequest(userName) {
+                axios.post('/api/friendApply', { userName })
+                    .then(response => {
+                        alert("已发送申请！");
+                        this.searchResults = this.searchResults.filter(t => t.friendNames !== userName);
+                    })
+                    .catch(error => {
+                        console.error('Error sending friend request:', error);
+                    });
             },
             showHistory(friendName) {
                 this.friendName=friendName;
