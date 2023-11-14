@@ -23,7 +23,7 @@ section {
 
 #left {
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 0;
     width: 250px;
     height: 120px;
@@ -34,10 +34,11 @@ section {
 
 #left1 {
     position: absolute;
-    top: 150px;
+    top: 140px;
+    bottom: 10px;
     left: 0;
     width: 250px;
-    height: calc(100% - 150px);
+    height: calc(100% - 190px);
     border: 1px solid #d0e4e8;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
@@ -46,9 +47,10 @@ section {
 .right-sidebar{
     overflow: auto;
     margin-left: 250px;
+    margin-top:10px;
     /* 调整 #right 元素的左边距 */
-    width: calc(100% - 240px);
-    height: calc(100% - 55px);
+    width: calc(100% - 270px);
+    height: calc(100% - 60px);
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -89,7 +91,7 @@ section {
     bottom: 5px;
     right: 5px;
     border-radius: 10px;
-    background-color: #3498db;
+    background-color: #F1939C;
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -102,7 +104,7 @@ section {
 }
 
 .comment-input button {
-    background-color: #3498db;
+    background-color: #75c8d8;
     color: #fff;
     padding: 5px 10px;
     border: none;

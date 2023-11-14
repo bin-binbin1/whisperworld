@@ -40,6 +40,7 @@
 		<div id="right" th:inline="none" class="right-sidebar">
 			<div v-for="topic in topics" :key="topic.topicId" class="topic-container">
 				<div class="topic-info">
+					<hr>
 					<p>
 						<span class="username">{{ topic.username }}</span>
 						<span class="topic-time">{{ topic.topicLaunchTime }}</span><br>
@@ -51,7 +52,7 @@
 				<!-- Comment Input Box -->
 				<div class="comment-input">
 					<textarea v-model="topic.comments.commentContent" placeholder="留下你们的评论吧"></textarea>
-					<button @click="submitComment(topic.topicId)">提交评论</button>
+					<button @click="submitComment(topic.topicId)">发表评论</button>
 				</div>
 
 				<!-- Comment List -->
