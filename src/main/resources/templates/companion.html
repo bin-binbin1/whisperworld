@@ -49,9 +49,9 @@
                 <button class="search-button" @click="searchFriends">搜索</button>
             </div>
             <div class="search-result">
-                <p v-for="result in searchResults" :key="result.friendName">
-                    {{ result.friendName }}
-                    <button @click="sendFriendRequest(result.friendName)">发送申请</button>
+                <p v-for="result in searchResults" :key="result.userName">
+                    {{ result.userName }}
+                    <button @click="sendFriendRequest(result.userName)">发送申请</button>
                 </p>
             </div>
         </div>
@@ -92,8 +92,8 @@
             friendName:'',
             searchInput: '', // 新增搜索输入变量
             searchResults: [{
-                friendID: 1,
-                friendName:'lcl'
+                userID: 1,
+                userName:'lcl'
             }], // 新增搜索结果变量
         },
         created() {
@@ -187,8 +187,8 @@
                         console.error('Error searching friends:', error);
                     });
             },
-            sendFriendRequest(friendName) {
-                axios.post('/api/friendApply', { friendName })
+            sendFriendRequest(userName) {
+                axios.post('/api/friendApply', { userName })
                     .then(response => {
                         console.log('Friend request sent successfully');
                         // You might want to update UI or show a notification here
