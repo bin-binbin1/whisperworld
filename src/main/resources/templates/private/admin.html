@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>管理员界面</title>
+    <link href="../static/css/navigation.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/admin.css" rel="stylesheet" type="text/css">
 </head>
-<body>
 
+<body>
+<div class="header">
+    <span style="margin-left: 10px;">whisperworld</span>
+</div>
+<aside>
+    <div class="nav" id="out">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+        <a href="/asdfsdarfsrawerawrwaerwer"  class="active">管理界面</a>
+        <a href="/logout" @click.prevent="logout">退出登录</a>
+    </div>
+</aside>
+
+<section>
+    <div id="left">
+        <h2>发公告</h2>
+        <div class="comment-input">
+            <textarea placeholder="写公告" rows="10"></textarea>
+            <button >发公告</button>
+        </div>
+    </div>
+    <div class="right-sidebar">
+        <h2>话题审核</h2>
+        <div class="topic-container">
+        <div class="topic-info">
+            <p>
+                <span class="username">{{ topic.username }}</span>
+                <span class="topic-time">{{ topic.topicLaunchTime }}</span><br>
+                <span class="topic-content">{{ topic.topicContent }}</span>
+
+            </p>
+            <button  class="like-button">删除</button>
+        </div>
+        </div>
+    </div>
+</section>
+<div class="footer">欢迎使用社交网络系统</div>
 </body>
 </html>
