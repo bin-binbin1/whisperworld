@@ -51,7 +51,7 @@
             <div class="search-result">
                 <p v-for="result in searchResults" :key="result.friendName">
                     {{ result.friendName }}
-                    <button @click="showHistory(result.friendName)">聊天</button>
+                    <button @click="sendFriendRequest(result.friendName)">发送申请</button>
                 </p>
             </div>
         </div>
@@ -188,9 +188,14 @@
                     });
             },
             sendFriendRequest(friendName) {
-                // 在这里实现发送好友请求的逻辑
-                console.log(`向 ${friendName} 发送好友请求`);
-                // 添加发送好友请求的 Axios 或 WebSocket 逻辑
+                axios.post('/api/friendApply', { friendName })
+                    .then(response => {
+                        console.log('Friend request sent successfully');
+                        // You might want to update UI or show a notification here
+                    })
+                    .catch(error => {
+                        console.error('Error sending friend request:', error);
+                    });
             },
             showHistory(friendName) {
                 this.friendName=friendName;
