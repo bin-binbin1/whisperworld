@@ -10,7 +10,7 @@ h2 {
     height:550px;
     flex-direction: column;
     justify-content: center;
-    background-color: #F1939C;
+    #background-color: #F1939C;
 }
 .outer-container1 {
     #position: absolute;
