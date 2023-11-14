@@ -14,6 +14,7 @@
     line-height: 4;
     display: flex;
     flex-direction: column;
+    #overflow-x: scroll;
 }
 .main-content header{
     height:50px;
@@ -56,7 +57,6 @@
     cursor: pointer;
 }
 .left-sidebar {
-
     position: fixed;
     width: 250px;
     /* 扩大左侧栏的宽度为 250px */
@@ -71,15 +71,16 @@
 }
 
 .right-sidebar {
-    position: fixed;
-    width: 375px;
+    position: relative;
+    overflow: auto;
+    width: 380px;
     /* 减小右侧栏的宽度为 375px */
     height: 580px;
     /* 调整右侧栏的高度 */
     top: 55px;
-    right: 0;
-    bottom: 30px;
-    left: auto;
+    margin-right: 0;
+    margin-bottom: 30px;
+    margin-left: auto;
     background-color: #f0f0f0;
     text-align: center;
     line-height: 3;
@@ -134,12 +135,18 @@
     cursor: pointer;
 }
 .search-result {
-    margin-top: 0; /* Add space between the search box and the friend list */
+    margin-top: 1px; /* Add space between the search box and the friend list */
+    #height:120px;
+    #max-height:80px;
+    #overflow-y: scroll;
+    #background-color: #F1939C;
 }
 
 .friend-list {
     list-style: none; /* Remove default list styles */
     padding: 0;
+    height:160px;
+    overflow-y: scroll;
     width: 350px;
     margin-left: 30px;
     #background-color: #F1939C;
@@ -174,12 +181,20 @@
     display: block;
     margin-bottom: 5px; /* 调整垂直间距 */
 }
+.search-box2 {
+    margin-top: 20px;
+    margin-left: 0;
+    padding-left: 0;
+    #background-color: #F1939C;
+}
 .add-box{
     #margin-bottom: 0;
-    width:100%;
+    margin-left: 0;
+    padding-left: 0;
+    #width:100%;
     bottom:40%;
     position: absolute;
-    #background-color: #75c8d8;
+    background-color: #75c8d8;
 }
 .chat-item {
     margin: 0;

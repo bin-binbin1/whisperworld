@@ -48,16 +48,18 @@
                 </ul>
             </div>
 
-            <div class="add-box">
+            <div class="search-box2">
                 <hr>
                 <input type="text" class="search-input" v-model="searchInput" placeholder="添加好友">
                 <button class="search-button" @click="searchFriends">搜索</button>
             </div>
             <div class="search-result">
-                <p v-for="result in searchResults" :key="result.userName">
+                <ul class="friend-list">
+                <li v-for="result in searchResults" :key="result.userName">
                     {{ result.friendNames }}
                     <button @click="sendFriendRequest(result.friendNames)">发送申请</button>
-                </p>
+                </li>
+                </ul>
             </div>
         </div>
         <div class="main-content">
