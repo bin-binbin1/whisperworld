@@ -84,13 +84,23 @@
     line-height: 3;
     z-index: 1;
 }
-
+#self {
+    /* 样式定义，自己发的消息 */
+    background-color: #b3e6cc;
+    padding: 10px;
+    margin: 5px;
+}
+#friend {
+    /* 样式定义，对方发的消息 */
+    background-color: #e6e6e6;
+    padding: 10px;
+    margin: 5px;
+}
 .search-box {
     margin-bottom: 20px;
     margin-left: 0;
     padding-left: 0;
 }
-
 .search-input {
     width: 50%;
     height: 28px;

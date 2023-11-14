@@ -43,17 +43,86 @@ section {
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
 
-#right {
+.right-sidebar{
     overflow: auto;
     margin-left: 250px;
     /* 调整 #right 元素的左边距 */
-    width: calc(100% - 250px);
+    width: calc(100% - 240px);
     height: calc(100% - 55px);
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+.topic-container {
 
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.topic-info {
+    position: relative; /* Required for absolute positioning */
+    #margin-bottom: 10px;
+    #background-color: #9face6;
+}
+.topic-info p {
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.topic-content {
+    flex-grow: 1;
+}
+
+.topic-time {
+    font-size: 12px;
+    color: #888;
+}
+.like-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    border-radius: 10px;
+    background-color: #3498db;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+.comment-input textarea {
+    width: 70%;
+    margin-left: 10px;
+    #padding: 5px;
+}
+
+.comment-input button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.comment-list .comment {
+    margin-bottom: 10px;
+}
+
+.comment-username {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.comment-time {
+    font-size: 12px;
+    color: #888;
+}
 .signature {
     padding: 0px;
     background-color: #d0e4e8;
