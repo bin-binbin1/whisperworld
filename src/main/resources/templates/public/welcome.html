@@ -7,29 +7,24 @@
     <title>欢迎页面</title>
     <link href="../static/css/welcome.css" rel="stylesheet" type="text/css">
 </head>
-<template>
-<body :style="{ backgroundImage: 'url(' + images[activeIndex] + ')'}">
-
-<div id="left">
-    <p>欢迎来到</p>
-    <p>&nbsp&nbsp&nbsp低语世界</p>
-    <p class="t1">&nbsp&nbsp&nbsp&nbsp whisperworld</p>
+<body>
+<div id="app" :style="{ backgroundImage: 'url(' + images[activeIndex] + ')'}">
+    <div id="left">
+        <p>欢迎来到</p>
+        <p>   低语世界</p>
+        <p class="t1">     whisperworld</p>
+    </div>
+    <div id="login-box">
+        <button><a href="/login">Login</a></button>
+    </div>
+    <div id="right">
+        <a href="">帮助</a>
+        <a href="">反馈</a>
+    </div>
 </div>
-<div id="login-box">
-    <button><a href="/login">Login</a></button>
-</div>
-
-
-
-<div id="right">
-    <a href="">帮助</a>
-    <a href="">反馈</a>
-</div>
-
-</body>
-</template>
-<script type="module">
-    export default {
+<script>
+    new Vue({
+        el: '#app',
         data() {
             return {
                 images: [
@@ -45,6 +40,7 @@
                 this.activeIndex = (this.activeIndex + 1) % this.images.length;
             }, 2000);  // Change image every 2 seconds
         },
-    };
+    });
 </script>
+</body>
 </html>

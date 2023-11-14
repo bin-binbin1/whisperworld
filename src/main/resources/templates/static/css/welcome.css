@@ -1,17 +1,24 @@
-body{
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+#app {
     background-repeat: no-repeat;
     background-size: cover;
     transform: scale(1);
-    #background-attachment: fixed; /* 背景图像固定 */
+    /* background-attachment: fixed; 背景图像固定 */
     margin: 0; /* 确保没有默认的body边距 */
     text-align:center;
     display: flex;
     justify-content: center;
     align-items:center;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh; /* 确保至少覆盖整个视口 */
     overflow: hidden;
-    #transition: background-image 1s ease; /* 添加渐变过渡效果 */
+    transition: background-image 1s ease; /* 添加渐变过渡效果 */
 }
+
 #left{
     position: fixed;
     top: 10px; /* 距离顶部的距离 */
