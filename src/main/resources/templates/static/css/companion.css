@@ -37,7 +37,7 @@
     #background-color: #9face6;
 }
 .input-box{
-    width: 90%;
+    width:500px;
     border: 1px solid #ccc;
     #display: flex;
     #background-color: #b6d9d9;
@@ -52,6 +52,7 @@
     background-color: #75c8d8;
     border: 0;
     height:30px;
+    border-radius:10px;
     cursor: pointer;
 }
 .left-sidebar {
@@ -84,16 +85,31 @@
     line-height: 3;
     z-index: 1;
 }
+.message-container {
+    display: flex;
+    justify-content: flex-end; /* Align messages to the right side */
+    margin-bottom: 10px; /* Add some space between message containers */
+}
+.message {
+    padding: 2px;
+    margin: 4px;
+    border-radius: 8px;
+    #max-width: 70%; /* Limit the maximum width of the message box */
+}
 #self {
     /* 样式定义，自己发的消息 */
     background-color: #b3e6cc;
-    padding: 10px;
+    width:50%;
+    align-self: flex-end;
+    #padding: 10px;
     margin: 5px;
 }
 #friend {
     /* 样式定义，对方发的消息 */
     background-color: #e6e6e6;
-    padding: 10px;
+    align-self: flex-start;
+    width:50%;
+    #padding: 10px;
     margin: 5px;
 }
 .search-box {
@@ -117,6 +133,38 @@
     border-radius:10px;
     cursor: pointer;
 }
+.search-result {
+    margin-top: 0; /* Add space between the search box and the friend list */
+}
+
+.friend-list {
+    list-style: none; /* Remove default list styles */
+    padding: 0;
+    width: 350px;
+    margin-left: 30px;
+    #background-color: #F1939C;
+}
+
+.friend-list li {
+    margin-bottom: 4px;
+}
+
+.friend-list button {
+    background-color: #cccccc;
+    #color: #fff;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Make the buttons fill the container width */
+    text-align: left; /* Align text to the left */
+    display: block;
+}
+
+.friend-list button:hover {
+    background-color: #d0e4e8;
+}
+
+/* Optional: Add more styling as needed */
 .search-result button {
     font-size: 16px;
     width: 90%;
@@ -124,10 +172,13 @@
     cursor: pointer;
     padding: 5px;
     display: block;
-    margin-bottom: 10px; /* 调整垂直间距 */
+    margin-bottom: 5px; /* 调整垂直间距 */
 }
 .add-box{
-    margin-bottom: 0;
+    #margin-bottom: 0;
+    width:100%;
+    bottom:40%;
+    position: absolute;
     #background-color: #75c8d8;
 }
 .chat-item {

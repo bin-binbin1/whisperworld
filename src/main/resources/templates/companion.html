@@ -39,12 +39,17 @@
             </div>
 
             <div class="search-result">
-                <button v-for="friendName in friendNames" :key="friendName" @click="showHistory(friendName)">
-                    {{ friendName }}
-                </button>
+                <ul class="friend-list">
+                    <li v-for="friendName in friendNames" :key="friendName">
+                        <button @click="showHistory(friendName)">
+                            {{ friendName }}
+                        </button>
+                    </li>
+                </ul>
             </div>
 
             <div class="add-box">
+                <hr>
                 <input type="text" class="search-input" v-model="searchInput" placeholder="添加好友">
                 <button class="search-button" @click="searchFriends">搜索</button>
             </div>
@@ -58,7 +63,7 @@
         <div class="main-content">
             <header>好友</header>
             <div class="upper-content" id="chat-content">
-                <div v-for="message in Messages" :key="message.id">
+                <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
                         <!-- 表示自己发的内容 -->
                         {{ message.content }} - {{ message.time }} - {{ message.receiveState }}
