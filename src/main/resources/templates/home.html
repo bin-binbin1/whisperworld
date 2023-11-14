@@ -130,6 +130,7 @@
                         // 根据后端响应来更新前端数据
                         if (response.data) {
                             // 示例：在前端删除已处理的好友请求
+
                             this.friendRequests = this.friendRequests.filter(request => request.senderUsername !== senderUsername);
                             console.log(this.friendRequests);
                         } else {
