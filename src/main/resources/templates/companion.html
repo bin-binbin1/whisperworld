@@ -68,11 +68,11 @@
                 <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
                         <!-- 表示自己发的内容 -->
-                        {{ message.content }} - {{ message.time }} - {{ message.receiveState }}
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
                     </div>
                     <div v-else id="friend" class="message">
                         <!-- 表示对方发的内容 -->
-                        {{ message.content }} - {{ message.time }} - {{ message.receiveState }}
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
                     </div>
                 </div>
             </div>
@@ -120,10 +120,7 @@
 
                         this.stompClient.subscribe('/user/queue/'+this.data.userID+'/History', (data) => {
                             let response = JSON.parse(data.body);
-                            this.$set(this, 'Messages', response.map(message => ({
-                                ...message,
-                                time: this.formatDate(message.time)
-                            })));
+                            this.$set(this, 'Messages', response);
                             console.log("History"+response);
                         });
 
