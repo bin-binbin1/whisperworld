@@ -21,10 +21,10 @@ section {
     justify-content: center;
 }
 
-#left {
-    #position: absolute;
+.left-sidebar {
+    position: absolute;
     overflow: auto;
-    margin-top:10px;
+    margin-top: 10px;
     left: 0;
     width: 20%;
     height: calc(100% - 60px);
@@ -32,19 +32,21 @@ section {
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
-.right-sidebar{
+
+.right-sidebar {
     overflow: auto;
     text-align: center;
     margin-left: 30px;
-    margin-top:10px;
+    margin-top: 10px;
     /* 调整 #right 元素的左边距 */
     #width: calc(100% - 270px);
-    width:60%;
+    width: 60%;
     height: calc(100% - 60px);
     border: 1px solid #d0e4e8;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
+
 .comment-input textarea {
     width: 70%;
     margin-left: 10px;
@@ -59,9 +61,10 @@ section {
     border-radius: 10px;
     cursor: pointer;
 }
+
 .topic-container {
     position: relative;
-    width:90%;
+    width: 90%;
     margin-left: 30px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -69,11 +72,13 @@ section {
     border-radius: 10px;
     background-color: #f9f9f9;
 }
+
 .topic-info {
     #position: relative; /* Required for absolute positioning */
     #margin-bottom: 10px;
     #background-color: #9face6;
 }
+
 .topic-info p {
     display: flex;
     align-items: center;
@@ -92,6 +97,7 @@ section {
     font-size: 12px;
     color: #888;
 }
+
 .like-button {
     position: absolute;
     bottom: 5px;
