@@ -1,195 +1,189 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>话题</title>
-	<link href="static/css/navigation.css" rel="stylesheet" type="text/css">
-	<link href="static/css/topics.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>话题</title>
+    <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
+    <link href="static/css/topics.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 <div class="header">
-	<span style="margin-left: 10px;">whisperworld</span>
+    <span style="margin-left: 10px;">whisperworld</span>
 </div>
-	<aside>
-		<div class="nav" id="out">
-			<span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
-			<a href="/home ">首页</a>
-			<a href="/companion">好友</a>
-			<a href="/group">群组</a>
-			<a href="/topics"  class="active">话题</a>
-			<a href="/profile">个人中心</a>
-			<a href="/logout" @click.prevent="logout">退出登录</a>
-		</div>
-	</aside>
-	<section>
-		<div id="left">
-			<div class="signature">个性签名</div>
-			<div> 万事都要全力以赴，包括开心</div>
-		</div>
-		<div id="left1">
-			<div>
-				<p>留言板</p>
-				<form  @submit.prevent="handleSubmit">
-					<textarea v-model="topicContent" name="topicContent" rows="10" cols="20" placeholder="写点话题吧"></textarea><br>
-					<button type="submit" class="send-button" >发送</button>
-				</form>
-			</div>
-		</div>
+<aside>
+    <div class="nav" id="out">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+        <a href="/home ">首页</a>
+        <a href="/companion">好友</a>
+        <a href="/group">群组</a>
+        <a href="/topics" class="active">话题</a>
+        <a href="/profile">个人中心</a>
+        <a href="/logout" @click.prevent="logout">退出登录</a>
+    </div>
+</aside>
+<section>
+    <div id="left">
+        <div class="signature">个性签名</div>
+        <div> 万事都要全力以赴，包括开心</div>
+    </div>
+    <div id="left1">
+        <div>
+            <p>留言板</p>
+            <form @submit.prevent="handleSubmit">
+                <textarea v-model="topicContent" name="topicContent" rows="10" cols="20"
+                          placeholder="写点话题吧"></textarea><br>
+                <button type="submit" class="send-button">发送</button>
+            </form>
+        </div>
+    </div>
 
-		<div id="right" th:inline="none" class="right-sidebar">
-			<div v-for="topic in topics" :key="topic.topicId" class="topic-container">
-				<div class="topic-info">
-					<p>
-						<span class="username">{{ topic.username }}</span>
-						<span class="topic-time">{{ topic.topicLaunchTime }}</span>
-						<span class="topic-content">{{ topic.topicContent }}</span>
-						<button @click="likeTopic(topic.topicId)" class="like-button">点赞</button>
-					</p>
-					<hr>
-				</div>
+    <div id="right" th:inline="none" class="right-sidebar">
+        <div v-for="topic in topics" :key="topic.topicId" class="topic-container">
+            <div class="topic-info">
+                <p>
+                    <span class="username">{{ topic.username }}</span>
+                    <span class="topic-time">{{ formatDate(topic.topicLaunchTime) }}</span>
+                    <span class="topic-content">{{ topic.topicContent }}</span>
+                    <button @click="likeTopic(topic.topicId)" class="like-button">点赞</button>
+                </p>
+                <hr>
+            </div>
 
-				<!-- Comment Input Box -->
-				<div class="comment-input">
-					<textarea v-model="topic.comments.commentContent" placeholder="留下你们的评论吧"></textarea>
-					<button @click="submitComment(topic.topicId)">发表评论</button>
-				</div>
+            <!-- Comment Input Box -->
+            <div class="comment-input">
+                <textarea v-model="topic.comments.commentContent" placeholder="留下你们的评论吧"></textarea>
+                <button @click="submitComment(topic.topicId)">发表评论</button>
+            </div>
 
-				<!-- Comment List -->
-				<div class="comment-list">
-					<div v-for="comment in topic.comments" :key="comment.commentId" class="comment">
+            <!-- Comment List -->
+            <div class="comment-list">
+                <div v-for="comment in topic.comments" :key="comment.commentId" class="comment">
 
-							<span class="comment-username">{{ comment.topicCommentusername }}</span>
-							<span class="comment-content">{{ comment.commentContent }}</span>
-							<span class="comment-time">{{ comment.commentTime }}</span>
+                    <span class="comment-username">{{ comment.topicCommentusername }}</span>
+                    <span class="comment-content">{{ comment.commentContent }}</span>
+                    <span class="comment-time">{{ formatDate(comment.commentTime) }}</span>
 
-					</div>
-				</div>
-			</div>
-		</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	</section>
+</section>
 <div class="footer">欢迎使用社交网络系统</div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="static/vue/logout.js"></script>
 <script src="static/vue/left_topic.js"></script>
 <script>
-	new Vue({
-		el:'#right',
-		data: {
-			topics: [],
-		},
-		mounted(){
-			// 在组件挂载后，发送请求获取话题数据
-			this.getTopics();
-		},
-		methods:{
-			formatDate: function (date) {
-				if (date) {
-					const formattedDate = new Date(date).toLocaleDateString();
-					return formattedDate;
-				}
-				return '';
-			},
-			//获取话题
-			getTopics(){
-				// 使用 Axios 或其他方式发送请求获取话题数据
-				axios.get('/api/getTopics')
-						.then(response => {
-							// 为每个话题对象指定唯一的 topicId
-							this.topics = response.data;
-							// 规范化话题的发布时间
-							this.topics.forEach(topic => {
-								topic.topicLaunchTime = this.formatDate(topic.topicLaunchTime);
-							});
-							console.log(this.topics);
-							this.getComments();
-						})
-						.catch(error => {
-							console.error('Error getting notices:', error);
-						});
-			},
-			//点赞更新
-			likeTopic(topicId) {
-				// 检查用户是否已经点赞过该话题
-				let topicid = 0;
-				for(;topicid < this.topics.length-1;topicid++){
-					if(this.topics[topicid].topicId === topicId){
-						break;
-					}
-				}
-					axios.post('/api/likeTopic', {"userId": this.userId,"topicId": topicId})
-							.then((response) => {
-								// 成功后更新点赞数量,(t)表示数组中的每个元素
+    new Vue({
+        el: '#right',
+        data: {
+            topics: [],
+        },
+        mounted() {
+            // 在组件挂载后，发送请求获取话题数据
+            this.getTopics();
+        },
+        methods: {
+            formatDate: function (date) {
+                if (date) {
+                    const formattedDate = new Date(date).toLocaleDateString();
+                    return formattedDate;
+                }
+                return '';
+            },
+            //获取话题
+            getTopics() {
+                // 使用 Axios 或其他方式发送请求获取话题数据
+                axios.get('/api/getTopics')
+                    .then(response => {
+                        // 为每个话题对象指定唯一的 topicId
+                        this.topics = response.data;
+                        console.log(this.topics);
+                        this.getComments();
+                    })
+                    .catch(error => {
+                        console.error('Error getting notices:', error);
+                    });
+            },
+            //点赞更新
+            likeTopic(topicId) {
+                // 检查用户是否已经点赞过该话题
+                let topicid = 0;
+                for (; topicid < this.topics.length - 1; topicid++) {
+                    if (this.topics[topicid].topicId === topicId) {
+                        break;
+                    }
+                }
+                axios.post('/api/likeTopic', {"userId": this.userId, "topicId": topicId})
+                    .then((response) => {
+                        // 成功后更新点赞数量,(t)表示数组中的每个元素
 
-								this.topics[topicid].likeNum = response.data;
-							})
-							.catch((error) => {
-								console.error('点赞时出错:', error);
-							});
-			},
-			//评论
-			getComments() {
-				// 创建一个 promises 数组，每个元素是一个 Axios 请求
-				const promises = this.topics.map(topic => {
-					// 返回每个请求的 Promise
-					return axios.get('/api/getComments/' + topic.topicId)
-							.then(response => {
-								// 获取到评论数据后更新话题的评论列表
-								//topic.comments = response.data;
-								this.$set(topic, 'comments', response.map(comment => ({
-									...comment,
-									commentTime: this.formatDate(comment.commentTime)
-								})))
-							.catch(error => {
-								console.error('获取评论数据失败:', error);
-							});
-				});
+                        this.topics[topicid].likeNum = response.data;
+                    })
+                    .catch((error) => {
+                        console.error('点赞时出错:', error);
+                    });
+            },
+            //评论
+            getComments() {
+                // 创建一个 promises 数组，每个元素是一个 Axios 请求
+                const promises = this.topics.map(topic => {
+                    // 返回每个请求的 Promise
+                    return axios.get('/api/getComments/' + topic.topicId)
+                        .then(response => {
+                            // 获取到评论数据后更新话题的评论列表
+                            //topic.comments = response.data;
+                            this.$set(topic, 'comments', response.data)
+                                .catch(error => {
+                                    console.error('获取评论数据失败:', error);
+                                });
+                        });
 
-			},
+                })
+            },
+            // 提交评论
+            submitComment(topicId) {
+                // 获取评论内容
+                let topicid = 0;
+                for (; topicid < this.topics.length - 1; topicid++) {
+                    if (this.topics[topicid].topicId === topicId) {
+                        break;
+                    }
+                }
+                let commentContent = this.topics[topicid].comments.commentContent;
+                console.log("commentContent: " + commentContent);
+                // 做一些检查，确保评论内容不为空
+                if (commentContent === undefined) {
+                    // 提示用户评论不能为空
+                    alert('评论不能为空！');
+                    return;
+                }
 
-			// 提交评论
-			submitComment(topicId){
-				// 获取评论内容
-				let topicid = 0;
-				 for(;topicid < this.topics.length-1;topicid++){
-					 if(this.topics[topicid].topicId === topicId){
-						 break;
-					 }
-				 }
-				let commentContent = this.topics[topicid].comments.commentContent;
-				console.log("commentContent: "+commentContent);
-				// 做一些检查，确保评论内容不为空
-				if (commentContent === undefined) {
-					// 提示用户评论不能为空
-					alert('评论不能为空！');
-					return;
-				}
+                // 发送请求给后端，提交评论
+                axios.post('/api/submitComment', {
+                    "topicId": topicId,
+                    "commentContent": commentContent
+                })
+                    .then(response => {
+                        // 成功后更新界面或显示成功消息
+                        alert('评论提交成功！');
 
-				// 发送请求给后端，提交评论
-				axios.post('/api/submitComment', {
-					"topicId": topicId,
-					"commentContent": commentContent
-				})
-						.then(response => {
-							// 成功后更新界面或显示成功消息
-							alert('评论提交成功！');
+                        // 清空评论输入框
+                        this.topics[topicid].commentContent = '';
 
-							// 清空评论输入框
-							this.topics[topicid].commentContent = '';
-
-							// 刷新评论数据
-							this.getComments();
-						})
-						.catch(error => {
-							// 处理提交失败的情况，可能显示错误消息
-							alert('评论提交失败，请重试！');
-							console.error(error);
-						});
-			}
-		}
-	});
+                        // 刷新评论数据
+                        this.getComments();
+                    })
+                    .catch(error => {
+                        // 处理提交失败的情况，可能显示错误消息
+                        alert('评论提交失败，请重试！');
+                        console.error(error);
+                    });
+            }
+        }
+    });
 </script>
 </body>
 </html>
