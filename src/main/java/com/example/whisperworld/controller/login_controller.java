@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -40,6 +42,16 @@ public class login_controller {
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
+
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            List<GrantedAuthority> authorities = authentication.getAuthorities();
+//            for (GrantedAuthority authority : authorities) {
+//                if (authority.getAuthority().equals("ROLE_ADMIN")) {
+//                    // 用户是管理员
+//                } else {
+//                    // 用户是普通用户
+//                }
+//            }
             // 创建UsernamePasswordAuthenticationToken
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUserID(), user.getUserPassword());
             // 使用AuthenticationManager来验证这个token
@@ -49,6 +61,7 @@ public class login_controller {
 
             session.setAttribute("loginID",user.getUserID());
             response.put("authenticated",true);
+//            response.put("isAdmin",isAdmin);
         } catch (AuthenticationException e) {
             // 如果验证失败，可以返回到登录页面
             response.put("authenticated",false);
