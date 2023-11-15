@@ -54,6 +54,7 @@ public class NagigationController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
+        //将状态设置为登出
         session.invalidate();//清空session
         return "public/welcome";
     }
