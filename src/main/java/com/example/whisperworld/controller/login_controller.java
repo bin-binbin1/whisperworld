@@ -18,9 +18,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -58,7 +60,16 @@ public class login_controller {
             Authentication auth = authenticationManager.authenticate(token);
             // 如果验证成功，将Authentication对象设置到SecurityContext中
             SecurityContextHolder.getContext().setAuthentication(auth);
-
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Collection<GrantedAuthority> authorities = authentication.getAuthorities().stream().map(a -> (GrantedAuthority) a).collect(Collectors.toList());
+            for(GrantedAuthority authority : authorities){
+                if(authority.getAuthority().equals("ROLE_ADMIN")){
+                    response.put("isAdmin",true);
+                }
+                else{
+                    response.put("isAdmin",false);
+                }
+            }
             session.setAttribute("loginID",user.getUserID());
             response.put("authenticated",true);
 //            response.put("isAdmin",isAdmin);

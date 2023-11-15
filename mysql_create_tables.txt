@@ -87,7 +87,7 @@ CREATE TABLE private_messages (
 );
 
 CREATE TABLE supervisors (
-  SupervisorID INT NOT NULL,
+  SupervisorID VARCHAR(10) NOT NULL,
   GrantTime DATE NOT NULL,
   PRIMARY KEY (SupervisorID),
   FOREIGN KEY (SupervisorID) REFERENCES users(UserID)

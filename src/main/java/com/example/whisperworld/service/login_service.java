@@ -1,5 +1,6 @@
 package com.example.whisperworld.service;
 
+import com.example.whisperworld.entity.Supervisor;
 import com.example.whisperworld.entity.User;
 import com.example.whisperworld.mapper.login_mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,22 +38,30 @@ public class login_service implements UserDetailsService {
     }
 
 
-    protected void ssss(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password("password").roles("ROLE_USER")
-                .and()
-                .withUser("admin").password("password").roles("ROLE_ADMIN");
-    }
+//    protected void ssss(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password("password").roles("ROLE_USER")
+//                .and()
+//                .withUser("admin").password("password").roles("ROLE_ADMIN");
+//    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println(username);//username是ID
         // 通过用户名获取用户信息
-        User user = loginMapper.login_pwd(Integer.parseInt(username));
-
-        if (user == null) {
+        User user = loginMapper.login_pwd(Integer.parseInt(username));//密码&ID
+        Supervisor supervisor = loginMapper.loginSuper(username);//判断是否为管理员
+        if (supervisor == null) {
+            if(user == null){
+                throw new UsernameNotFoundException("用户不存在");
+            }
+            else{
+                return new org.springframework.security.core.userdetails.User(user.getUserID().toString(), user.getUserPassword(), new ArrayList<>());
+            }
             // 如果用户不存在，返回一个具有特殊权限的UserDetails对象
-            return new org.springframework.security.core.userdetails.User("", "", new ArrayList<>());
+        }
+        else{//如果是管理员
+            return new org.springframework.security.core.userdetails.User("", "",new ArrayList<>());
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getUserID().toString(), user.getUserPassword(), new ArrayList<>());
     }
 }

@@ -13,8 +13,8 @@ import java.util.List;
 
 @Mapper
 public interface topicsMapper {
-    @Select("SELECT topicID FROM topics WHERE UserID=#{userid}")
-    int topicID(int userid);//查找用户的话题号
+    @Select("SELECT userName FROM users WHERE UserID=#{userid}")
+    String topicName(int userid);//查找话题用户
 
     @Select("SELECT * FROM topics ORDER BY LikeNum DESC, TopicLaunchTime DESC ")
     List<Topics> topics();//查找所有话题并按照发布时间和点赞数降序排序

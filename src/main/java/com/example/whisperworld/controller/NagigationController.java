@@ -58,5 +58,10 @@ public class NagigationController {
         return "public/welcome";
     }
 
+    @GetMapping("/asdfsdarfsrawerawrwaerwer")
+    public String admin(Model model){
+        return "private/admin";
+    }
+
 }
 

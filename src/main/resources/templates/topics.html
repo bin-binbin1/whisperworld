@@ -120,7 +120,6 @@
 						.then(response => {
 							// 为每个话题对象指定唯一的 topicId
 							this.topics = response.data;
-							console.log(this.topics);
 							this.getComments();
 						})
 						.catch(error => {
