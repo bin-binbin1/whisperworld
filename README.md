@@ -5,7 +5,7 @@
 
 版本:
 - Java 17
-- Spring 2.7.18
+- Spring 2.7.17
 - MySQL 8.0.35
 - Maven 3.9.5
 

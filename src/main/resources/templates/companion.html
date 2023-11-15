@@ -63,16 +63,16 @@
             </div>
         </div>
         <div class="main-content">
-            <header>好友</header>
+            <header>{{ friendName }}</header>
             <div class="upper-content" id="chat-content">
                 <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
                         <!-- 表示自己发的内容 -->
-                        {{ message.content }} - {{ message.time }} - {{ message.receiveState }}
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
                     </div>
                     <div v-else id="friend" class="message">
                         <!-- 表示对方发的内容 -->
-                        {{ message.content }} - {{ message.time }} - {{ message.receiveState }}
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
                     </div>
                 </div>
             </div>
@@ -145,14 +145,11 @@
             });
         },
         methods: {
-            formatDate: function(date) {
-                // 检查日期是否有效
+            formatDate: function (date) {
                 if (date) {
-                    // 使用JavaScript的Date对象来格式化日期
                     const formattedDate = new Date(date).toLocaleDateString();
                     return formattedDate;
                 }
-                // 如果日期无效，返回空字符串或其他默认值
                 return '';
             },
             getFriends() {
