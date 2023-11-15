@@ -1,31 +1,23 @@
 package com.example.whisperworld.controller;
 
 import com.example.whisperworld.entity.PrivateMessage;
+import com.example.whisperworld.entity.User;
 import com.example.whisperworld.service.companionService;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.session.Session;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
@@ -91,30 +83,21 @@ public class companionController extends TextWebSocketHandler {
         }
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
+    @GetMapping("/api/searchFriends/{prefix}")
+    public ResponseEntity<String> getOtherPeople(@SessionAttribute("loginID") Integer userID, @PathVariable String prefix){
+        List<String> names=service.getPeopleNames(userID,prefix);
+        return ResponseEntity.ok(service.namesToJSON(names));
+    }
+    @PostMapping("/api/friendApply")
+    public ResponseEntity<String> friendApply(@SessionAttribute("loginID") Integer userID,@RequestBody User user){
+        return ResponseEntity.ok(""+service.friendApply(userID, user.getUserName()));
+    }
+
     @MessageMapping("/getAllFriends")
     public void getAllFriends(Principal principal) {
-
-        // 从session存储中获取session
-
         Integer loginID=Integer.parseInt(principal.getName());
-
         List<String> names=service.getAllFriends(loginID);
-        List<Map<String,Object>> responses = new ArrayList<>();
-        for(String name : names){
-            Map<String,Object> response = new HashMap<>();
-            response.put("friendNames",name);
-            responses.add(response);
-            System.out.println("friendsname"+name);
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        String json="";
-        try {
-            json = mapper.writeValueAsString(responses);
-        }catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-
-        messagingTemplate.convertAndSend("/user/queue/"+loginID+"/friends",json);
+        messagingTemplate.convertAndSend("/user/queue/"+loginID+"/friends",service.namesToJSON(names));
     }
     @MessageMapping("/getFriends")
     public void getFriendByName(@RequestParam String prefix,Principal principal){
@@ -145,7 +128,6 @@ public class companionController extends TextWebSocketHandler {
     }
     @MessageMapping("/sendMessages")
     public void sendMessage(@RequestParam String message, Principal principal){
-        System.out.println(message);
         ObjectMapper objectMapper = new ObjectMapper();
         String name="";
         String content="";
@@ -156,14 +138,19 @@ public class companionController extends TextWebSocketHandler {
         } catch (JsonProcessingException e1){
             e1.printStackTrace();
         }
-                Map<String,Object> response = new HashMap<>();
         Integer friendId = service.getNameByID(name);
         Integer userId =Integer.parseInt(principal.getName());
-        response.put("send",service.sendMessage(content
+        if(!service.sendMessage(content
                 ,userId
                 ,friendId
-        ));
-        System.out.println(response.get("send"));
+        )){
+            return;
+        }
+        PrivateMessage privateMessage = new PrivateMessage();
+        privateMessage.setMessageContent(content);
+        privateMessage.setSendTime(new Date());
+        Map<String,Object> response = service.getOneMessageResponse(privateMessage,true);
+
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
@@ -171,7 +158,15 @@ public class companionController extends TextWebSocketHandler {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        messagingTemplate.convertAndSend("/user/queue"+principal.getName()+"/Msg",json);
+        messagingTemplate.convertAndSend("/user/queue/"+principal.getName()+"/Msg",json);
+        response = service.getOneMessageResponse(privateMessage,false);
+        try {
+            json = mapper.writeValueAsString(response);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        messagingTemplate.convertAndSend("/user/queue/"+friendId+"/Msg",json);
+
     }
 
 }

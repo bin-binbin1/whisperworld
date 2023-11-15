@@ -41,18 +41,22 @@
               userName: this.userName,
               userPassword: this.userPassword
             })
-                    .then(function (response) {
-                      // Handle success
+                    .then(response => {
                       if (response.data.authenticated) {
-                        // 登录成功后执行WebSocket的相关操作
-                        this.websocket = new WebSocket('ws://localhost:8080'); // 替换为你的WebSocket地址
-                        this.websocket.onopen = function() {
-                          console.log('WebSocket connection opened.');
-                          // 在这里执行你的onopen逻辑
-                        };
+                        if (response.data.isAdmin) {
+                          // 用户是管理员，执行管理员相关逻辑
+                          window.location.href = '/admin';
+                        } else {
+                          // 用户不是管理员，执行普通用户逻辑,登录成功后执行WebSocket的相关操作
+                          this.websocket = new WebSocket('ws://localhost:8080'); // 替换为你的WebSocket地址
+                          this.websocket.onopen = function () {
+                            console.log('WebSocket connection opened.');
+                            // 在这里执行你的onopen逻辑
+                          };
 
-                        window.location.href = '/home';
-                      } else {
+                          window.location.href = '/home';
+                        }
+                      }else {
                         // Authentication failed, show an error message
                         window.alert('Authentication failed. Please try again.');
                       }

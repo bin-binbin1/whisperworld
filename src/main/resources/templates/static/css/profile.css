@@ -1,44 +1,48 @@
 h2{
-    font-size:20px;
+    font-size:22px;
     text-align:center;
+    line-height: 0;
 }
 .outer-container {
-    background-color: white;
+    #background-color: white;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    max-width: 800px;
-    margin: 0 auto;
-    align-items: center;
+    border-radius: 15px;
+    max-width: 600px;
+    #margin: 0 auto;
+    top: 0;
+    text-align:center;
+    #align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     position: absolute;
-    padding: 15px;
     display: flex;
     flex-direction: column;
-    max-height:450px;
+    padding-top: 0;
+    height:480px;
+    #background-color: #75c8d8;
 }
 section {
     position: fixed;
-    width: auto;
-    height: auto;
-    top: 55px; /* 调整内容区域的上边距 */
-    right: 0px;
-    bottom: 30px;
-    left: 250px;
-    background-color: #FFFFFF;
+    width: 600px;
+    height: 550px;
+    top: 80px; /* 调整内容区域的上边距 */
+    left: 550px;
+    #background-color: #9face6;
     text-align: center;
-    line-height: 4;
+    line-height: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 .announcement-container {
-    margin-bottom: 0px;
+    margin-top: 30px;
+    height: 550px;
+    background-color: #F1939C;
 }
 .scrollable-text {
     overflow: auto;
-    height: 425px;
+    height: 300px;
     width: 500px;
-    padding: 20px;
+    padding-top: 10px;
 }

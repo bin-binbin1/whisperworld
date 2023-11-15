@@ -37,27 +37,37 @@
 			</div>
 		</div>
 
-		<div id="right" th:inline="none">
-			<div v-for="topic in topics" :key="topic.topicId">
-				<p>
-					{{ topic.username }} -- {{ topic.topicContent }} -- {{ topic.topicLaunchTime }}
-					<button @click="likeTopic(topic.topicId)">点赞</button>
-				</p>
-
-				<!-- 显示评论输入框 -->
-				<textarea v-model="topic.comments.commentContent" placeholder="留下你们的评论吧"></textarea>
-				<button @click="submitComment(topic.topicId)">提交评论</button>
-
-				<!-- 显示评论列表 -->
-
-				<div v-for="comment in topic.comments" :key="comment.commentId">
+		<div id="right" th:inline="none" class="right-sidebar">
+			<div v-for="topic in topics" :key="topic.topicId" class="topic-container">
+				<div class="topic-info">
 					<p>
-						{{ comment.topicCommentusername }} -- {{ comment.commentContent }} -- {{ comment.commentTime }}
+						<span class="username">{{ topic.username }}</span>
+						<span class="topic-time">{{ topic.topicLaunchTime }}</span><br>
+						<span class="topic-content">{{ topic.topicContent }}</span>
+						<button @click="likeTopic(topic.topicId)" class="like-button">点赞</button>
 					</p>
+					<hr>
+				</div>
+
+				<!-- Comment Input Box -->
+				<div class="comment-input">
+					<textarea v-model="topic.comments.commentContent" placeholder="留下你们的评论吧"></textarea>
+					<button @click="submitComment(topic.topicId)">发表评论</button>
+				</div>
+
+				<!-- Comment List -->
+				<div class="comment-list">
+					<div v-for="comment in topic.comments" :key="comment.commentId" class="comment">
+						<p>
+							<span class="comment-username">{{ comment.topicCommentusername }}</span>
+							<span class="comment-content">{{ comment.commentContent }}</span>
+							<span class="comment-time">{{ comment.commentTime }}</span>
+						</p>
+					</div>
 				</div>
 			</div>
-
 		</div>
+
 	</section>
 <div class="footer">欢迎使用社交网络系统</div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -93,6 +103,16 @@
 			this.getTopics();
 		},
 		methods:{
+			formatDate: function(date) {
+				// 检查日期是否有效
+				if (date) {
+					// 使用JavaScript的Date对象来格式化日期
+					const formattedDate = new Date(date).toLocaleDateString();
+					return formattedDate;
+				}
+				// 如果日期无效，返回空字符串或其他默认值
+				return '';
+			},
 			//获取话题
 			getTopics(){
 				// 使用 Axios 或其他方式发送请求获取话题数据

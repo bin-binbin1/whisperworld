@@ -1,22 +1,28 @@
-body{
-    #margin:auto;
-    #height:100%;
-    background-image: url(/static/pictures/1.png);
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+#app {
     background-repeat: no-repeat;
     background-size: cover;
     transform: scale(1);
-    #background-attachment: fixed; /* 背景图像固定 */
+    /* background-attachment: fixed; 背景图像固定 */
     margin: 0; /* 确保没有默认的body边距 */
     text-align:center;
     display: flex;
     justify-content: center;
     align-items:center;
-    #transition: background-image 1s ease; /* 添加渐变过渡效果 */
+    height: 100%;
+    min-height: 100vh; /* 确保至少覆盖整个视口 */
+    overflow: hidden;
+    transition: background-image 1s ease; /* 添加渐变过渡效果 */
 }
+
 #left{
     position: fixed;
     top: 10px; /* 距离顶部的距离 */
-    left: 20px; /* 距离左侧的距离 */
+    left: 30px; /* 距离左侧的距离 */
     #float:left;
     width:450px;
     height:600px;
@@ -39,7 +45,7 @@ body{
     width:120px;
     height:50px;
     left: 46.5%;
-    top: 400px;
+    top: 360px;
     text-align:center;
     #background:#d0e4e8;
 }
@@ -63,7 +69,7 @@ body{
 #right{
     position:fixed;
     width:300px;
-    right:10px;
+    right:20px;
     top:0;
     padding-top:20px;
     text-align:right;
@@ -76,3 +82,4 @@ body{
 #right a:hover{
     font-size:17px;
 }
+

@@ -8,20 +8,41 @@
     <link href="../static/css/welcome.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div id="left">
-    <p>欢迎来到</p>
-    <p>&nbsp&nbsp&nbsp低语世界</p>
-    <p class="t1">&nbsp&nbsp&nbsp&nbsp whisperworld</p>
+<div id="app" :style="{ backgroundImage: 'url(' + images[activeIndex] + ')'}">
+    <div id="left">
+        <p>欢迎来到</p>
+        <p>   低语世界</p>
+        <p class="t1">     whisperworld</p>
+    </div>
+    <div id="login-box">
+        <button><a href="/login">Login</a></button>
+    </div>
+    <div id="right">
+        <a href="">帮助</a>
+        <a href="">反馈</a>
+    </div>
 </div>
-<div id="login-box">
-    <button><a href="/login">Login</a></button>
-</div>
-
-<div id="right">
-    <a href="">帮助</a>
-    <a href="">反馈</a>
-</div>
-
-
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                images: [
+                    '/static/pictures/1.png',
+                    '/static/pictures/4.png',
+                    '/static/pictures/6.png',
+                    '/static/pictures/5.png',
+                    // Add more image URLs
+                ],
+                activeIndex: 0,
+            };
+        },
+        mounted() {
+            setInterval(() => {
+                this.activeIndex = (this.activeIndex + 1) % this.images.length;
+            }, 2000);  // Change image every 2 seconds
+        },
+    });
+</script>
 </body>
 </html>

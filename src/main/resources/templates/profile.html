@@ -29,18 +29,18 @@
 	</aside>
    <section>
  <div class="outer-container">
-      <div class="announcement-container">
+      <!--<div class="announcement-container">-->
         <h2>个人资料</h2>
-
-
             <div id="app" class="scrollable-text" th:inline="none">
-                <p>用户ID:{{user_data.user_id}}</p>
-                <p>用户名: {{user_data.username}}</p>
-                <p>性别: {{user_data.gender}}</p>
-                <p>年龄: {{user_data.age}}</p>
-                <p>生日: {{user_data.birthday}}</p>
-                <p>手机号: {{user_data.phone}}</p>
+                <p>用户ID | {{user_data.user_id}}</p>
+                <p>用户名 | {{user_data.username}}</p>
+                <p>性别 | {{user_data.gender}}</p>
+                <p>年龄 | {{user_data.age}}</p>
+                <p>生日 | {{user_data.birthday}}</p>
+                <p>手机号 | {{user_data.phone}}</p>
             </div>
+
+ </div>
             <script>
                 new Vue({
                     el: '#app',
@@ -75,14 +75,8 @@
                             });
                     }
                 });
-
-
-
             </script>
-        </div>
 
-
-    </div>
 </section>
 
 <div class="footer">欢迎使用社交网络系统</div>

@@ -1,5 +1,6 @@
 package com.example.whisperworld.service;
 
+import com.example.whisperworld.entity.Friends;
 import com.example.whisperworld.entity.PrivateMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,12 +20,23 @@ public class companionService {
         this.mapper=mapper;
     }
 
+    public List<String> getPeopleNames(Integer userId,String prefix){
+        return mapper.getPeopleByNAME(userId,prefix);
+    }
     public List<String> getAllFriends(Integer userId){
         return mapper.getAllFriends(userId);
     }
     public List<String> getFriendsByName(Integer userId,String prefix){
         return mapper.getFriendsByNAME(userId, prefix);
     }
+    public boolean friendApply(Integer userId,String friendName){
+        Integer friendId= mapper.getIDByName(friendName);
+        Friends friends=new Friends();
+        friends.setFriendId(userId);
+        friends.setUserId(friendId);
+        return mapper.applyFriend(friends)==1;
+    }
+
     public boolean sendMessage(String content,Integer userId,Integer friendId){
         PrivateMessage msg = new PrivateMessage();
         msg.setMessageContent(content);
@@ -36,11 +48,9 @@ public class companionService {
     }
     public String getMessages(Integer userId, Integer receiverId){
 
+        mapper.setReceived(receiverId,userId);
         List<PrivateMessage> getMsg=mapper.getMessagesFromA2B(receiverId,userId);
         List<PrivateMessage> sendMsg=mapper.getMessagesFromA2B(userId,receiverId);
-        for(PrivateMessage msg:getMsg){//显示收到消息
-            msg.setReceiveState(true);
-        }
 
         List<Map<String,Object>> responses = new ArrayList<>();
         // 定义两个指针，分别指向两个列表的头部
@@ -77,7 +87,7 @@ public class companionService {
         response= new HashMap<>();
         response.put("content",msg.getMessageContent());
         response.put("self",self);
-        response.put("Datetime",msg.getSendTime());
+        response.put("time",msg.getSendTime());
         response.put("receiveState",msg.isReceiveState());
         return response;
     }
@@ -86,5 +96,22 @@ public class companionService {
         return mapper.getIDByName(name);
     }
 
+    public String namesToJSON(List<String> names){
+        List<Map<String,Object>> responses = new ArrayList<>();
+        for(String name : names){
+            Map<String,Object> response = new HashMap<>();
+            response.put("friendNames",name);
+            responses.add(response);
+            System.out.println("friendsname"+name);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try {
+            json = mapper.writeValueAsString(responses);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        return json;
+    }
 
 }

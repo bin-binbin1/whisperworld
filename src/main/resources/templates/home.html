@@ -82,6 +82,16 @@
             this.getFriendRequests();
         },
         methods: {
+            formatDate: function(date) {
+                // 检查日期是否有效
+                if (date) {
+                    // 使用JavaScript的Date对象来格式化日期
+                    const formattedDate = new Date(date).toLocaleDateString();
+                    return formattedDate;
+                }
+                // 如果日期无效，返回空字符串或其他默认值
+                return '';
+            },
             getNotices() {
                 // 使用 Axios 或其他方式发送请求获取公告数据
                 axios.get('/api/getNotices')
@@ -120,6 +130,7 @@
                         // 根据后端响应来更新前端数据
                         if (response.data) {
                             // 示例：在前端删除已处理的好友请求
+
                             this.friendRequests = this.friendRequests.filter(request => request.senderUsername !== senderUsername);
                             console.log(this.friendRequests);
                         } else {

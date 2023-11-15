@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>管理员界面</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="../static/css/navigation.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/admin.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="header">
+    <span style="margin-left: 10px;">whisperworld</span>
+</div>
+<aside>
+    <div class="nav" id="out">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+        <a href="/asdfsdarfsrawerawrwaerwer" class="active">管理界面</a>
+        <a href="/logout" @click.prevent="logout">退出登录</a>
+    </div>
+</aside>
+<section>
+    <div id="left">
+        <div class="left-sidebar">
+            <h2>发公告</h2>
+            <div class="comment-input">
+                <textarea v-model="announce" placeholder="写公告" rows="10"></textarea>
+                <button @click="sendAnnouncement">发公告</button>
+            </div>
+        </div>
+        <div class="right-sidebar">
+            <h2>话题审核</h2>
+            <div class="topic-container">
+                <div v-for="topic in topics" :key="topic.id" class="topic-info">
+                    <p>
+                        <span class="username">{{ topic.userName }}</span>
+                        <span class="topic-time">{{ topic.topicLaunchTime }}</span><br>
+                        <span class="topic-content">{{ topic.topicContent }}</span>
+
+                    </p>
+                    <button @click="deleteTopic(topic.id)" class="like-button">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="footer">欢迎使用社交网络系统</div>
+<script>
+    new Vue({
+        el:'#left',
+        data:{
+            announce:"",
+            topics:[
+                {
+                    userName:'fun',
+                    topicLaunchTime:'2020-2-8',
+                    topicContent:'今天好冷'
+                }
+            ]
+        },
+        mounted() {
+            this.fetchTopics();
+        },
+        methods: {
+            fetchTopics() {
+                axios.get('/admin_announce/topics')
+                    .then(response => {
+                        this.topics = response.data;
+                    })
+                    .catch(error => {
+                        // Handle errors if any
+                        console.error(error);
+                    });
+            },
+            deleteTopic(topicId) {
+                axios.delete(`/admin_announce/topics/${topicId}`)
+                    .then(response => {
+                        this.topics = response.data;
+                    })
+                    .catch(error => {
+                        // Handle errors if any
+                        console.error(error);
+                    });
+            },
+            sendAnnouncement() {
+                axios.post('/admin_announce', { announce: this.announce })
+                    .then(response => {
+                        console.log(response.data);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            },
+
+        }
+    })
+</script>
+</body>
+</html>
