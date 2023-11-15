@@ -89,7 +89,8 @@ CREATE TABLE private_messages (
 CREATE TABLE supervisors (
   SupervisorID INT NOT NULL,
   GrantTime DATE NOT NULL,
-  PRIMARY KEY (SupervisorID)
+  PRIMARY KEY (SupervisorID),
+  FOREIGN KEY (SupervisorID) REFERENCES users(UserID)
 );
 
 CREATE TABLE notifications (
