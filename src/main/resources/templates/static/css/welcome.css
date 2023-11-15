@@ -16,7 +16,7 @@ html, body {
     height: 100%;
     min-height: 100vh; /* 确保至少覆盖整个视口 */
     overflow: hidden;
-    transition: background-image 1s ease; /* 添加渐变过渡效果 */
+    transition: background-image 2s ease; /* 添加渐变过渡效果 */
 }
 
 #left{

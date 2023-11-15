@@ -42,7 +42,7 @@
 				<div class="topic-info">
 					<p>
 						<span class="username">{{ topic.username }}</span>
-						<span class="topic-time">{{ topic.topicLaunchTime }}</span><br>
+						<span class="topic-time">{{ topic.topicLaunchTime }}</span>
 						<span class="topic-content">{{ topic.topicContent }}</span>
 						<button @click="likeTopic(topic.topicId)" class="like-button">点赞</button>
 					</p>
@@ -58,11 +58,11 @@
 				<!-- Comment List -->
 				<div class="comment-list">
 					<div v-for="comment in topic.comments" :key="comment.commentId" class="comment">
-						<p>
+
 							<span class="comment-username">{{ comment.topicCommentusername }}</span>
 							<span class="comment-content">{{ comment.commentContent }}</span>
 							<span class="comment-time">{{ comment.commentTime }}</span>
-						</p>
+
 					</div>
 				</div>
 			</div>
