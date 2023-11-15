@@ -27,6 +27,7 @@ public class topicsController {
     public ResponseEntity<String> showTopics(){
         System.out.println("获取全部话题");
         List<Topics>response = topicService.showTopics();
+        System.out.println("话题：" + response);
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {

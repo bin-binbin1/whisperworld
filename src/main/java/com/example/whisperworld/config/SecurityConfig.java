@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/public/**","/","/welcome","/login", "/login/submit","/register_submit2", "/static/**","/websocket-endpoint/**").permitAll() // 允许公开访问的URL
+                //.antMatchers("/private/**").hasRole("ROLE_ADMIN")//只有管理员才能访问admin界面
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

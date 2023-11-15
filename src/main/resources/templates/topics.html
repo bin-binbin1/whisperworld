@@ -115,12 +115,12 @@
 			},
 			//获取话题
 			getTopics(){
-				console.log("getTopics");
 				// 使用 Axios 或其他方式发送请求获取话题数据
 				axios.get('/api/getTopics')
 						.then(response => {
 							// 为每个话题对象指定唯一的 topicId
 							this.topics = response.data;
+							console.log(this.topics);
 							this.getComments();
 						})
 						.catch(error => {
@@ -130,12 +130,17 @@
 			//点赞更新
 			likeTopic(topicId) {
 				// 检查用户是否已经点赞过该话题
-
+				let topicid = 0;
+				for(;topicid < this.topics.length-1;topicid++){
+					if(this.topics[topicid].topicId === topicId){
+						break;
+					}
+				}
 					axios.post('/api/likeTopic', {"userId": this.userId,"topicId": topicId})
 							.then((response) => {
 								// 成功后更新点赞数量,(t)表示数组中的每个元素
 
-								this.topics[this.topics.length- topicId - 1].likeNum = response.data;
+								this.topics[topicid].likeNum = response.data;
 							})
 							.catch((error) => {
 								console.error('点赞时出错:', error);
@@ -162,11 +167,16 @@
 			// 提交评论
 			submitComment(topicId) {
 				// 获取评论内容
-				console.log(this.topics.length-topicId);
-				let commentContent = this.topics[this.topics.length- topicId - 1].comments.commentContent;
+				let topicid = 0;
+				 for(;topicid < this.topics.length-1;topicid++){
+					 if(this.topics[topicid].topicId === topicId){
+						 break;
+					 }
+				 }
+				let commentContent = this.topics[topicid].comments.commentContent;
+				console.log("commentContent: "+commentContent);
 				// 做一些检查，确保评论内容不为空
-				console.log(commentContent);
-				if (commentContent === '') {
+				if (commentContent === undefined) {
 					// 提示用户评论不能为空
 					alert('评论不能为空！');
 					return;
@@ -182,7 +192,7 @@
 							alert('评论提交成功！');
 
 							// 清空评论输入框
-							this.topics[this.topics.length-topicId].commentContent = '';
+							this.topics[topicid].commentContent = '';
 
 							// 刷新评论数据
 							this.getComments();
