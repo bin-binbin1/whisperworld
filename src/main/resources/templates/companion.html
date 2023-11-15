@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="main-content">
-            <header>好友</header>
+            <header>{{ friendName }}</header>
             <div class="upper-content" id="chat-content">
                 <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
@@ -120,7 +120,10 @@
 
                         this.stompClient.subscribe('/user/queue/'+this.data.userID+'/History', (data) => {
                             let response = JSON.parse(data.body);
-                            this.$set(this, 'Messages', response);
+                            this.$set(this, 'Messages', response.map(message => ({
+                                ...message,
+                                time: this.formatDate(message.time)
+                            })));
                             console.log("History"+response);
                         });
 
@@ -145,14 +148,11 @@
             });
         },
         methods: {
-            formatDate: function(date) {
-                // 检查日期是否有效
+            formatDate: function (date) {
                 if (date) {
-                    // 使用JavaScript的Date对象来格式化日期
                     const formattedDate = new Date(date).toLocaleDateString();
                     return formattedDate;
                 }
-                // 如果日期无效，返回空字符串或其他默认值
                 return '';
             },
             getFriends() {

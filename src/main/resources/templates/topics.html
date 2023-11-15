@@ -78,39 +78,18 @@
 	new Vue({
 		el:'#right',
 		data: {
-			topics: [
-				{
-					topicId: 1,
-					username: "User1",
-					topicContent: "Topic 1",
-					topicLaunchTime: "2023-11-12",
-					comments: [
-						{
-							commentId: 1,
-							topicCommentusername: "User2",
-							commentContent: "Comment 1",
-							commentTime: "2023-11-13",
-						},
-						// More comments for Topic 1
-					],
-				},
-				// More topics
-			],
+			topics: [],
 		},
-
 		mounted(){
 			// 在组件挂载后，发送请求获取话题数据
 			this.getTopics();
 		},
 		methods:{
-			formatDate: function(date) {
-				// 检查日期是否有效
+			formatDate: function (date) {
 				if (date) {
-					// 使用JavaScript的Date对象来格式化日期
 					const formattedDate = new Date(date).toLocaleDateString();
 					return formattedDate;
 				}
-				// 如果日期无效，返回空字符串或其他默认值
 				return '';
 			},
 			//获取话题
@@ -120,6 +99,10 @@
 						.then(response => {
 							// 为每个话题对象指定唯一的 topicId
 							this.topics = response.data;
+							// 规范化话题的发布时间
+							this.topics.forEach(topic => {
+								topic.topicLaunchTime = this.formatDate(topic.topicLaunchTime);
+							});
 							console.log(this.topics);
 							this.getComments();
 						})
@@ -155,8 +138,10 @@
 							.then(response => {
 								// 获取到评论数据后更新话题的评论列表
 								//topic.comments = response.data;
-								this.$set(topic, 'comments', response.data);
-							})
+								this.$set(topic, 'comments', response.map(comment => ({
+									...comment,
+									commentTime: this.formatDate(comment.commentTime)
+								})))
 							.catch(error => {
 								console.error('获取评论数据失败:', error);
 							});
@@ -165,7 +150,7 @@
 			},
 
 			// 提交评论
-			submitComment(topicId) {
+			submitComment(topicId){
 				// 获取评论内容
 				let topicid = 0;
 				 for(;topicid < this.topics.length-1;topicid++){
@@ -202,8 +187,8 @@
 							alert('评论提交失败，请重试！');
 							console.error(error);
 						});
-			},
-		},
+			}
+		}
 	});
 </script>
 </body>
