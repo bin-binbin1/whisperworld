@@ -25,102 +25,24 @@
 	</div>
 	</aside>
   <section>
-    <div id="left"> <div class="signature">群组</div>
-    <div>
-        <!-- 使用模板引擎循环生成群组数据 -->
-        {% for group in groups %}
-        <div class="group-row" onclick="showGroupInfo('{{ group.id }}')">{{ group.name }}</div>
-        {% endfor %}  
-    </div>
-    </div>
-      <div id="left1">
+    <div id="left" th:inline="none">
+        <div class="signature">群组</div>
+        <div class="group">
+            <ul class="group-list">
+                <li v-for="group in groups" :key="groupId">
+                    <button @click="showHistory(groupId)">
+                        {{group.groupName }}
+                    </button>
+                </li>
+            </ul>
+        </div>
+
         <div class="signature">群卡片</div>
         <div id="groupInfo"></div>
-    </div>
-    
+      </div>
     <div id="right"><div class="messageContainer"></div></div>  
     </section>
-    <script>
-        function showGroupInfo(groupId) {
-            // 获取对应群组的信息，可以通过 AJAX 请求或从数据集中获取
-            var groupData = getGroupData(groupId);
-    
-            // 更新群组信息显示
-            var groupInfoElement = document.getElementById("groupInfo");
-            groupInfoElement.innerHTML = `
-                <p>群名称: ${groupData.name}</p>
-                <p>群号: ${groupData.id}</p>
-                <p>群人数: ${groupData.memberCount}</p>
-                <p>群主ID: ${groupData.ownerId}</p>
-                <p>群管理员: ${groupData.admins}</p>
-                <p>创建时间: ${groupData.creationTime}</p>
-                <p>群背景信息: ${groupData.backgroundInfo}</p>
-            `;
-    
-            // 显示群组信息块
-            var left1Element = document.getElementById("left1");
-            left1Element.style.display = "block";
-    
-            // 获取群组的聊天记录
-            var groupMessages = getGroupMessages(groupId);
-    
-            // 显示聊天记录
-            var messageContainer = document.querySelector(".messageContainer");
-            messageContainer.innerHTML = "";
-    
-            groupMessages.forEach(function(message) {
-                var messageBlock = document.createElement("div");
-                messageBlock.classList.add("message-block");
-                messageBlock.innerHTML = `
-                    <p>消息序号: ${message.messageId}</p>
-                    <p>发送者ID: ${message.senderId}</p>
-                    <p>时间: ${message.timestamp}</p>
-                    <p>${message.content}</p>
-                `;
-    
-                messageContainer.appendChild(messageBlock);
-            });
-        }
-    
-        function getGroupData(groupId) {
-            // 在这里根据groupId从数据库或其他数据源获取群组数据，并返回对应的群组信息对象
-            // 示例：假设有一个名为groupData的对象数组，其中包含了所有群组的数据
-            var groupData = [
-                { id: "1", name: "群组1", memberCount: 10, ownerId: "12345", admins: ["admin1", "admin2"], creationTime: "2023-06-15", backgroundInfo: "群组1的背景信息" },
-                { id: "2", name: "群组2", memberCount: 15, ownerId: "67890", admins: ["admin3", "admin4"], creationTime: "2023-06-16", backgroundInfo: "群组2的背景信息" },
-                // 其他群组数据...
-            ];
-    
-            // 根据groupId查找对应的群组信息
-            var groupInfo = groupData.find(function(group) {
-                return group.id === groupId;
-            });
-    
-            return groupInfo;
-        }
-    
-        function getGroupMessages(groupId) {
-            // 在这里根据groupId从数据库或其他数据源获取群组的聊天记录数据，并返回对应的聊天记录数组
-            // 示例：假设有一个名为groupMessages的对象数组，其中包含了群组的聊天记录数据
-            var groupMessages = [
-                { messageId: 1, senderId: "user1", timestamp: "2023-06-15 10:00:00", content: "这是第一条消息" },
-                { messageId: 2, senderId: "user2", timestamp: "2023-06-15 10:05:00", content: "这是第二条消息" },
-                // 其他聊天记录数据...
-            ];
-    
-            // 根据groupId过滤对应的聊天记录数据
-            var filteredMessages = groupMessages.filter(function(message) {
-                return message.groupId === groupId;
-            });
-    
-            // 根据消息序号排序
-            filteredMessages.sort(function(a, b) {
-                return a.messageId - b.messageId;
-            });
-    
-            return filteredMessages;
-        }
-    </script>
+
 <div class="footer">欢迎使用社交网络系统</div>
 </body>
 </html>
