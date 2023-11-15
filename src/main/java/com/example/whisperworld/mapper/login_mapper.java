@@ -1,5 +1,6 @@
 package com.example.whisperworld.mapper;
 
+import com.example.whisperworld.entity.Supervisor;
 import com.example.whisperworld.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,5 +15,8 @@ public interface login_mapper {
     Integer login_id(String username);//查找用户id
 
     @Select("SELECT supervisorId from supervisors where supervisorId=#{userID}")
-    int login_super(int userID);//判断是否为管理员
+    Integer isSuper(int userID);//判断是否为管理员
+
+    @Select("SELECT * FROM supervisors WHERE supervisorId=#{userID}")
+    Supervisor loginSuper(int userID);//获取管理员信息
 }

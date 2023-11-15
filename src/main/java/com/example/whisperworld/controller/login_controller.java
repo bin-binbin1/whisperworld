@@ -39,7 +39,6 @@ public class login_controller {
         Map<String,Object> response = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         String json="";
-
         try {
             // 创建UsernamePasswordAuthenticationToken
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUserID(), user.getUserPassword());
