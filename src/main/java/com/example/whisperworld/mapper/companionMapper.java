@@ -2,10 +2,7 @@ package com.example.whisperworld.mapper;
 
 import com.example.whisperworld.entity.Friends;
 import com.example.whisperworld.entity.PrivateMessage;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -15,6 +12,10 @@ public interface companionMapper {
     List<String> getAllFriends(Integer userId);
     @Insert("INSERT INTO friends VALUES(#{userId},#{friendId},false)")
     int applyFriend(Friends friends);
+    @Delete("DELETE FROM friends WHERE userID=#{userID} AND FriendID=#{friendID}")
+    void deleteFriends(Integer userID,Integer friendID);
+    @Delete("DELETE FROM private_messages WHERE userID=#{userID} AND ReceiverID=#{friendID}")
+    void deleteMsgs(Integer userID,Integer friendID);
     @Select("SELECT userName FROM users WHERE userID IN (SELECT friendID FROM Friends WHERE userID = #{userId} ) AND userName LIKE CONCAT(#{prefix}, '%')")
     List<String> getFriendsByNAME(Integer userId, String prefix);
     @Select("SELECT userName FROM users WHERE userID NOT IN (SELECT userID FROM Friends WHERE friendID = #{userId} ) AND userName LIKE CONCAT(#{prefix}, '%') AND userID NOT IN (#{userId})")
