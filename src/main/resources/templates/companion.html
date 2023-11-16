@@ -199,7 +199,7 @@
                 this.stompClient.send('/send/getHistory' ,{}, friendName);
             },
             deleteFriend(friendName){
-                axios.get(`/deleteFriend/${friendName}`)
+                axios.get(`/api/deleteFriend/${friendName}`)
                     .then(response => {
                         this.friendNames = response.data;
                     })
