@@ -33,13 +33,14 @@
             <h2>话题审核</h2>
             <div class="topic-container">
                 <div v-for="topic in topics" :key="topic.topicID" class="topic-info">
-                    <p>
+                    <div>
+                        <p>
                         <span class="username">{{ topic.userName }}</span>
-                        <span class="topic-time">{{ topic.topicLaunchTime }}</span><br>
+                        <span class="topic-time">{{ formatDate(topic.topicLaunchTime) }}</span><br>
                         <span class="topic-content">{{ topic.topicContent }}</span>
                         <button @click="deleteTopic(topic.topicID)" class="like-button">删除</button>
                     </p>
-
+                </div>
                 </div>
             </div>
         </div>
@@ -51,20 +52,20 @@
         el:'#left',
         data:{
             announce:"",
-            topics:[
-                {
-                    userName:'fun',
-                    topicLaunchTime:'2020-2-8',
-                    topicContent:'今天好冷',
-                    topicID:1
-                }
-            ],
+            topics:[],
             notificationContent: '',
         },
         mounted() {
             this.fetchTopics();
         },
         methods: {
+            formatDate: function (date) {
+                if (date) {
+                    const formattedDate = new Date(date).toLocaleDateString();
+                    return formattedDate;
+                }
+                return '';
+            },
             fetchTopics() {
                 axios.get('/admin_announce/topicsAll')
                     .then(response => {

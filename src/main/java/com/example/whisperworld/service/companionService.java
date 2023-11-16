@@ -36,7 +36,13 @@ public class companionService {
         friends.setUserId(friendId);
         return mapper.applyFriend(friends)==1;
     }
-
+    public void deleteFriend(Integer userID,String username){
+        Integer friendID=mapper.getIDByName(username);
+        mapper.deleteMsgs(userID,friendID);
+        mapper.deleteMsgs(friendID,userID);
+        mapper.deleteFriends(userID,friendID);
+        mapper.deleteFriends(friendID,userID);
+    }
     public boolean sendMessage(String content,Integer userId,Integer friendId){
         PrivateMessage msg = new PrivateMessage();
         msg.setMessageContent(content);
