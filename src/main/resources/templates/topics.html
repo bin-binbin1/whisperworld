@@ -45,9 +45,8 @@
                     <span class="username">{{ topic.username }}</span>
                     <span class="topic-time">{{ formatDate(topic.topicLaunchTime) }}</span>
                     <span class="topic-content">{{ topic.topicContent }}</span>
-                    <button @click="likeTopic(topic.topicId)" class="like-button">点赞</button>
+                    <button @click="likeTopic(topic.topicId)" class="like-button"> 点赞{{topic.likeNum}}</button>
                 </p>
-                <hr>
             </div>
 
             <!-- Comment Input Box -->
