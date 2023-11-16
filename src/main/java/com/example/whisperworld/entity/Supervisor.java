@@ -6,6 +6,6 @@ import java.util.Date;
 
 @Data
 public class Supervisor {
-    private int supervisorId;
+    private Integer supervisorId;
     private Date grantTime;
 }

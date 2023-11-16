@@ -5,6 +5,9 @@ import com.example.whisperworld.entity.User;
 import com.example.whisperworld.mapper.login_mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +20,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import java.awt.desktop.SystemEventListener;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class login_service implements UserDetailsService {
@@ -26,6 +32,9 @@ public class login_service implements UserDetailsService {
     private final login_mapper loginMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     public login_service(login_mapper loginMapper){
@@ -37,31 +46,28 @@ public class login_service implements UserDetailsService {
         return loginMapper.login_id(username);
     }
 
-
-//    protected void ssss(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("user").password("password").roles("ROLE_USER")
-//                .and()
-//                .withUser("admin").password("password").roles("ROLE_ADMIN");
-//    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println(username);//username是ID
         // 通过用户名获取用户信息
         User user = loginMapper.login_pwd(Integer.parseInt(username));//密码&ID
-        Supervisor supervisor = loginMapper.loginSuper(username);//判断是否为管理员
-        if (supervisor == null) {
-            if(user == null){
-                throw new UsernameNotFoundException("用户不存在");
-            }
-            else{
-                return new org.springframework.security.core.userdetails.User(user.getUserID().toString(), user.getUserPassword(), new ArrayList<>());
-            }
-            // 如果用户不存在，返回一个具有特殊权限的UserDetails对象
+        Supervisor supervisor = loginMapper.loginSuper(Integer.parseInt(username));//判断是否为管理员
+        if (user == null && supervisor == null){
+            throw new UsernameNotFoundException("用户不存在");
         }
-        else{//如果是管理员
-            return new org.springframework.security.core.userdetails.User("", "",new ArrayList<>());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        if(supervisor != null){
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                user.getUserID().toString(),
+                user.getUserPassword(),
+                authorities
+        );
+
+        return userDetails;
     }
 }
