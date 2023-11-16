@@ -2,6 +2,7 @@ package com.example.whisperworld.mapper;
 
 import com.example.whisperworld.entity.TopicReplies;
 import com.example.whisperworld.entity.Topics;
+import com.example.whisperworld.specialClasses.topics;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -16,8 +17,11 @@ public interface topicsMapper {
     @Select("SELECT userName FROM users WHERE UserID=#{userid}")
     String topicName(int userid);//查找话题用户
 
-    @Select("SELECT * FROM topics ORDER BY LikeNum DESC, TopicLaunchTime DESC ")
-    List<Topics> topics();//查找所有话题并按照发布时间和点赞数降序排序
+//    @Select("SELECT * FROM topics ORDER BY LikeNum DESC, TopicLaunchTime DESC ")
+//    List<Topics> topics();//查找所有话题
+
+    @Select("select LikeNum,TopicLaunchTime,TopicID,topics.UserID,userName from topics JOIN users ON users.userID = topics.UserID ORDER BY LikeNum DESC, TopicLaunchTime DESC")
+    List<topics> topics();//查询所有话题信息并按照发布时间和点赞数降序排序
 
     @Select("SELECT MAX(TopicID) FROM topics ")
     int countTopics();//查找话题数目

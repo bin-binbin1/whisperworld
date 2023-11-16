@@ -3,6 +3,7 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.TopicReplies;
 import com.example.whisperworld.entity.Topics;
 import com.example.whisperworld.mapper.topicsMapper;
+import com.example.whisperworld.specialClasses.topics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +20,8 @@ public class topicService {
         topicid = topicsMapper.countTopics();
     }
 
-    public List<Map<String, Object>> showTopics(){//获取所有话题
-        List<Topics>topics = topicsMapper.topics();
-        List<Map<String, Object>> responses = new ArrayList<>();
-        for(Topics topic :topics){
-            Map<String, Object> response = new HashMap<>();
-            response.put("username",topicsMapper.topicName(topic.getUserId()));
-            response.put("topicLaunchTime",topic.getTopicLaunchTime());
-            response.put("topicContent",topic.getTopicContent());
-            response.put("topicId",topic.getTopicId());
-            response.put("likeNum",topic.getLikeNum());
-            responses.add(response);
-        }
-        return responses;
+    public List<topics> showTopics(){//获取所有话题
+        return topicsMapper.topics();
     }
     public List<TopicReplies> showTopicReplies(Topics topics){//获取话题所有评论
         return topicsMapper.topicReplies(topics);

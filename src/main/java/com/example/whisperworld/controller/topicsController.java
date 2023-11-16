@@ -4,6 +4,7 @@ import com.example.whisperworld.entity.Notification;
 import com.example.whisperworld.entity.TopicReplies;
 import com.example.whisperworld.entity.Topics;
 import com.example.whisperworld.service.topicService;
+import com.example.whisperworld.specialClasses.topics;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class topicsController {
     @GetMapping("/api/getTopics")//获取全部话题
     public ResponseEntity<String> showTopics(){
         System.out.println("获取全部话题");
-        List<Map<String, Object>> responses = topicService.showTopics();
+        List<topics> responses = topicService.showTopics();
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
