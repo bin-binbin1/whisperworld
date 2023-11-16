@@ -41,9 +41,11 @@
             <div class="search-result">
                 <ul class="friend-list">
                     <li v-for="friendName in friendNames" :key="friendName">
-                        <button @click="showHistory(friendName)">
+                        <div>
                             {{ friendName }}
-                        </button>
+                            <button @click="showHistory(friendName)">聊天</button>
+                            <button @click="deleteFriend(friendName)">删除好友</button>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -195,6 +197,16 @@
             showHistory(friendName) {
                 this.friendName=friendName;
                 this.stompClient.send('/send/getHistory' ,{}, friendName);
+            },
+            deleteFriend(friendName){
+                axios.get(`/deleteFriend/${friendName}`)
+                    .then(response => {
+                        this.friendNames = response.data;
+                    })
+                    .catch(error => {
+                        // Handle errors if any
+                        console.error(error);
+                    });
             },
             sendMessage() {
                 var data={
