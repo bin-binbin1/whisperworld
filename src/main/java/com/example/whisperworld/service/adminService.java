@@ -35,6 +35,7 @@ public class adminService {
         if(!isAdmin(userID)){
             return;
         }
+        mapper.deleteLikes(topicID);
         mapper.deleteRepliesByID(topicID);
         mapper.deleteTopicByID(topicID);
     }
@@ -45,6 +46,7 @@ public class adminService {
         notification.setNotificationTime(new Date());
         notification.setNotificationId(notificationCount++);
         notification.setSupervisorId(userID);
+        mapper.insertNotice(notification);
     }
 
     private boolean isAdmin(Integer userID){
