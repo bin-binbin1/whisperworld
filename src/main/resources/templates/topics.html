@@ -135,10 +135,7 @@
                         .then(response => {
                             // 获取到评论数据后更新话题的评论列表
                             //topic.comments = response.data;
-                            this.$set(topic, 'comments', response.data)
-                                .catch(error => {
-                                    console.error('获取评论数据失败:', error);
-                                });
+                            this.$set(topic, 'comments', response.data);
                         });
 
 

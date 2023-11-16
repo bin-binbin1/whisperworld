@@ -31,44 +31,6 @@ public class companionController extends TextWebSocketHandler {
     public companionController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
-//    @Override
-//    public void afterConnectionEstablished(WebSocketSession session) {
-//        // 获取用户ID，这取决于你的应用程序如何处理用户身份
-//        Principal principal=session.getPrincipal();
-//        userSessions.put(principal.getName(), session);
-//        Integer userID = Integer.parseInt(principal.getName());
-//        userIDToName.put(userID,principal.getName());
-//        nameToUser.put(principal.getName(),userID);
-//        System.out.println("associateSession:"+principal.getName());
-//    }
-
-//    @GetMapping("/associateSession/{userId}")
-//    public ResponseEntity<String> associateSession(@PathVariable Integer userId, Principal principal, HttpSession httpSession) {
-//        WebSocketSession session = (WebSocketSession) httpSession.getAttribute("WEBSOCKET_SESSION");
-//        System.out.println("Principal"+principal.getName());
-////        //userSessions.put(principal.getName(),  session);
-////        userIDToName.put(userID,principal.getName());
-////        nameToUser.put(principal.getName(),userID);
-////        System.out.println("associateSession:"+principal.getName());
-//        return null;
-//    }
-//    @DeleteMapping("/api/removeSession/{userID}")
-//    public ResponseEntity<String> removeSession(@PathVariable Integer  userID,Principal principal){
-//        userSessions.remove(principal.getName());
-//        userIDToName.remove(userID);
-//        nameToUser.remove(principal.getName());
-//        Map<String,Object> response = new HashMap<>();
-//        response.put("userID",userID);
-//        ObjectMapper mapper = new ObjectMapper();
-//        String json="";
-//        try {
-//            json = mapper.writeValueAsString(response); // 将Map对象转换为JSON字符串
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        return new ResponseEntity<>(json, HttpStatus.OK);
-//    }
-
     @GetMapping("/api/getCurrentID")
     public ResponseEntity<String> getUserID(@SessionAttribute("loginID") Integer userID){
         System.out.println("userID:"+userID.toString());
@@ -97,8 +59,8 @@ public class companionController extends TextWebSocketHandler {
     public void getAllFriends(Principal principal) {
         Integer loginID=Integer.parseInt(principal.getName());
         List<String> names=service.getAllFriends(loginID);
-        messagingTemplate.convertAndSend("/user/queue/"+loginID+"/friends",service.namesToJSON(names));
-    }
+        messagingTemplate.convertAndSend("/user/queue/"+loginID+"/friends",service.namesToJSON(names));//Map<name,WebsocketSession>
+}
     @MessageMapping("/getFriends")
     public void getFriendByName(@RequestParam String prefix,Principal principal){
         Integer loginID = Integer.parseInt(principal.getName());

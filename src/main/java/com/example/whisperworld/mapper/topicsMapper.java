@@ -19,7 +19,7 @@ public interface topicsMapper {
     @Select("SELECT * FROM topics ORDER BY LikeNum DESC, TopicLaunchTime DESC ")
     List<Topics> topics();//查找所有话题并按照发布时间和点赞数降序排序
 
-    @Select("SELECT count(*) FROM topics ")
+    @Select("SELECT MAX(TopicID) FROM topics ")
     int countTopics();//查找话题数目
 
     @Select("SELECT * FROM topic_replies WHERE TopicID=#{topicId} ORDER BY CommentTime ")
@@ -30,9 +30,6 @@ public interface topicsMapper {
 
     @Insert("INSERT INTO topic_replies VALUES(#{topicId},#{commentUserId},#{commentContent},#{commentId},#{commentTime})")
     void postTopicReplies(TopicReplies topicReplies);//发表评论
-
-    @Select("SELECT count(*) FROM topic_replies WHERE topicID=#{topicId} ")
-    int topicRepliesNum(TopicReplies topicReplies);//获取话题的评论个数
 
     @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE TopicID=#{topicId}")
     void addLikeNum(int topicId);//点赞+1

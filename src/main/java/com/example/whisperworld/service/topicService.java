@@ -3,9 +3,7 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.TopicReplies;
 import com.example.whisperworld.entity.Topics;
 import com.example.whisperworld.mapper.topicsMapper;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.listener.Topic;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -30,6 +28,7 @@ public class topicService {
             response.put("topicLaunchTime",topic.getTopicLaunchTime());
             response.put("topicContent",topic.getTopicContent());
             response.put("topicId",topic.getTopicId());
+            response.put("likeNum",topic.getLikeNum());
             responses.add(response);
         }
         return responses;
@@ -44,7 +43,7 @@ public class topicService {
         return postTopicId(topics);
     }
     private synchronized boolean postTopicId(Topics topics){//生成话题号
-        topics.setTopicId(topicsMapper.countTopics());
+        topics.setTopicId(topicsMapper.countTopics()+1);
         topicsMapper.postTopic(topics);
         //发送失败判断
         return true;

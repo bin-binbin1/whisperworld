@@ -40,7 +40,7 @@ CREATE TABLE topic_replies (
   CommentID INT NOT NULL,
   CommentTime DATETIME NOT NULL,
   PRIMARY KEY (TopicID, CommentID),
-  FOREIGN KEY (TopicID) REFERENCES topics(TopicID),
+  FOREIGN KEY (TopicID) REFERENCES topics(TopicID) ON DELETE CASCADE,
   FOREIGN KEY (CommentUserID) REFERENCES users(UserID)
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE likes(
  TopicID INT NOT NULL,
  LikeUserID INT NOT NULL,
  PRIMARY KEY (TopicID, LikeUserID),
- FOREIGN KEY (TopicID) REFERENCES topics(TopicID),
+ FOREIGN KEY (TopicID) REFERENCES topics(TopicID) ON DELETE CASCADE,
  FOREIGN KEY (LikeUserID) REFERENCES users(UserID)
 );
 
