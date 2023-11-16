@@ -10,7 +10,7 @@ new Vue({
             axios.post('/api/sendtopic' , {topicContent:topicContent})
                 .then(response => {
                     // 处理成功的响应
-                    if (response.data.success) {
+                    if (response.data) {
                         this.topicContent = '';
                         alert('消息发送成功！');
                     }else {
