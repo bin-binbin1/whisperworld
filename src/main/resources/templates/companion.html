@@ -201,7 +201,7 @@
             deleteFriend(friendName){
                 axios.get(`/api/deleteFriend/${friendName}`)
                     .then(response => {
-                        this.friendNames = response.data;
+                        this.getAllFriends();  // 在这里调用getAllFriends函数
                     })
                     .catch(error => {
                         // Handle errors if any
