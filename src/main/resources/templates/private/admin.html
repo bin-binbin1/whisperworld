@@ -77,7 +77,7 @@
                     });
             },
             deleteTopic(topicId) {
-                axios.delete(`/admin_announce/topics/${topicId}`)
+                axios.get(`/admin_announce/topics/${topicId}`)
                     .then(response => {
                         this.topics = response.data;
                     })

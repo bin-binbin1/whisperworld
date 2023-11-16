@@ -10,11 +10,13 @@ import java.util.List;
 
 @Mapper
 public interface adminMapper {
-    @Select("SELECT userName,TopicLaunchTime,TopicContent FROM topics JOIN users ON topics.userID = users.userID")
+    @Select("SELECT userName,TopicID,TopicLaunchTime,TopicContent FROM topics JOIN users ON topics.userID = users.userID")
     List<oneTopic> getTopics();
     @Select("SELECT COUNT(*) from supervisors WHERE SupervisorID=#{userID}")
     int getSupervisorCountByID(Integer userID);
-    @Delete("DELETE FROM users WHERE topicID=#{topicID} ")
+    @Delete("DELETE FROM topic_replies WHERE TopicID=#{topicID}")
+    void deleteRepliesByID(Integer topicID);
+    @Delete("DELETE FROM topics WHERE TopicID=#{topicID} ")
     void deleteTopicByID(Integer topicID);
     @Select("SELECT COUNT(*) FROM notifications")
     int getNoticeCount();
