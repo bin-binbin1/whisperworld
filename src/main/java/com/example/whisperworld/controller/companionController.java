@@ -92,7 +92,11 @@ public class companionController extends TextWebSocketHandler {
     public ResponseEntity<String> friendApply(@SessionAttribute("loginID") Integer userID,@RequestBody User user){
         return ResponseEntity.ok(""+service.friendApply(userID, user.getUserName()));
     }
-
+    @GetMapping("/api/deleteFriend/{friendName}")
+    public ResponseEntity<String> deleteFriend(@SessionAttribute("loginID") Integer userId,@PathVariable String friendName){
+        service.deleteFriend(userId,friendName);
+        return ResponseEntity.ok("success");
+    }
     @MessageMapping("/getAllFriends")
     public void getAllFriends(Principal principal) {
         Integer loginID=Integer.parseInt(principal.getName());

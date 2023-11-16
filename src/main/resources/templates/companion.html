@@ -44,7 +44,7 @@
                         <div class="chat"><button @click="showHistory(friendName)">
                             {{ friendName }}
                         </button></div>
-                        <button class="delete">删除</button>
+                        <button class="delete" @click="deleteFriend(friendName)">删除</button>
                     </li>
                 </ul>
             </div>
@@ -200,6 +200,16 @@
             showHistory(friendName) {
                 this.friendName=friendName;
                 this.stompClient.send('/send/getHistory' ,{}, friendName);
+            },
+            deleteFriend(friendName){
+                axios.get(`/api/deleteFriend/${friendName}`)
+                    .then(response => {
+                        this.getAllFriends();  // 在这里调用getAllFriends函数
+                    })
+                    .catch(error => {
+                        // Handle errors if any
+                        console.error(error);
+                    });
             },
             sendMessage() {
                 var data={

@@ -5,6 +5,9 @@
     <title>话题</title>
     <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
     <link href="static/css/topics.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="static/vue/logout.js"></script>
 </head>
 
 <body>
@@ -45,9 +48,8 @@
                     <span class="username">{{ topic.username }}</span>
                     <span class="topic-time">{{ formatDate(topic.topicLaunchTime) }}</span>
                     <span class="topic-content">{{ topic.topicContent }}</span>
-                    <button @click="likeTopic(topic.topicId)" class="like-button">点赞</button>
+                    <button @click="likeTopic(topic.topicId)" class="like-button"> 点赞{{topic.likeNum}}</button>
                 </p>
-                <hr>
             </div>
 
             <!-- Comment Input Box -->
@@ -71,9 +73,6 @@
 
 </section>
 <div class="footer">欢迎使用社交网络系统</div>
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="static/vue/logout.js"></script>
 <script src="static/vue/left_topic.js"></script>
 <script>
     new Vue({
@@ -81,46 +80,6 @@
         data: {
             topics: [],
         },
-        mounted() {
-            // 在组件挂载后，发送请求获取话题数据
-            this.getTopics();
-        },
-        methods: {
-            formatDate: function (date) {
-                if (date) {
-                    const formattedDate = new Date(date).toLocaleDateString();
-                    return formattedDate;
-                }
-                return '';
-            },
-            //获取话题
-            getTopics() {
-                // 使用 Axios 或其他方式发送请求获取话题数据
-                axios.get('/api/getTopics')
-                    .then(response => {
-                        // 为每个话题对象指定唯一的 topicId
-                        this.topics = response.data;
-                        console.log(this.topics);
-                        this.getComments();
-                    })
-                    .catch(error => {
-                        console.error('Error getting notices:', error);
-                    });
-            },
-            //点赞更新
-            likeTopic(topicId) {
-                // 检查用户是否已经点赞过该话题
-                let topicid = 0;
-                for (; topicid < this.topics.length - 1; topicid++) {
-                    if (this.topics[topicid].topicId === topicId) {
-                        break;
-                    }
-                }
-                axios.post('/api/likeTopic', {"userId": this.userId, "topicId": topicId})
-                    .then((response) => {
-                        // 成功后更新点赞数量,(t)表示数组中的每个元素
-
-<<<<<<< HEAD
 		mounted(){
 			// 在组件挂载后，发送请求获取话题数据
 			this.getTopics();
@@ -161,7 +120,6 @@
 					axios.post('/api/likeTopic', {"userId": this.userId,"topicId": topicId})
 							.then((response) => {
 								// 成功后更新点赞数量,(t)表示数组中的每个元素
-=======
                         this.topics[topicid].likeNum = response.data;
                     })
                     .catch((error) => {
@@ -182,7 +140,7 @@
                                     console.error('获取评论数据失败:', error);
                                 });
                         });
->>>>>>> 9651d3a237587531cac7e7a71a91134e8e9dc733
+
 
                 })
             },
@@ -226,7 +184,8 @@
                     });
             }
         }
-    });
+    }
+    );
 </script>
 </body>
 </html>
