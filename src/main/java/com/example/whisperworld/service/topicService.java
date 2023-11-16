@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.listener.Topic;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class topicService {
@@ -22,9 +21,18 @@ public class topicService {
         topicid = topicsMapper.countTopics();
     }
 
-    public List<Topics> showTopics(){//获取所有话题
-
-        return topicsMapper.topics();
+    public List<Map<String, Object>> showTopics(){//获取所有话题
+        List<Topics>topics = topicsMapper.topics();
+        List<Map<String, Object>> responses = new ArrayList<>();
+        for(Topics topic :topics){
+            Map<String, Object> response = new HashMap<>();
+            response.put("username",topicsMapper.topicName(topic.getUserId()));
+            response.put("topicLaunchTime",topic.getTopicLaunchTime());
+            response.put("topicContent",topic.getTopicContent());
+            response.put("topicId",topic.getTopicId());
+            responses.add(response);
+        }
+        return responses;
     }
     public List<TopicReplies> showTopicReplies(Topics topics){//获取话题所有评论
         return topicsMapper.topicReplies(topics);
@@ -56,7 +64,7 @@ public class topicService {
 
     public int likeTopic(Topics topic, Integer loginId){//更新点赞
         if(topicsMapper.isDumplicateLike(topic.getTopicId(), loginId) == false){//如果没有点过赞
-            topicsMapper.addLikeNum(loginId,topic.getTopicId());//增加点赞数
+            topicsMapper.addLikeNum(topic.getTopicId());//增加点赞数
             topicsMapper.addlikeUser(topic.getTopicId(),loginId);//增加点赞用户
         }
         return topicsMapper.updateLikeNum(topic);

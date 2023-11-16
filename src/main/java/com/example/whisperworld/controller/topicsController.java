@@ -26,12 +26,11 @@ public class topicsController {
     @GetMapping("/api/getTopics")//获取全部话题
     public ResponseEntity<String> showTopics(){
         System.out.println("获取全部话题");
-        List<Topics>response = topicService.showTopics();
-        System.out.println("话题：" + response);
+        List<Map<String, Object>> responses = topicService.showTopics();
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
-            json = mapper.writeValueAsString(response); // 将Map对象转换为JSON字符串
+            json = mapper.writeValueAsString(responses); // 将Map对象转换为JSON字符串
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -40,7 +39,6 @@ public class topicsController {
     @GetMapping("/api/getComments/{topicId}")//获取全部评论
     public ResponseEntity<String> showComments(@PathVariable Integer topicId){
         System.out.println("获取全部评论");
-        System.out.println(topicId);
         Topics topic = new Topics();
         topic.setTopicId(topicId);
         List<TopicReplies> topicReplies = topicService.showTopicReplies(topic);
@@ -99,7 +97,6 @@ public class topicsController {
         }
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
-
 
     @PostMapping("/api/likeTopic")//点赞
     public ResponseEntity<String> likeTopic(@RequestBody Topics topic, @SessionAttribute("loginID") Integer loginID){
