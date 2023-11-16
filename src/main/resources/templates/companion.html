@@ -34,16 +34,17 @@
             <div><span style="margin-left: 10px; font-size: 18px; letter-spacing: 2px;">好友列表</span></div>
 
             <div class="search-box">
-                <input type="text" class="search-input" v-model="friendprefix" placeholder="搜索">
+                <input type="text" class="search-input" v-model="friendprefix" placeholder="搜索好友">
                 <button class="search-button" @click="getFriends">搜索</button>
             </div>
 
             <div class="search-result">
                 <ul class="friend-list">
                     <li v-for="friendName in friendNames" :key="friendName">
-                        <button @click="showHistory(friendName)">
+                        <div class="chat"><button @click="showHistory(friendName)">
                             {{ friendName }}
-                        </button>
+                        </button></div>
+                        <button class="delete">删除</button>
                     </li>
                 </ul>
             </div>
@@ -54,9 +55,9 @@
                 <button class="search-button" @click="searchFriends">搜索</button>
             </div>
             <div class="search-result">
-                <ul class="friend-list">
+                <ul class="friend-list2">
                 <li v-for="result in searchResults" :key="result.userName">
-                    {{ result.friendNames }}
+                   <div class="p">{{ result.friendNames }}</div>
                     <button @click="sendFriendRequest(result.friendNames)">发送申请</button>
                 </li>
                 </ul>
@@ -67,12 +68,16 @@
             <div class="upper-content" id="chat-content">
                 <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
-                        <!-- 表示自己发的内容 -->
-                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                        <!-- Represents user's messages -->
+                        <span class="timestamp">{{ formatDate(message.time) }}</span>
+                        {{ message.content }}
+                        <span class="receive-status">{{ message.receiveState }}</span>
                     </div>
                     <div v-else id="friend" class="message">
-                        <!-- 表示对方发的内容 -->
-                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                        <!-- Represents friend's messages -->
+                        <span class="timestamp2">{{ formatDate(message.time) }}</span>
+                        {{ message.content }}
+                        <span class="receive-status2">{{ message.receiveState }}</span>
                     </div>
                 </div>
             </div>
