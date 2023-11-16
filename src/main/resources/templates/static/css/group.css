@@ -3,7 +3,7 @@ section {
     width: auto;
     height: auto;
     top: 55px; /* 调整内容区域的上边距 */
-    right: 0px;
+    right: 0;
     bottom: 30px;
     left: 250px;
     background-color: #FFFFFF;
@@ -14,45 +14,134 @@ section {
     align-items: center;
     justify-content: center;
 }
-#left{
+.left{
+    overflow: auto;
     position: absolute; /* 使用绝对定位 */
-    top: 0; /* 距离顶部的距离 */
+    top: 10px; /* 距离顶部的距离 */
     left: 20px; /* 距离左侧的距离 */
     float:left;
-    width:350px;
-    height: 350px;;
+    width:300px;
+    height: 260px;
+    border: 1px solid #ccc;
+    border-radius:10px;
+    box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
+    #background-color: #75c8d8;
+}
+.group{
+    #background-color: #cccccc;
+    overflow: auto;
+    top:0;
+    margin-top: 0;
+    padding-top: 0;
+    height: 200px; /* 设置group容器的最大高度，可以根据实际情况调整 */
+    overflow-y: auto; /* 当内容溢出时显示垂直滚动条 */
+}
+.group-list {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+}
+
+.group-list li {
+    margin-bottom: 2px;
+    #background-color: #75c8d8;
+}
+
+.group-list button {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #cccccc;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: block; /* 让按钮变成块级元素，占据整个列表项的宽度 */
+    width: 100%; /* 让按钮的宽度充满整个列表项 */
+}
+
+button:hover {
+    background-color: #d0e4e8;
+}
+.left1{
+    overflow: auto;
+    position: absolute;
+    float:left;
+    #top: 140px;
+    bottom: 50px;
+    left: 20px;
+    width: 300px;
+    height: 260px;
+    border: 1px solid #d0e4e8;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
+    #background-color: #75c8d8;
+}
+#groupInfo {
+
+}
+.right{
+    overflow: auto;
+    position: fixed; /* 使用绝对定位 */
+    top: 70px; /* 距离顶部的距离 */
+    right: 30px; /* 距离右侧的距离 */
+    width:840px;
+    height:550px;
     border: 1px solid #ccc;
     border-radius:10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-#left1{
-    display: none;
-    overflow: auto;
-    position: absolute; /* 使用绝对定位 */
-    top: 350px; /* 距离顶部的距离 */
-    left: 20px; /* 距离左侧的距离 */
-    float:left;
-    width:350px;
-    height:225px;
-    border: 1px solid #ccc;
-    border-radius:10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.right header{
+    height:50px;
+    border: 2px solid #ccc;
 }
-#right{
-    overflow: auto;
-    position: absolute; /* 使用绝对定位 */
-    top: 0; /* 距离顶部的距离 */
-    right: 50px; /* 距离右侧的距离 */
-    width:800px;
-    height:590px;
+.upper-content {
+    flex-grow: 2;
+    height: 380px;
     border: 1px solid #ccc;
+    overflow-y: scroll;
+    padding: 10px;
+    #margin-bottom: 10px;
+    #background-color: #b6d9d9;
+}
+.lower-content {
+    flex-grow: 1;
+    margin-top:0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    #background-color: #9face6;
+}
+.input-box{
+    width:500px;
+    border: 1px solid #ccc;
+    #display: flex;
+    #background-color: #b6d9d9;
+    justify-content: center;
+    #width: calc(100% - 80px);
+    height: 30px;
+    #padding: 5px;
+    font-size: 14px;
+}
+.send-button {
+    width: 80px;
+    background-color: #75c8d8;
+    color:#ffffff;
+    font-weight: bold;
+    border: 0;
+    height:30px;
     border-radius:10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 .signature {
-    padding: 0px;
+    #padding: 0;
+    height:50px;
+    padding-bottom: 7px;
+    font-weight: bold;
+    margin-bottom: 0;
     background-color:#b6d9d9;
-    color: black;; /* 设置文字颜色为白色 */
+    border-radius: 10px 10px 0 0;
+    color: #ffffff;; /* 设置文字颜色为白色 */
 }
 .message-block {
     border: 1px solid #ccc;
@@ -61,11 +150,4 @@ section {
     width: 750px;
     margin-bottom: 10px;
     padding: 10px;
-}
-#groupInfo {
-    padding: 10px;
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

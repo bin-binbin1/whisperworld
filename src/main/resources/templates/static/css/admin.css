@@ -24,26 +24,41 @@ section {
 .left-sidebar {
     position: absolute;
     overflow: auto;
-    margin-top: 10px;
-    left: 0;
-    width: 20%;
+    top:10px;
+    left: 20px;
+    width: 25%;
     height: calc(100% - 60px);
     border: 1px solid #d0e4e8;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
+.left-sidebar textarea{
+    margin:0 auto;
+}
+.send-button {
+    width: 80px;
+    background-color: #75c8d8;
+    border: 0;
+    height:35px;
+    color:#ffffff;
+    font-weight: bold;
+    border-radius:10px;
+    cursor: pointer;
+}
 
 .right-sidebar {
+    position: absolute;
     overflow: auto;
     text-align: center;
-    margin-left: 30px;
+    left: 30%;
     margin-top: 10px;
     /* 调整 #right 元素的左边距 */
     #width: calc(100% - 270px);
-    width: 60%;
+    width:60%;
     height: calc(100% - 60px);
     border: 1px solid #d0e4e8;
     border-radius: 10px;
+    overflow-y: scroll;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
 

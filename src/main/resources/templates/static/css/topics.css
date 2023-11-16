@@ -43,6 +43,16 @@ section {
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
+.send-button {
+    width: 80px;
+    background-color: #75c8d8;
+    border: 0;
+    height:30px;
+    color:#ffffff;
+    font-weight: bold;
+    border-radius:10px;
+    cursor: pointer;
+}
 
 .right-sidebar{
     overflow: auto;
@@ -135,6 +145,6 @@ section {
     padding: 0;
     background-color: #d0e4e8;
     color: black;
-;
+    border-radius: 10px 10px 0 0;
     /* 设置文字颜色为白色 */
 }

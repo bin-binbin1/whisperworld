@@ -26,20 +26,20 @@
             <h2>发公告</h2>
             <div class="comment-input">
                 <textarea v-model="notificationContent" placeholder="写公告" rows="10"></textarea>
-                <button @click="sendAnnouncement">发公告</button>
+                <button @click="sendAnnouncement" class="send-button">发公告</button>
             </div>
         </div>
         <div class="right-sidebar">
             <h2>话题审核</h2>
             <div class="topic-container">
-                <div v-for="topic in topics" :key="topic.id" class="topic-info">
+                <div v-for="topic in topics" :key="topic.topicID" class="topic-info">
                     <p>
                         <span class="username">{{ topic.userName }}</span>
                         <span class="topic-time">{{ topic.topicLaunchTime }}</span><br>
                         <span class="topic-content">{{ topic.topicContent }}</span>
-
+                        <button @click="deleteTopic(topic.topicID)" class="like-button">删除</button>
                     </p>
-                    <button @click="deleteTopic(topic.id)" class="like-button">删除</button>
+
                 </div>
             </div>
         </div>
@@ -55,9 +55,11 @@
                 {
                     userName:'fun',
                     topicLaunchTime:'2020-2-8',
-                    topicContent:'今天好冷'
+                    topicContent:'今天好冷',
+                    topicID:1
                 }
-            ]
+            ],
+            notificationContent: '',
         },
         mounted() {
             this.fetchTopics();
@@ -66,6 +68,7 @@
             fetchTopics() {
                 axios.get('/admin_announce/topicsAll')
                     .then(response => {
+                        console.log(response.data);
                         this.topics = response.data;
                     })
                     .catch(error => {

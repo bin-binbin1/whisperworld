@@ -25,9 +25,9 @@
 	</div>
 	</aside>
   <section>
-    <div id="left" th:inline="none">
+    <div class="left" th:inline="none">
         <div class="signature">群组</div>
-        <div class="group">
+         <div class="group">
             <ul class="group-list">
                 <li v-for="group in groups" :key="groupId">
                     <button @click="showHistory(groupId)">
@@ -35,12 +35,37 @@
                     </button>
                 </li>
             </ul>
-        </div>
-
+         </div>
+    </div>
+    <div class="left1">
         <div class="signature">群卡片</div>
-        <div id="groupInfo"></div>
-      </div>
-    <div id="right"><div class="messageContainer"></div></div>  
+        <div id="groupInfo">
+
+        </div>
+    </div>
+    <div class="right">
+        <div class="main-content">
+            <header>{{ friendName }}</header>
+            <div class="upper-content" id="chat-content">
+                <div v-for="message in Messages" :key="message.id" class="message-container">
+                    <div v-if="message.self" id="self" class="message">
+                        <!-- 表示自己发的内容 -->
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                    </div>
+                    <div v-else id="friend" class="message">
+                        <!-- 表示对方发的内容 -->
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                    </div>
+                </div>
+            </div>
+            <div class="lower-content">
+                <form @submit.prevent="submitMessage">
+                    <input type="text" class="input-box" placeholder="输入消息" v-model="newMessage" name="message">
+                    <button type="submit" class="send-button" >发送</button>
+                </form>
+            </div>
+        </div>
+    </div>
     </section>
 
 <div class="footer">欢迎使用社交网络系统</div>
