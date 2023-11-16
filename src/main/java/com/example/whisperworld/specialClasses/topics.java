@@ -8,4 +8,5 @@ public class topics {
     String topicLaunchTime;
     String topicContent;
     Integer topicId;
+    Integer likeNum;
 }

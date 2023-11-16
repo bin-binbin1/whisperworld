@@ -20,7 +20,7 @@ public interface topicsMapper {
 //    @Select("SELECT * FROM topics ORDER BY LikeNum DESC, TopicLaunchTime DESC ")
 //    List<Topics> topics();//查找所有话题
 
-    @Select("select LikeNum,TopicLaunchTime,TopicID,topics.UserID,userName from topics JOIN users ON users.userID = topics.UserID ORDER BY LikeNum DESC, TopicLaunchTime DESC")
+    @Select("select userName,TopicLaunchTime,TopicContent,TopicID,LikeNum from topics JOIN users ON users.userID = topics.UserID ORDER BY LikeNum DESC, TopicLaunchTime DESC")
     List<topics> topics();//查询所有话题信息并按照发布时间和点赞数降序排序
 
     @Select("SELECT MAX(TopicID) FROM topics ")
