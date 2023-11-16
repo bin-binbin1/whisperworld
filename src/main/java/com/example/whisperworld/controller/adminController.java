@@ -13,7 +13,7 @@ public class adminController {
     public adminController(adminService service){
         this.service=service;
     }
-    @DeleteMapping("/admin_announce/topics/{topicId}")
+    @GetMapping("/admin_announce/topics/{topicId}")
     public void deleteTopic(@SessionAttribute("loginID") Integer loginID, @PathVariable Integer topicId){
         service.deleteTopic(topicId,loginID);
     }

@@ -35,6 +35,7 @@ public class adminService {
         if(!isAdmin(userID)){
             return;
         }
+        mapper.deleteRepliesByID(topicID);
         mapper.deleteTopicByID(topicID);
     }
     public void postNote(Integer userID, Notification notification){

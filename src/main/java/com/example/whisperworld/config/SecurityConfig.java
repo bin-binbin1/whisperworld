@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.csrf().ignoringAntMatchers("/register_submit2","/login/submit","/api/submitComment","/api/likeTopic","/api/sendtopic",
                 "/api/friendApply",
-                "/api/handleFriendRequest"
+                "/api/handleFriendRequest",
+                "/admin_announce/post_note"
                 );//Post
     }
 
