@@ -34,8 +34,8 @@ public interface topicsMapper {
     @Select("SELECT count(*) FROM topic_replies WHERE topicID=#{topicId} ")
     int topicRepliesNum(TopicReplies topicReplies);//获取话题的评论个数
 
-    @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE UserID=#{userId} AND TopicID=#{topicId}")
-    void addLikeNum(int userId, int topicId);//点赞+1
+    @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE TopicID=#{topicId}")
+    void addLikeNum(int topicId);//点赞+1
 
     @Select("SELECT likeNum from topics WHERE TopicID=#{topicId}")
     int updateLikeNum(Topics topic);//获取点赞数
