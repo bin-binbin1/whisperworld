@@ -87,7 +87,7 @@ CREATE TABLE private_messages (
 );
 
 CREATE TABLE supervisors (
-  SupervisorID VARCHAR(10) NOT NULL,
+  SupervisorID INT NOT NULL,
   GrantTime DATE NOT NULL,
   PRIMARY KEY (SupervisorID),
   FOREIGN KEY (SupervisorID) REFERENCES users(UserID)
@@ -210,4 +210,4 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 insert into users values(0,"fun",123456,'m',CURDATE(),18114803454,'offline',0,CURDATE());
 insert into supervisors values(0,CURDATE());
 insert into notifications values (0,"今天我最帅",CURDATE(),0);
-
+insert into topics values(0,0,0,curdate(),"欢迎来到低语世界",0);
