@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="static/vue/logout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <title>群组</title>
     <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
     <link href="static/css/chat.css" rel="stylesheet" type="text/css">
@@ -18,56 +20,159 @@
         <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
         <a href="/home ">首页</a>
         <a href="/companion">好友</a>
-        <a href="/group"  class="active">群中心</a>
+        <a href="/group" class="active">群中心</a>
         <a href="/topics">话题</a>
         <a href="/profile">个人中心</a>
         <a href="/logout" @click.prevent="logout">退出登录</a>
     </div>
 </aside>
 <section>
-    <div class="left" th:inline="none">
-        <div class="signature">群组</div>
-        <div class="group">
-            <ul class="group-list">
-                <li v-for="group in groups" :key="groupId">
-                    <button @click="showHistory(groupId)">
-                        {{group.groupName }}
-                    </button>
-                </li>
-            </ul>
+    <div id="app" th:inline="none">
+        <div class="left">
+            <div class="signature">群组</div>
+            <div class="group">
+                <ul class="group-list">
+                    <li v-for="groupName in groupNames" :key="groupName">
+                        <button @click="showGroup(groupName)">
+                            {{groupName }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="left1">
-        <div class="signature">群成员</div>
-        <div id="groupmenber">
+        <div class="left1">
+            <div class="signature">群成员</div>
+            <div v-for="groupMember in groupMembers" :key="groupMember">
+                <p>{{ groupMember }}</p>
+            </div>
+        </div>
 
-        </div>
-    </div>
     <div class="right">
         <div class="main-content">
-            <header>{{ friendName }}</header>
+            <header>{{ groupName }}</header>
             <div class="upper-content" id="chat-content">
                 <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
                         <!-- 表示自己发的内容 -->
-                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                        {{ message.userName }} - {{ message.content }} - {{ formatDate(message.time) }}
                     </div>
                     <div v-else id="friend" class="message">
                         <!-- 表示对方发的内容 -->
-                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                        {{ message.userName }} - {{ message.content }} - {{ formatDate(message.time) }}
                     </div>
                 </div>
             </div>
             <div class="lower-content">
                 <form @submit.prevent="submitMessage">
                     <input type="text" class="input-box" placeholder="输入消息" v-model="newMessage" name="message">
-                    <button type="submit" class="send-button" >发送</button>
+                    <button type="submit" class="send-button">发送</button>
                 </form>
             </div>
         </div>
     </div>
+    </div>
 </section>
-
 <div class="footer">欢迎使用社交网络系统</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            stompClient: null,
+            groupNames:['null','你好','再见'],
+            groupMembers:['null','你好','再见'],
+            Messages: [
+                { userName: 'lcl', content: '有点冷', time: '2021-10-11' }
+            ],
+            newMessage: '',
+            userID: '',
+            groupName:''
+        },
+        created() {
+            axios.get('/api/getCurrentID')
+                .then(response => {
+                    this.data = response.data;
+                    const socket = new SockJS(`http://localhost:8080/websocket-endpoint/`+this.data.userID);
+                    // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
+                    this.stompClient = Stomp.over(socket);
+
+                    this.stompClient.connect({}, () => {
+                        console.log('Connected to server');
+                        //获取群名称
+                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/groups', (data) => {
+                            let response = JSON.parse(data.body);
+                            this.$set(this, 'groupNames', response.map(item => item.groupNames));
+                        });
+                        //获取群成员名称
+                        this.stompClient.subscribe(`/user/queue/${this.data.userID}/groupMembers/${groupName}`, (data) => {
+                            let response = JSON.parse(data.body);
+                            this.$set(this, 'groupMembers', response.map(item => item.groupMembers));
+                        });
+                        //获取历史记录
+                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/receiveHistory', (data) => {
+                            let response = JSON.parse(data.body);
+                            this.$set(this, 'Messages', response);
+                            console.log("History"+response);
+                        });
+                        //获取消息
+                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/groupMsg', (data) => {
+                            let response = JSON.parse(data.body);
+                            this.Messages.push(response);
+                        });
+
+                        // Send a request to get all friends
+                        this.getAllGroups();
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        },
+        beforeDestroy() {
+            // 断开WebSocket连接
+            this.stompClient.subscriptions.forEach(subscription => {
+                subscription.unsubscribe();
+            });
+        },
+        methods: {
+            formatDate: function (date) {
+                if (date) {
+                    const formattedDate = new Date(date).toLocaleDateString();
+                    return formattedDate;
+                }
+                return '';
+            },
+            getAllGroups() {
+                this.stompClient.send('/send/getAllGroups', {});
+            },
+            showGroupHistory(groupName) {
+                this.stompClient.send('/send/getGroupHistory' ,{}, groupName);
+            },
+            sendMessage() {
+                var data={
+                    "messageContent":this.newMessage,
+                    "groupName":this.groupName,
+                };
+                this.stompClient.send('/send/sendMessages', {}, JSON.stringify(data));
+            },
+            submitMessage() {
+
+                if (this.newMessage.trim() !== '') {
+                    this.sendMessage();
+                    this.newMessage = '';
+                }
+            },
+            getGroupMembers(groupName) {
+                // 调用后端接口获取群成员
+                this.stompClient.send('/send/getGroupMembers', {}, groupName);
+            },
+            showGroup(groupName) {
+                this.groupName = groupName;
+                this.getGroupMembers(this.groupName);
+                this.showGroupHistory(this.groupName)
+            }
+        },
+    });
+</script>
 </body>
 </html>
