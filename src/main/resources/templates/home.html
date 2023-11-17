@@ -51,11 +51,11 @@
                     <button @click="handleDecision(request.senderUsername, true)">添加</button>
                     <button @click="handleDecision(request.senderUsername, false)">拒绝</button>
                 </div>
-<!--                <div v-for="request in groupRequests" :key="request.requestID">-->
-<!--                    <p> {{ request.senderUsername }} 请求添加你为好友</p>-->
-<!--                    <button @click="handleDecision(request.senderUsername, true)">添加</button>-->
-<!--                    <button @click="handleDecision(request.senderUsername, false)">拒绝</button>-->
-<!--                </div>-->
+                <div v-for="grouprequest in groupRequests" :key="grouprequest.requestID">
+                    <p> {{ grouprequest.senderUsername }} 请求添加{{ grouprequest.groupName }}</p>
+                    <button @click="handleGroupRequest(grouprequest.senderUsername, true)">添加</button>
+                    <button @click="handleGroupRequest(grouprequest.senderUsername, false)">拒绝</button>
+                </div>
             </div>
         </div>
     </div>
@@ -80,11 +80,26 @@
                     requestID: 2,
                 }
             ],
+            groupRequests:[ // 接收后端发来的加群请求
+                {
+                    senderUsername: 'fun',
+                    groupName:'工作群',
+                    decision: null,
+                    requestID: 1,
+                },
+                {
+                    senderUsername: 'lcl',
+                    groupName:'玩乐群',
+                    decision: null,
+                    requestID: 2,
+                }
+            ],
         },
         mounted() {
             // 在组件挂载后，发送请求获取公告数据和加好友请求数据
             this.getNotices();
             this.getFriendRequests();
+            this.getGroupRequests();
         },
         methods: {
             formatDate: function(date) {
@@ -121,6 +136,17 @@
                         console.error('Error getting friend requests:', error);
                     });
             },
+            getGroupRequests(){
+                axios.get('/api/getGroupRequests')
+                    .then(response => {
+                        // 获取到加好友请求数据后更新 groupRequests
+                        this.groupRequests = response.data;
+                        console.log(this.groupRequests);
+                    })
+                    .catch(error => {
+                        console.error('Error getting friend requests:', error);
+                    });
+            },
             handleDecision(senderUsername, decision) {
                 // 发送请求给后端，处理添加/拒绝好友请求的逻辑
                 let request=JSON.stringify({ 'senderUsername':senderUsername, 'decision':decision });
@@ -144,6 +170,31 @@
                     })
                     .catch(error => {
                         console.error('Error handling friend request:', error);
+                    });
+            },
+            handleGroupRequest(senderUsername, decision) {
+                // 发送请求给后端，处理添加/拒绝好友请求的逻辑
+                let grouprequest=JSON.stringify({ 'senderUsername':senderUsername, 'decision':decision });
+                console.log(grouprequest);
+                axios.post('/api/handleGroupRequest', grouprequest,{
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        console.log('Handle group request:', senderUsername, decision);
+                        // 根据后端响应来更新前端数据
+                        if (response.data) {
+                            // 示例：在前端删除已处理的好友请求
+
+                            this.groupRequests = this.groupRequests.filter(grouprequest => grouprequest.senderUsername !== senderUsername);
+                            console.log(this.groupRequests);
+                        } else {
+                            console.error('Failed to handle group request:', response.data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error handling group request:', error);
                     });
             }
         },
