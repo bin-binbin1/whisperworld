@@ -65,19 +65,19 @@ public class companionService {
         // 循环遍历两个列表，将较小的元素添加到新列表中
         while (i < getMsg.size() && j < sendMsg.size()) {
             if (getMsg.get(i).getSendTime().compareTo(sendMsg.get(j).getSendTime()) < 0) {
-                responses.add(getOneMessageResponse(getMsg.get(i++),true));
+                responses.add(getOneMessageResponse(getMsg.get(i++),false));
             } else {
-                responses.add(getOneMessageResponse(sendMsg.get(j++),false));
+                responses.add(getOneMessageResponse(sendMsg.get(j++),true));
             }
         }
 
         // 将剩余元素添加到新列表中
         while (i < getMsg.size()) {
-            responses.add(getOneMessageResponse(getMsg.get(i++),true));
+            responses.add(getOneMessageResponse(getMsg.get(i++),false));
         }
 
         while (j < sendMsg.size()) {
-            responses.add(getOneMessageResponse(sendMsg.get(j++),false));
+            responses.add(getOneMessageResponse(sendMsg.get(j++),true));
         }
         ObjectMapper mapper = new ObjectMapper();
         String json="";
