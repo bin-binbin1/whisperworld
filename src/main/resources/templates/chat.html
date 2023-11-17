@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="static/vue/logout.js"></script>
+    <title>群组</title>
+    <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
+    <link href="static/css/group.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="header">
+    <span style="margin-left: 10px;">whisperworld</span>
+</div>
+<aside>
+    <div class="nav" id="out">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+        <a href="/home ">首页</a>
+        <a href="/companion">好友</a>
+        <a href="/group"  class="active">群中心</a>
+        <a href="/topics">话题</a>
+        <a href="/profile">个人中心</a>
+        <a href="/logout" @click.prevent="logout">退出登录</a>
+    </div>
+</aside>
+<section>
+    <div class="left" th:inline="none">
+        <div class="signature">群组</div>
+        <div class="group">
+            <ul class="group-list">
+                <li v-for="group in groups" :key="groupId">
+                    <button @click="showHistory(groupId)">
+                        {{group.groupName }}
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="left1">
+        <div class="signature">群成员</div>
+        <div id="groupmenber">
+
+        </div>
+    </div>
+    <div class="right">
+        <div class="main-content">
+            <header>{{ friendName }}</header>
+            <div class="upper-content" id="chat-content">
+                <div v-for="message in Messages" :key="message.id" class="message-container">
+                    <div v-if="message.self" id="self" class="message">
+                        <!-- 表示自己发的内容 -->
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                    </div>
+                    <div v-else id="friend" class="message">
+                        <!-- 表示对方发的内容 -->
+                        {{ message.content }} - {{ formatDate(message.time) }} - {{ message.receiveState }}
+                    </div>
+                </div>
+            </div>
+            <div class="lower-content">
+                <form @submit.prevent="submitMessage">
+                    <input type="text" class="input-box" placeholder="输入消息" v-model="newMessage" name="message">
+                    <button type="submit" class="send-button" >发送</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="footer">欢迎使用社交网络系统</div>
+</body>
+</html>
