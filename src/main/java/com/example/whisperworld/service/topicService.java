@@ -3,36 +3,23 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.TopicReplies;
 import com.example.whisperworld.entity.Topics;
 import com.example.whisperworld.mapper.topicsMapper;
-import org.apache.ibatis.annotations.Select;
+import com.example.whisperworld.specialClasses.topics;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.listener.Topic;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class topicService {
-    private int topicid;
     private final topicsMapper topicsMapper;
 
     @Autowired
     public topicService(topicsMapper topicsMapper){
         this.topicsMapper = topicsMapper;
-        topicid = topicsMapper.countTopics();
     }
 
-    public List<Map<String, Object>> showTopics(){//获取所有话题
-        List<Topics>topics = topicsMapper.topics();
-        List<Map<String, Object>> responses = new ArrayList<>();
-        for(Topics topic :topics){
-            Map<String, Object> response = new HashMap<>();
-            response.put("username",topicsMapper.topicName(topic.getUserId()));
-            response.put("topicLaunchTime",topic.getTopicLaunchTime());
-            response.put("topicContent",topic.getTopicContent());
-            response.put("topicId",topic.getTopicId());
-            responses.add(response);
-        }
-        return responses;
+    public List<topics> showTopics(){//获取所有话题
+        return topicsMapper.topics();
     }
     public List<TopicReplies> showTopicReplies(Topics topics){//获取话题所有评论
         return topicsMapper.topicReplies(topics);
@@ -44,7 +31,15 @@ public class topicService {
         return postTopicId(topics);
     }
     private synchronized boolean postTopicId(Topics topics){//生成话题号
-        topics.setTopicId(topicsMapper.countTopics());
+        if(topicsMapper.countTopics() == null)
+        {
+            System.out.println("当前无话题");
+            topics.setTopicId(0);
+        }
+        else{
+            System.out.println("yyyyyy");
+            topics.setTopicId(topicsMapper.countTopics()+1);
+        }
         topicsMapper.postTopic(topics);
         //发送失败判断
         return true;

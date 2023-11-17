@@ -2,6 +2,7 @@ package com.example.whisperworld.mapper;
 
 import com.example.whisperworld.entity.TopicReplies;
 import com.example.whisperworld.entity.Topics;
+import com.example.whisperworld.specialClasses.topics;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -16,11 +17,14 @@ public interface topicsMapper {
     @Select("SELECT userName FROM users WHERE UserID=#{userid}")
     String topicName(int userid);//查找话题用户
 
-    @Select("SELECT * FROM topics ORDER BY LikeNum DESC, TopicLaunchTime DESC ")
-    List<Topics> topics();//查找所有话题并按照发布时间和点赞数降序排序
+//    @Select("SELECT * FROM topics ORDER BY LikeNum DESC, TopicLaunchTime DESC ")
+//    List<Topics> topics();//查找所有话题
 
-    @Select("SELECT count(*) FROM topics ")
-    int countTopics();//查找话题数目
+    @Select("select userName,TopicLaunchTime,TopicContent,TopicID,LikeNum from topics JOIN users ON users.userID = topics.UserID ORDER BY LikeNum DESC, TopicLaunchTime DESC")
+    List<topics> topics();//查询所有话题信息并按照发布时间和点赞数降序排序
+
+    @Select("SELECT MAX(TopicID) FROM topics ")
+    Integer countTopics();//查找话题数目
 
     @Select("SELECT * FROM topic_replies WHERE TopicID=#{topicId} ORDER BY CommentTime ")
     List<TopicReplies> topicReplies(Topics topics);//查找话题的所有评论并按照发表时间降序排序
@@ -30,9 +34,6 @@ public interface topicsMapper {
 
     @Insert("INSERT INTO topic_replies VALUES(#{topicId},#{commentUserId},#{commentContent},#{commentId},#{commentTime})")
     void postTopicReplies(TopicReplies topicReplies);//发表评论
-
-    @Select("SELECT count(*) FROM topic_replies WHERE topicID=#{topicId} ")
-    int topicRepliesNum(TopicReplies topicReplies);//获取话题的评论个数
 
     @Update("UPDATE topics SET LikeNum=LikeNum+1 WHERE TopicID=#{topicId}")
     void addLikeNum(int topicId);//点赞+1
@@ -44,6 +45,7 @@ public interface topicsMapper {
     int getCommentNumByID(Integer topicId);
 
     @Select("SELECT userName FROM users WHERE userID=#{userId}")
+
     String getNameByID(Integer userId);
 
     @Select("SELECT EXISTS(SELECT * FROM likes WHERE TopicID=#{topicId} AND LikeUserID=#{userId})")
