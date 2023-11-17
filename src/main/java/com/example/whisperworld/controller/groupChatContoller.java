@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.awt.*;
 import java.security.Principal;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class groupChatContoller extends TextWebSocketHandler {
     public void showGroups(Principal principal){
         System.out.println("获取群组");
         Integer userID = Integer.parseInt(principal.getName());
+        System.out.println("userId.getName:"+userID);
         List<String>crowds = service.crowds(userID);
         messagingTemplate.convertAndSend(" /user/queue/"+userID+"/groups",service.namesToJSON(crowds,"groupNames"));
     }
