@@ -63,6 +63,14 @@ CREATE TABLE crowds (
   PRIMARY KEY (GroupID)
 );
 
+CREATE  TABLE crowds_members(
+ GroupID INT NOT NULL,
+ MemberID INT NOT NULL,
+ PRIMARY KEY (GroupID, MemberID),
+ FOREIGN KEY (GroupID) REFERENCES crowds(GroupID) ON DELETE CASCADE,
+ FOREIGN KEY (MemberID) REFERENCES users(userID)
+);
+
 CREATE TABLE crowds_messages (
   GroupID INT NOT NULL,
   GroupMessageID INT NOT NULL,
