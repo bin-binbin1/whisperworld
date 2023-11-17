@@ -33,10 +33,10 @@ public class groupChatContoller extends TextWebSocketHandler {
         messagingTemplate.convertAndSend(" /user/queue/"+userID+"/groups",service.namesToJSON(crowds,"groupNames"));
     }
 
-    @MessageMapping("/getGroupMembers")//获取
-    public void showMembers(Principal principal, @RequestParam String groupName){
+    @MessageMapping("/getGroupMembers")//获取群成员
+    public void showMembers(Principal principal, @RequestParam Integer groupId){
         Integer userID = Integer.parseInt(principal.getName());
-        List<String>members = service.members(groupName);
+        List<String>members = service.members(groupId);
         messagingTemplate.convertAndSend(" /user/queue/"+userID+"/groupMembers",service.namesToJSON(members,"memberNames"));
     }
 

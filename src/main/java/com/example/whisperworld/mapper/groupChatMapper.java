@@ -15,7 +15,7 @@ public interface groupChatMapper {
     List<String> groups(Integer userID);//查询用户所属组
 
     @Select("SELECT userName FROM users JOIN crowds_members ON crowds_members.MemberID=users.userID JOIN crowds ON crowds.GroupID=crowds_members.GroupID WHERE crowds.GroupID=#{groupID}")
-    List<String> members(String groupName);//查找群组内的所有成员
+    List<String> members(Integer groupID);//查找群组内的所有成员
 
     @Insert("INSERT INTO crowds_messages VALUES (#{groupID},#{groupMessageID},#{content},#{userID},#{sendTime})")
     Boolean sendMessage(CrowdsMessage crowdsMessage);//发送信息

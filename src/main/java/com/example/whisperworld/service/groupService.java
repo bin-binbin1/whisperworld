@@ -25,8 +25,8 @@ public class groupService {
         return groupChatMapper.groups(userID);
     }
 
-    public List<String>members(String groupName){//查询组内所有成员
-        return groupChatMapper.members(groupName);
+    public List<String>members(Integer groupId){//查询组内所有成员
+        return groupChatMapper.members(groupId);
     }
 
     public Boolean message(CrowdsMessage crowdsMessage){//发送消息
