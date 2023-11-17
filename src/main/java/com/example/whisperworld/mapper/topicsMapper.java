@@ -24,7 +24,7 @@ public interface topicsMapper {
     List<topics> topics();//查询所有话题信息并按照发布时间和点赞数降序排序
 
     @Select("SELECT MAX(TopicID) FROM topics ")
-    int countTopics();//查找话题数目
+    Integer countTopics();//查找话题数目
 
     @Select("SELECT * FROM topic_replies WHERE TopicID=#{topicId} ORDER BY CommentTime ")
     List<TopicReplies> topicReplies(Topics topics);//查找话题的所有评论并按照发表时间降序排序
@@ -45,6 +45,7 @@ public interface topicsMapper {
     int getCommentNumByID(Integer topicId);
 
     @Select("SELECT userName FROM users WHERE userID=#{userId}")
+
     String getNameByID(Integer userId);
 
     @Select("SELECT EXISTS(SELECT * FROM likes WHERE TopicID=#{topicId} AND LikeUserID=#{userId})")

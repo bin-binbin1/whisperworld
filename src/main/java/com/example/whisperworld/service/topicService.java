@@ -11,13 +11,11 @@ import java.util.*;
 
 @Service
 public class topicService {
-    private int topicid;
     private final topicsMapper topicsMapper;
 
     @Autowired
     public topicService(topicsMapper topicsMapper){
         this.topicsMapper = topicsMapper;
-        topicid = topicsMapper.countTopics();
     }
 
     public List<topics> showTopics(){//获取所有话题
@@ -33,7 +31,15 @@ public class topicService {
         return postTopicId(topics);
     }
     private synchronized boolean postTopicId(Topics topics){//生成话题号
-        topics.setTopicId(topicsMapper.countTopics()+1);
+        if(topicsMapper.countTopics() == null)
+        {
+            System.out.println("当前无话题");
+            topics.setTopicId(0);
+        }
+        else{
+            System.out.println("yyyyyy");
+            topics.setTopicId(topicsMapper.countTopics()+1);
+        }
         topicsMapper.postTopic(topics);
         //发送失败判断
         return true;
