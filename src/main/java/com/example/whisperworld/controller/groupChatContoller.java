@@ -1,7 +1,11 @@
 package com.example.whisperworld.controller;
 
 import com.example.whisperworld.service.groupService;
+import com.example.whisperworld.specialClasses.historyMsg;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -48,6 +52,29 @@ public class groupChatContoller extends TextWebSocketHandler {
         Integer userID = Integer.parseInt(principal.getName());
         List<String>members = service.members(groupId);
         messagingTemplate.convertAndSend(" /user/queue/"+userID+"/groupMembers",service.namesToJSON(members,"groupName"));
+    }
+
+    @MessageMapping("/getGroupHistory")//获取群历史消息
+    public void showHistory(Principal principal, @RequestParam Integer groupId){
+        System.out.println("获取群历史消息");
+        Integer userID = Integer.parseInt(principal.getName());
+        List<historyMsg> historyMsgs = service.historyMsgs(groupId);
+        for(historyMsg historyMsg : historyMsgs){
+            if(historyMsg.getUserID() == userID){
+                historyMsg.setSelf(true);
+            }
+            else{
+                historyMsg.setSelf(false);
+            }
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try {
+            json = mapper.writeValueAsString(historyMsgs);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        messagingTemplate.convertAndSend(" /user/queue/"+userID+"/receiveHistory",json);
     }
 
 

@@ -2,6 +2,7 @@ package com.example.whisperworld.mapper;
 
 import com.example.whisperworld.entity.Crowds;
 import com.example.whisperworld.entity.CrowdsMessage;
+import com.example.whisperworld.specialClasses.historyMsg;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -22,4 +23,8 @@ public interface groupChatMapper {
 
     @Select("SELECT ConversationContent FROM cowds_messages WHERE GroupID=#{groupID} AND UserID=#{userID}")
     List<String> userMessage(Integer groupId, Integer userID);//查询用户自己的消息
+
+    @Select("SELECT ConversationContent,userName,SendTime,users.userID FROM crowds_messages JOIN users ON crowds_messages.UserID=users.userID WHERE GroupID=#{groupID}")
+    List<historyMsg> historyMsg(Integer groupID);//查询群聊历史消息
+
 }

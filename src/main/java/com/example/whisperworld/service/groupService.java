@@ -3,6 +3,7 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.CrowdsMessage;
 import com.example.whisperworld.mapper.groupChatMapper;
 import com.example.whisperworld.mapper.groupMapper;
+import com.example.whisperworld.specialClasses.historyMsg;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,16 @@ public class groupService {
     public List<String> userMessage(Integer userID,Integer groupID){//查询用户自己发送的消息
         return groupChatMapper.userMessage(groupID,userID);
     }
+
+    public  List<historyMsg> historyMsgs(Integer groupID){//查询群聊历史消息
+        return groupChatMapper.historyMsg(groupID);
+    }
+
+
+
+
+
+
 
     public String namesToJSON(List<String> names, String keys){
         List<Map<String,Object>> responses = new ArrayList<>();
