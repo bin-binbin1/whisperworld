@@ -56,7 +56,7 @@ section {
 .group-list li {
     display: flex;
     align-items: center;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     background-color: #B2DFEE;
     height:36px;
     width: 96%;
