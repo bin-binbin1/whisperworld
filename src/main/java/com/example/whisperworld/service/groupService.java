@@ -3,6 +3,7 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.CrowdsMessage;
 import com.example.whisperworld.mapper.groupChatMapper;
 import com.example.whisperworld.mapper.groupMapper;
+import com.example.whisperworld.specialClasses.groups;
 import com.example.whisperworld.specialClasses.historyMsg;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +20,7 @@ public class groupService {
         this.groupChatMapper = groupChatMapper;
     }
 
-    public List<String>crowds(Integer userID){//查询用户所有群组
+    public List<groups>crowds(Integer userID){//查询用户所有群组
         return groupChatMapper.groups(userID);
     }
 
@@ -36,8 +37,8 @@ public class groupService {
         return groupChatMapper.userMessage(groupID,userID);
     }
 
-    public  List<historyMsg> historyMsgs(Integer groupID,Integer num){//查询群聊历史消息
-        List<historyMsg> historyMsgs = groupChatMapper.historyMsg(groupID,num);
+    public  List<historyMsg> historyMsgs(Integer userID,Integer groupID,Integer num){//查询群聊历史消息
+        List<historyMsg> historyMsgs = groupChatMapper.historyMsg(userID,groupID,num);
         List<historyMsg> historyMsgs1 = new ArrayList<>();
         for(int i = historyMsgs.size()-1;i >= 0;i--)
         {

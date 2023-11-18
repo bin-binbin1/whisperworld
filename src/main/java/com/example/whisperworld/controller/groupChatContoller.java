@@ -2,6 +2,7 @@ package com.example.whisperworld.controller;
 
 import com.example.whisperworld.entity.CrowdsMessage;
 import com.example.whisperworld.service.groupService;
+import com.example.whisperworld.specialClasses.groups;
 import com.example.whisperworld.specialClasses.historyMsg;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -21,8 +22,10 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class groupChatContoller extends TextWebSocketHandler {
@@ -40,40 +43,34 @@ public class groupChatContoller extends TextWebSocketHandler {
         System.out.println("获取群组");
         Integer userID = Integer.parseInt(principal.getName());
         System.out.println("userId.getName:"+userID);
-        List<String>crowds = service.crowds(userID);
+        List<groups>crowds = service.crowds(userID);
         System.out.println(crowds);
-        if(crowds == null){
-            System.out.println("null");
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try {
+            json = mapper.writeValueAsString(crowds);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
         }
-        else{
-            System.out.println("No");
-        }
-        messagingTemplate.convertAndSend("/user/queue/"+userID+"/groups",service.namesToJSON(crowds,"groupName"));
+        messagingTemplate.convertAndSend("/user/queue/groups/"+userID,json);
     }
 
     @MessageMapping("/getGroupMembers")//获取群成员
     public void showMembers(Principal principal, @RequestParam Integer groupId){
         System.out.println("获取群成员");
-        System.out.println(groupId);
         Integer userID = Integer.parseInt(principal.getName());
         List<String>members = service.members(groupId);
-        messagingTemplate.convertAndSend("/user/queue/"+userID+"/groupMembers",service.namesToJSON(members,"groupMember"));
+        System.out.println(members);
+        messagingTemplate.convertAndSend("/user/queue/groupMembers/"+userID,service.namesToJSON(members,"userName"));
     }
 
     @MessageMapping("/getGroupHistory")//获取群历史消息
     public void showHistory(Principal principal, @RequestParam Integer groupId,@RequestParam Integer num){
         System.out.println("获取群历史消息");
+        System.out.println(num);
         Integer userID = Integer.parseInt(principal.getName());
-        List<historyMsg> historyMsgs = service.historyMsgs(groupId,num);
-        for(historyMsg historyMsg : historyMsgs){
-            if(historyMsg.getUserID() == userID){
-                historyMsg.setSelf(true);
-            }
-            else{
-                historyMsg.setSelf(false);
-            }
-            historyMsg.setUserID(null);
-        }
+        List<historyMsg> historyMsgs = service.historyMsgs(userID,groupId,num);
+        System.out.println(historyMsgs);
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
@@ -81,7 +78,7 @@ public class groupChatContoller extends TextWebSocketHandler {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        messagingTemplate.convertAndSend("/user/queue/"+userID+"/receiveHistory",json);
+        messagingTemplate.convertAndSend("/user/queue/receiveHistory/"+userID,json);
     }
 
     @MessageMapping("/groupMsg")//发送消息

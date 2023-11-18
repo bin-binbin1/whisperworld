@@ -7,6 +7,5 @@ public class historyMsg {
     String content;
     String username;
     String time;
-    Integer userID;
     Boolean self;
 }

@@ -43,7 +43,7 @@
         <div class="left1">
             <div class="signature">群成员</div>
             <div v-for="groupMember in groupMembers" :key="groupMember">
-                <p>{{ groupMember }}</p>
+                <p>{{ groupMember.userName }}</p>
             </div>
         </div>
 
@@ -79,8 +79,8 @@
         el: '#app',
         data: {
             stompClient: null,
-            Groups: [{groupName:'test'}],
-            groupMembers: null,
+            Groups: [{groupName:'test',groupId:0 }],
+            groupMembers: [{userName:''}],
             Messages: [
                 {userName: 'lcl', content: '有点冷', time: '2021-10-11'}
             ],
@@ -102,24 +102,25 @@
                     this.stompClient.connect({}, () => {
                         console.log('Connected to server');
                         console.log('stompClient:', this.stompClient);
+                        console.log("userID:"+this.data.userID);
                         //获取群名称
-                        this.stompClient.subscribe('/user/queue/' + this.data.userID + '/groups', (data) => {
+                        this.stompClient.subscribe('/user/queue/groups/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.$set(this, 'Groups', response);
                         });
                         //获取群成员名称
-                        this.stompClient.subscribe(`/user/queue/${this.data.userID}/groupMembers/${this.groupId}`, (data) => {
+                        this.stompClient.subscribe('/user/queue/groupMembers/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
-                            this.$set(this, 'groupMembers', response.map(item => item.groupMembers));
+                            this.$set(this, 'groupMembers', response);
                         });
                         //获取历史记录
-                        this.stompClient.subscribe('/user/queue/' + this.data.userID + '/receiveHistory', (data) => {
+                        this.stompClient.subscribe('/user/queue/receiveHistory/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.$set(this, 'Messages', response);
                             console.log("History" + response);
                         });
                         //获取消息
-                        this.stompClient.subscribe('/user/queue/' + this.data.userID + '/groupMsg', (data) => {
+                        this.stompClient.subscribe('/user/queue/groupMsg/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.Messages.push(response);
                         });
