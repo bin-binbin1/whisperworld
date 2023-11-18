@@ -41,9 +41,11 @@
             <div class="search-result">
                 <ul class="friend-list">
                     <li v-for="friendName in friendNames" :key="friendName">
-                        <div class="chat"><button @click="showHistory(friendName)">
+                        <div class="chat">
+                        <button @click="showHistory(friendName)">
                             {{ friendName }}
-                        </button></div>
+                        </button>
+                        </div>
                         <button class="delete" @click="deleteFriend(friendName)">删除</button>
                     </li>
                 </ul>
