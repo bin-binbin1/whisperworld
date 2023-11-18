@@ -5,7 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="static/vue/logout.js"></script>
-  <title>群组</title>
+    <title>群组</title>
     <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
     <link href="static/css/group.css" rel="stylesheet" type="text/css">
 </head>
@@ -14,59 +14,175 @@
     <span style="margin-left: 10px;">whisperworld</span>
 </div>
 <aside>
-	<div class="nav" id="out">
-         <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+    <div class="nav" id="out">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
         <a href="/home ">首页</a>
         <a href="/companion">好友</a>
-        <a href="/group"  class="active">群组</a>
+        <a href="/group" class="active">群组</a>
         <a href="/topics">话题</a>
         <a href="/profile">个人中心</a>
         <a href="/logout" @click.prevent="logout">退出登录</a>
-	</div>
-	</aside>
-  <section>
-    <div class="left" th:inline="none">
-        <div class="signature">群组</div>
-         <div class="group">
-            <ul class="group-list">
-                <li v-for="group in groups" :key="groupId">
-                    <button @click="showHistory(groupId)">
-                        {{group.groupName }}
-                    </button>
-                </li>
-            </ul>
-         </div>
     </div>
-    <div class="left1">
-        <div class="signature">群搜索</div>
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="搜索群聊">
-                <button class="search-button" @click="getFriends">搜索</button>
-            </div>
-            <div class="search-result">
-                <ul class="group-list2">
-                    <li v-for="result in searchResults" :key="result.userName">
-                        <div class="p">{{ result.friendNames }}</div>
-                        <button @click="sendFriendRequest(result.friendNames)">申请加群</button>
+</aside>
+<section>
+    <div id="app">
+        <div class="left" th:inline="none">
+            <div class="signature">群组</div>
+            <div class="group">
+                <ul class="group-list">
+                    <li v-for="group in Groups" :key="group.groupId">
+                        <a href="/chat">{{group.groupName }}</a>
+                        <button @click="handleGroup(group.groupId)">退出</button>
                     </li>
                 </ul>
             </div>
+        </div>
+        <div class="left1">
+            <div class="signature">群搜索</div>
+            <div class="search-box">
+                <input type="text" class="search-input" v-model="searchInput" placeholder="搜索新群聊">
+                <button class="search-button" @click="getGroups()">搜索</button>
+            </div>
+            <div class="search-result">
+                <ul class="group-list2">
+                    <li v-for="result in searchResults" :key="result.groupId">
+                        <div class="p">{{ result.groupName }} - {{result.groupId}}</div>
+                        <button @click="sendGroupRequest(result.groupName,result.masterId)">申请加群</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right">
+            <form @submit.prevent="createGroup">
+                <h2>创建群聊</h2>
+                <label for="groupName">群名称：</label>
+                <input type="text" id="groupName" v-model="groupName" class="underline-input"  placeholder="请填写群名称" required>
+                <br>
+                <label for="groupIntro">群介绍：</label>
+                <textarea id="groupIntro" v-model="groupIntro" class="underline-input"  placeholder="请介绍一下群功能类别" required></textarea>
+                <br>
+                <br>
+                <button type="submit">点击创建</button>
+            </form>
+        </div>
     </div>
-    <div class="right">
-        <form action="#" method="post">
-            <h2>创建群聊</h2>
-            <label for="groupName">群名称：</label>
-            <input type="text" id="groupName" name="groupName" class="underline-input" required>
-            <br>
-            <label for="groupIntro">群介绍：</label>
-            <textarea id="groupIntro" name="groupIntro"  class="underline-input" required></textarea>
-            <br>
-            <br>
-            <button type="submit">点击创建</button>
-        </form>
-    </div>
-    </section>
-
+</section>
 <div class="footer">欢迎使用社交网络系统</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            Groups:[{groupName:'工作群',groupId:1},{groupName:'玩乐群',groupId:2}],
+            searchInput: '',
+            searchResults: [{groupName:'工作群',groupId:1,masterId:1}],
+            groupName: '',
+            groupIntro: '',
+            userId: ''
+        },
+        created() {
+            this.getAllGroups();
+            this.getCurrentUserId();
+        },
+        methods: {
+            getAllGroups() {
+                axios.get('/api/getAllgroups')
+                    .then(response => {
+                        // 成功获取数据后，设置到 Groups 中
+                        this.Groups = response.data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching groups data:', error);
+                    });
+            },
+            getCurrentUserId() {
+                axios.get('/api/currentUserId')
+                    .then(response => {
+                        // 假设后端返回的数据包含当前用户的 ID，你需要根据实际情况进行修改
+                        this.userId = response.data.userId;
+                    })
+                    .catch(error => {
+                        console.error('Error getting current user ID:', error);
+                    });
+            },
+            handleGroup(groupId) {
+                const group = this.Groups.find(group => group.groupId === groupId);
+                if (group.masterId === this.userId) {
+                    // 当前用户是群组的创建者，执行解散群聊的操作
+                    this.dismissGroup(groupId);
+                } else {
+                    // 当前用户不是群组的创建者，执行退出群聊的操作
+                    this.leaveGroup(groupId);
+                }
+            },
+            dismissGroup(){
+                axios.post('/api/dismissGroup', { groupId })
+                    .then(response => {
+                        alert('群组解散成功！');
+                        // 重新获取群组列表
+                        this.getAllGroups();
+                    })
+                    .catch(error => {
+                        console.error('Error deleting group:', error);
+                        alert('群组删除失败，请重试');
+                    });
+            },
+            leaveGroup(groupId) {
+                // 执行退出群聊的操作，可以通过发送请求到后端来处理
+                axios.post('/api/leaveGroup', {groupId})
+                    .then(response => {
+                        // 处理后端响应，例如更新前端的 Groups 数据
+                        this.getAllGroups();
+                        alert('已退出群聊');
+                    })
+                    .catch(error => {
+                        console.error('Error leaving group:', error);
+                    });
+            },
+            getGroups() {
+                // 发送请求到后端，使用 axios 或其他方式
+                axios.get('/api/searchGroups', {params: { searchInput: this.searchInput } })
+                    .then(response => {
+                        // 处理后端返回的群组搜索结果
+                        this.searchResults = response.data;
+                    })
+                    .catch(error => {
+                        console.error('Error searching groups:', error);
+                    });
+            },
+            sendGroupRequest(groupName,masterId) {
+                axios.post('/api/groupApply', { groupName ,masterId})
+                    .then(response => {
+                        // 处理后端响应，如果需要的话
+                        alert("已发送申请！");
+                        console.log('Group request sent successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error sending group request:', error);
+                    });
+            },
+            createGroup() {
+                // 检查群名称和群介绍是否为空
+                if (!this.groupName || !this.groupIntro) {
+                    alert('请填写群名称和群介绍');
+                    return;
+                }
+                // 发送创建群组的请求到后端，使用 axios 或其他方式
+                axios.post('/api/createGroup', {
+                    groupName: this.groupName,
+                    groupIntro: this.groupIntro
+                })
+                    .then(response => {
+                        // 处理后端返回的创建群组结果
+                        alert('群组创建成功！');
+                        // 可以根据需要进行其他操作，例如跳转到群组详情页面
+                    })
+                    .catch(error => {
+                        console.error('Error creating group:', error);
+                        alert('群组创建失败，请重试');
+                    });
+            }
+        }
+    });
+</script>
 </body>
 </html>
