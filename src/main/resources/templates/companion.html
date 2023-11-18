@@ -146,7 +146,7 @@
                             if(response.self){
                                 delete response.friendName;
                                 this.Messages.push(response);
-                                setTimeout(() => this.scrollToBottom(), 150);//延迟
+                                setTimeout(() => this.scrollToBottom(), 0);//延迟
 
                             }else{
                                 if(response.friendName===this.friendName) {
@@ -269,7 +269,7 @@
                 const container = this.$refs.scrollContainer;
                 const distanceToBottom = container.scrollHeight - (container.scrollTop + container.clientHeight);
 
-                if (distanceToBottom < 150) { // 如果距离底部小于150像素
+                if (distanceToBottom < 100) { // 如果距离底部小于150像素
                     const totalScrollDistance = container.scrollHeight - container.scrollTop;
                     const totalScrollTime = 1000; // T时间，单位为毫秒
                     const scrollStep = totalScrollDistance / (totalScrollTime / 16.67); // 每一帧的滚动距离
