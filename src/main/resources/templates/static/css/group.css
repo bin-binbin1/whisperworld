@@ -29,7 +29,7 @@ section {
     #overflow: auto;
     position: absolute; /* 使用绝对定位 */
     top: 10px; /* 距离顶部的距离 */
-    left: 60px; /* 距离左侧的距离 */
+    left: 100px; /* 距离左侧的距离 */
     float:left;
     width:400px;
     height: 270px;
@@ -81,7 +81,7 @@ button:hover {
     position: absolute;
     #float:left;
     bottom: 45px;
-    left: 60px;
+    left: 100px;
     width: 400px;
     height: 275px;
     border: 1px solid #d0e4e8;
@@ -100,7 +100,7 @@ button:hover {
     #background-color: #F1939C;
 }
 .search-input {
-    width: 50%;
+    width: 60%;
     height: 28px;
     border-radius: 3px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
@@ -112,13 +112,16 @@ button:hover {
 .search-button {
     width: 23%;
     height: 30px;
-    #font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     background-color: #75c8d8;
     color: white;
     border: 0;
-    border-radius:10px;
+    border-radius:5px;
     cursor: pointer;
+}
+.search-button:hover{
+    background-color: #B2DFEE;
 }
 .search-result {
     margin-top: 1px; /* Add space between the search box and the friend list */
@@ -133,8 +136,8 @@ button:hover {
      margin-top: 0;
      height:160px;
      overflow-y: scroll;
-     width: 350px;
-     margin-left: 12%;
+     width: 370px;
+     margin-left: 7%;
      #background-color: #F1939C;
  }
 
@@ -143,12 +146,12 @@ button:hover {
     height:40px;
     display: flex;
     align-items: center;
-    margin-right: 9%;
+    margin-right: 3%;
     justify-content: space-between;
     #background-color: #F1939C;
 }
 .p {
-    width: 200px;
+    width: 242px;
     display: flex;
     align-items: center;
     background-color: #b6d9d9;
@@ -164,13 +167,14 @@ button:hover {
     float:right;
     #font-weight: bold;
     font-size: 15px;
+    font-weight:600;
     border-radius: 5px;
     padding-bottom: 3px;
     #margin-right: 10px;
     border: none;
     cursor: pointer;
     height: 33px;
-    width: 30%; /* Make the buttons fill the container width */
+    width: 26.5%; /* Make the buttons fill the container width */
     text-align: center; /* Align text to the left */
     #display: block;
 }
@@ -180,82 +184,78 @@ button:hover {
 .right{
     #overflow: auto;
     position: fixed; /* 使用绝对定位 */
-    top: 70px; /* 距离顶部的距离 */
-    right: 70px; /* 距离右侧的距离 */
-    width:600px;
-    height:550px;
+    top: 90px; /* 距离顶部的距离 */
+    right: 100px; /* 距离右侧的距离 */
+    width:550px;
+    height:500px;
     border: 1px solid #ccc;
     border-radius:10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    #background: #B2DFEE;
+    background:#00000060;
+    display: flex;
+    flex-flow: column;
+    #justify-content: center;
 }
-.style{
-    #border-radius: 5px;
-    #background-color:rgba(255, 255, 255, 0.8);
-    font-size:16px;
-    width: 420px;
-    margin: 15px auto;
-    padding: 20px;
-    color:#FFFFFF;
-    #border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    background:#00000090;
-    text-align:left;
-    justify-content: center;
-}
-a{
-    color:#1E7ACE;
-    text-decoration:none;
-}
-a:hover{
-    color:#cccccc;
-    text-decoration:underline;
+form{
+    #background-color: #F1939C;
+    margin-top: 40px;
+    height:400px;
+    text-align: center;
 }
 h2{
+    margin-top:2px;
     font-size:26px;
     text-align:center;
+    color:#ffffff;
+    #background-color: #F1939C;
+    margin-bottom: 0;
 }
 label {
-    float: left;
-    width: 120px;
+    #background-color: #F1939C;
+    width: 100px;
+    color:#ffffff;
+    font-weight: bold;
     text-align: right;
     margin: 1px;
     padding: 10px 1px;
     display: inline-block; /* 将label元素设置为行内块元素 */
 }
-
-.style input {
+.right input {
     #padding: 1px;
     margin: 2px;
-    font-size: 14px;
+    font-size: 15px;
     vertical-align: middle;
-    width: 200px;
+    width: 220px;
     border:0;
     border-bottom:2px solid #fff;
     padding:5px 10px;
     background:#ffffff00;
-    color:#cccccc;
+    color:#ffffff;
     #display: inline-block; /* 将input元素设置为行内块元素 */
 }
-.login-container {
-    text-align:center;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.right textarea{
+    margin: 2px;
+    font-size: 15px;
+    vertical-align: middle;
+    width: 220px;
+    border:0;
+    border-bottom:2px solid #fff;
+    padding:5px 10px;
+    background:#ffffff00;
+    color:#ffffff;
 }
-.sex{
-    text-align:center;
-    margin-right: 70px;
+.underline-input {
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
 }
-.selector{
-    width:15px;
-}
-
-.login-button {
-    background-image: linear-gradient(to right, #74ebd5 0%, #9face6 100%);
-    width:100px;
+.right button {
+    background-image: linear-gradient(to right, #74ebd5 0%, #B2DFEE 100%);
+    width:120px;
     height:40px;
     font-size:17px;
-    font-weight:700;
+    font-weight:600;
     color:#fff;
     border: 0;
     padding: 10px 20px;
@@ -264,15 +264,12 @@ label {
     display: block;
     margin: 0 auto;
 }
-button:hover{
+.right button:hover{
     font-size: 18px;
     background-color: #2EA9DF;
 }
 form b{
     color:white;
-}
-.foot{
-    text-align:center;
 }
 .right header{
     height:50px;

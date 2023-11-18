@@ -39,7 +39,6 @@
     </div>
     <div class="left1">
         <div class="signature">群搜索</div>
-
             <div class="search-box">
                 <input type="text" class="search-input" placeholder="搜索群聊">
                 <button class="search-button" @click="getFriends">搜索</button>
@@ -52,50 +51,19 @@
                     </li>
                 </ul>
             </div>
-
     </div>
     <div class="right">
-<!--        <div class="style" id="formwrapper">-->
-<!--            <form @submit.prevent="validate" name="apForm" id="apForm">-->
-<!--                <h2>用户注册</h2>-->
-<!--                <div>-->
-<!--                    <label for="userName">用户名:</label>-->
-<!--                    <input v-model="userName" type="text" name="userName" id="userName"/><b>*</b>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="userPassword">密 码:</label>-->
-<!--                    <input v-model="userPassword" type="password" name="userPassword" id="userPassword"-->
-<!--                           placeholder="最少6个字符要有数字和字母"/><b>*</b>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="confirm_password">重复密码:</label>-->
-<!--                    <input v-model="confirm_Password" type="password" name="confirm_password" id="confirm_password"/><b>*</b>-->
-<!--                </div>-->
-
-<!--                <div class="sex">-->
-<!--                    <label for="userSex">性 别:</label>-->
-<!--                    <input type="radio" class="selector" name="userSex" value="M" v-model="userSex"/>男&nbsp-->
-<!--                    <input type="radio" class="selector" name="userSex" value="F" v-model="userSex"/> 女-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="userPhone">手机号:</label>-->
-<!--                    <input v-model="userPhone" type="text" name="userPhone" id="userPhone" class="input"/><b>*</b>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="userBDate">生 日:</label>-->
-<!--                    <input v-model="userBDate" type="date" name="userBDate" id="userBDate"/><b>*</b>-->
-<!--                </div>-->
-<!--                <br>-->
-<!--                &lt;!&ndash; submit button &ndash;&gt;-->
-<!--                <div class="login-container">-->
-<!--                    <button type="submit" class="login-button">注册</button>-->
-<!--                </div>-->
-
-<!--                <div class="foot">-->
-<!--                    <p>已有账号？<a href="/login">立即登录</a></p>-->
-<!--                    <p>(*为必填)</p></div>-->
-<!--            </form>-->
-<!--        </div>-->
+        <form action="#" method="post">
+            <h2>创建群聊</h2>
+            <label for="groupName">群名称：</label>
+            <input type="text" id="groupName" name="groupName" class="underline-input" required>
+            <br>
+            <label for="groupIntro">群介绍：</label>
+            <textarea id="groupIntro" name="groupIntro"  class="underline-input" required></textarea>
+            <br>
+            <br>
+            <button type="submit">点击创建</button>
+        </form>
     </div>
     </section>
 
