@@ -112,26 +112,18 @@
                     const socket = new SockJS(`http://localhost:8080/websocket-endpoint/`+this.data.userID);
                     // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
                     this.stompClient = Stomp.over(socket);
-
                     this.stompClient.connect({}, () => {
-                        console.log('Connected to server');
-
                         this.stompClient.subscribe('/user/queue/friends/'+this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.$set(this, 'friendNames', response.map(item => item.friendNames));
                         });
-
-
-
                         this.stompClient.subscribe('/user/queue/History/'+this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.$set(this, 'Messages', response);
                         });
                         this.stompClient.subscribe('/user/queue/setState/'+this.data.userID,(data) => {
                             data=data.body;
-
                             if(data.slice(0,-1) === this.friendName) {
-
                                 if (data[data.length - 1] === "1") {
 
                                     this.Messages[this.Messages.length - 1].receiveState = true;
@@ -147,7 +139,6 @@
                                 }
                             }
                         });
-
                         this.stompClient.subscribe('/user/queue/Msg/'+this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
 
@@ -163,6 +154,10 @@
                                 }
                             }
 
+                        });
+                        this.stompClient.subscribe('/user/queue/moreHistory/'+this.data.userID,(data) => {
+                            let response = JSON.parse(data.body);
+                            this.Messages.unshift(...response);
                         });
 
                         // Send a request to get all friends
@@ -258,6 +253,13 @@
             },
             isRead(){
                 this.stompClient.send('/send/receivedMsg',{},this.friendName);
+            },
+            getMoreHistory(){
+                var data={
+                    "friendName":this.friendName,
+                    "currentMsg":this.Messages.length
+                }
+                this.stompClient.send('/send/getMoreHistory',{},JSON.stringify(data));
             }
         },
     });

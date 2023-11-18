@@ -22,8 +22,8 @@ public interface companionMapper {
     List<String> getPeopleByNAME(Integer userId, String prefix);
     @Update("UPDATE private_messages SET ReceiveState=true WHERE userID=#{userId} AND ReceiverID=#{receiverId}")
     void setReceived(Integer userId,Integer receiverId);
-    @Select("SELECT MessageContent,SendTime,ReceiveState FROM private_messages WHERE UserID=#{userId} and ReceiverID=#{receiverId} ORDER BY MessageContentID ASC")
-    List<PrivateMessage> getMessagesFromA2B(Integer userId,Integer receiverId);
+    @Select("SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{receiverID} and ReceiverID=#{uesrID} and STATE=false")
+    List<PrivateMessage> getUnreadMsgs(Integer userID,Integer receiverID);
     @Insert("INSERT INTO private_messages VALUES(#{userId},#{receiverId},#{messageContent},#{messageContentId},#{sendTime},#{receiveState})")
     int insertMessage(PrivateMessage msg);
     @Select("SELECT userID FROM users WHERE userName=#{name}")
@@ -32,4 +32,9 @@ public interface companionMapper {
     int getMsgCount(PrivateMessage msg);
     @Select("SELECT userName FROM users WHERE userID=#{userID}")
     String getNameByID(Integer userID);
+    @Select("(SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{userID} AND ReceiverID=#{friendID})" +
+            "UNION ALL" +
+            "(SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{friendID} AND ReceiverID=#{userID})" +
+            "ORDER BY SendTime ASC LIMIT #{start_length},#{msg_length}")
+    List<PrivateMessage> getMoreHistory(Integer userID,Integer friendid,int start_length,int msg_length);
 }
