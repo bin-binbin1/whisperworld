@@ -1,13 +1,16 @@
 package com.example.whisperworld.controller;
 
+import com.example.whisperworld.entity.CrowdsMessage;
 import com.example.whisperworld.service.groupService;
 import com.example.whisperworld.specialClasses.historyMsg;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +19,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.awt.*;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -56,10 +61,10 @@ public class groupChatContoller extends TextWebSocketHandler {
     }
 
     @MessageMapping("/getGroupHistory")//获取群历史消息
-    public void showHistory(Principal principal, @RequestParam Integer groupId){
+    public void showHistory(Principal principal, @RequestParam Integer groupId,@RequestParam Integer num){
         System.out.println("获取群历史消息");
         Integer userID = Integer.parseInt(principal.getName());
-        List<historyMsg> historyMsgs = service.historyMsgs(groupId);
+        List<historyMsg> historyMsgs = service.historyMsgs(groupId,num);
         for(historyMsg historyMsg : historyMsgs){
             if(historyMsg.getUserID() == userID){
                 historyMsg.setSelf(true);
@@ -67,6 +72,7 @@ public class groupChatContoller extends TextWebSocketHandler {
             else{
                 historyMsg.setSelf(false);
             }
+            historyMsg.setUserID(null);
         }
         ObjectMapper mapper = new ObjectMapper();
         String json="";
@@ -75,10 +81,37 @@ public class groupChatContoller extends TextWebSocketHandler {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        messagingTemplate.convertAndSend(" /user/queue/"+userID+"/receiveHistory",json);
+        messagingTemplate.convertAndSend("/user/queue/"+userID+"/receiveHistory",json);
     }
 
+    @MessageMapping("/groupMsg")//发送消息
+    public void sendMessage(Principal principal,@Payload String jsonData){
+        System.out.println("发送消息");
+        try {
+            // 将JSON字符串映射到crowdsMessage对象
+            ObjectMapper objectMapper = new ObjectMapper();
+            CrowdsMessage crowdsMessage = objectMapper.readValue(jsonData, CrowdsMessage.class);
+            Integer userID = Integer.parseInt(principal.getName());
+            crowdsMessage.setUserId(userID);
+            crowdsMessage.setSendTime(new Date());
+            Boolean response = true;
+            ObjectMapper mapper = new ObjectMapper();
+            String json="";
+            try {
+                json = mapper.writeValueAsString(response);
+            }catch (JsonProcessingException e){
+                e.printStackTrace();
+            }
+            messagingTemplate.convertAndSend("/user/queue/"+userID+"/groupMsg",json);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 处理JSON解析异常
+        }
+
+
+
+    }
 
 
 

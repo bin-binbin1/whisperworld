@@ -9,10 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class groupService {
@@ -31,6 +28,7 @@ public class groupService {
     }
 
     public Boolean message(CrowdsMessage crowdsMessage){//发送消息
+        crowdsMessage.setGroupMessageId(groupChatMapper.countGroupMsg(crowdsMessage.getGroupId()));
         return groupChatMapper.sendMessage(crowdsMessage);
     }
 
@@ -38,8 +36,14 @@ public class groupService {
         return groupChatMapper.userMessage(groupID,userID);
     }
 
-    public  List<historyMsg> historyMsgs(Integer groupID){//查询群聊历史消息
-        return groupChatMapper.historyMsg(groupID);
+    public  List<historyMsg> historyMsgs(Integer groupID,Integer num){//查询群聊历史消息
+        List<historyMsg> historyMsgs = groupChatMapper.historyMsg(groupID,num);
+        List<historyMsg> historyMsgs1 = new ArrayList<>();
+        for(int i = historyMsgs.size()-1;i >= 0;i--)
+        {
+            historyMsgs1.add(historyMsgs.get(i));
+        }
+        return historyMsgs1;
     }
 
 
