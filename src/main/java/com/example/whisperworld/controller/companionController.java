@@ -63,7 +63,7 @@ public class companionController extends TextWebSocketHandler {
     public void getAllFriends(Principal principal) {
         Integer loginID=Integer.parseInt(principal.getName());
         List<String> names=service.getAllFriends(loginID);
-        messagingTemplate.convertAndSend("/user/queue/"+loginID+"/friends",service.namesToJSON(names));//Map<name,WebsocketSession>
+        messagingTemplate.convertAndSend("/user/queue/friends/"+loginID,service.namesToJSON(names));//Map<name,WebsocketSession>
 }
     @MessageMapping("/getFriends")
     public void getFriendByName(@RequestParam String prefix,Principal principal){
@@ -84,13 +84,15 @@ public class companionController extends TextWebSocketHandler {
             e.printStackTrace();
         }
 
-        messagingTemplate.convertAndSend("/user/queue/"+loginID+"/friends",json);
+        messagingTemplate.convertAndSend("/user/queue/friends/"+loginID,json);
     }
 
     @MessageMapping("/getHistory")
     public void getMessages(@RequestParam String name, Principal principal){
-        String json = service.getMessages(Integer.parseInt(principal.getName()),service.getNameByID(name));
-        messagingTemplate.convertAndSend("/user/queue/"+principal.getName()+"/History",json);
+        Integer friendID=service.getNameByID(name);
+        String json = service.getMessages(Integer.parseInt(principal.getName()),friendID);
+        messagingTemplate.convertAndSend("/user/queue/History/"+principal.getName(),json);
+        messagingTemplate.convertAndSend("/user/queue/setState/"+friendID,name+"2");
     }
     @MessageMapping("/sendMessages")
     public void sendMessage(@RequestParam String message, Principal principal){
@@ -116,7 +118,7 @@ public class companionController extends TextWebSocketHandler {
         privateMessage.setMessageContent(content);
         privateMessage.setSendTime(new Date());
         Map<String,Object> response = service.getOneMessageResponse(privateMessage,true);
-
+        response.put("friendName",name);
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
@@ -124,15 +126,24 @@ public class companionController extends TextWebSocketHandler {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        messagingTemplate.convertAndSend("/user/queue/"+principal.getName()+"/Msg",json);
+        messagingTemplate.convertAndSend("/user/queue/Msg/"+principal.getName(),json);//发送给自己
         response = service.getOneMessageResponse(privateMessage,false);
+        response.put("friendName",service.getNameByID(userId));
         try {
             json = mapper.writeValueAsString(response);
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-        messagingTemplate.convertAndSend("/user/queue/"+friendId+"/Msg",json);
+
+        messagingTemplate.convertAndSend("/user/queue/Msg/"+friendId,json);//发送给好友
 
     }
-
+    @MessageMapping("/receivedMsg")
+    public void receivedMsg(@RequestParam String friendName,Principal principal){//告诉朋友收到了消息
+        Integer friendID=service.getNameByID(friendName);
+        Integer userID=Integer.parseInt( principal.getName());
+        service.setReceived(userID,friendID);
+        System.out.println("/user/queue/setState/"+friendID);
+        messagingTemplate.convertAndSend("/user/queue/setState/"+friendID,service.getNameByID(userID)+"1");
+    }
 }

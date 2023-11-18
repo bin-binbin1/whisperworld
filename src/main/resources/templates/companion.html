@@ -116,22 +116,53 @@
                     this.stompClient.connect({}, () => {
                         console.log('Connected to server');
 
-                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/friends', (data) => {
+                        this.stompClient.subscribe('/user/queue/friends/'+this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.$set(this, 'friendNames', response.map(item => item.friendNames));
                         });
 
 
 
-                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/History', (data) => {
+                        this.stompClient.subscribe('/user/queue/History/'+this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.$set(this, 'Messages', response);
-                            console.log("History"+response);
+                        });
+                        this.stompClient.subscribe('/user/queue/setState/'+this.data.userID,(data) => {
+                            data=data.body;
+
+                            if(data.slice(0,-1) === this.friendName) {
+
+                                if (data[data.length - 1] === "1") {
+
+                                    this.Messages[this.Messages.length - 1].receiveState = true;
+                                } else {
+
+                                    for (let i = this.Messages.length - 1; i >= 0; i--) {
+                                        if (this.Messages[i].receiveState) {
+                                            this.Messages[i].receiveState = true;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         });
 
-                        this.stompClient.subscribe('/user/queue/'+this.data.userID+'/Msg', (data) => {
+                        this.stompClient.subscribe('/user/queue/Msg/'+this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
-                            this.Messages.push(response);
+
+                            if(response.self){
+                                delete response.friendName;
+                                this.Messages.push(response);
+                            }else{
+                                if(response.friendName===this.friendName) {
+                                    this.isRead();
+                                    delete response.friendName;
+                                    response.receiveState = true;
+                                    this.Messages.push(response);
+                                }
+                            }
+
                         });
 
                         // Send a request to get all friends
@@ -224,6 +255,9 @@
                     this.sendMessage();
                     this.newMessage = '';
                 }
+            },
+            isRead(){
+                this.stompClient.send('/send/receivedMsg',{},this.friendName);
             }
         },
     });
