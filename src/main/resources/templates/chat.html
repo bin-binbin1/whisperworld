@@ -103,7 +103,7 @@
                         //获取群名称
                         this.stompClient.subscribe('/user/queue/' + this.data.userID + '/groups', (data) => {
                             let response = JSON.parse(data.body);
-                            this.$set(this, 'Groups', response.map(item => item.Groups));
+                            this.$set(this, 'Groups', response);
                         });
                         //获取群成员名称
                         this.stompClient.subscribe(`/user/queue/${this.data.userID}/groupMembers/${this.groupId}`, (data) => {

@@ -36,22 +36,23 @@ public class groupChatContoller extends TextWebSocketHandler {
         Integer userID = Integer.parseInt(principal.getName());
         System.out.println("userId.getName:"+userID);
         List<String>crowds = service.crowds(userID);
+        System.out.println(crowds);
         if(crowds == null){
             System.out.println("null");
         }
         else{
             System.out.println("No");
         }
-
-        messagingTemplate.convertAndSend(" /user/queue/"+userID+"/groups",service.namesToJSON(crowds,"groupNames"));
+        messagingTemplate.convertAndSend("/user/queue/"+userID+"/groups",service.namesToJSON(crowds,"groupName"));
     }
 
     @MessageMapping("/getGroupMembers")//获取群成员
     public void showMembers(Principal principal, @RequestParam Integer groupId){
         System.out.println("获取群成员");
+        System.out.println(groupId);
         Integer userID = Integer.parseInt(principal.getName());
         List<String>members = service.members(groupId);
-        messagingTemplate.convertAndSend(" /user/queue/"+userID+"/groupMembers",service.namesToJSON(members,"groupName"));
+        messagingTemplate.convertAndSend("/user/queue/"+userID+"/groupMembers",service.namesToJSON(members,"groupMember"));
     }
 
     @MessageMapping("/getGroupHistory")//获取群历史消息
