@@ -168,6 +168,7 @@
             getGroupMembers(groupId) {
                 // 调用后端接口获取群成员
                 this.stompClient.send('/send/getGroupMembers', {}, groupId);
+                console.log("sucess");
             },
             showGroup(groupId) {
                 this.groupId = groupId;
