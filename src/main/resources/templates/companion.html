@@ -66,6 +66,7 @@
         <div class="main-content">
             <header>{{ friendName }}</header>
             <div class="upper-content" id="chat-content">
+                <button @click="getMoreHistory()">更多历史记录</button>
                 <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
                         <!-- Represents user's messages -->
