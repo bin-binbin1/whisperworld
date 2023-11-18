@@ -50,11 +50,13 @@
                     <p> {{ request.senderUsername }} 请求添加你为好友</p>
                     <button @click="handleDecision(request.senderUsername, true)">添加</button>
                     <button @click="handleDecision(request.senderUsername, false)">拒绝</button>
+                    <hr>
                 </div>
                 <div v-for="grouprequest in groupRequests" :key="grouprequest.requestID">
-                    <p> {{ grouprequest.senderUsername }} 请求添加{{ grouprequest.groupName }}</p>
+                    <p> {{ grouprequest.senderUsername }} 申请加入{{ grouprequest.groupName }}</p>
                     <button @click="handleGroupRequest(grouprequest.senderUsername, true)">添加</button>
                     <button @click="handleGroupRequest(grouprequest.senderUsername, false)">拒绝</button>
+                    <hr>
                 </div>
             </div>
         </div>
