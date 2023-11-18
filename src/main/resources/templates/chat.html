@@ -50,7 +50,8 @@
         <div class="right">
             <div class="main-content">
                 <header>{{ selectedGroupName }}</header>
-                <div class="upper-content" id="chat-content">
+                <div ref="scrollContainer" class="upper-content" id="chat-content">
+                    <button @click="getMoreHistory()">更多历史记录</button>
                     <div v-for="message in Messages" :key="message.id" class="message-container">
                         <div v-if="message.self" id="self" class="message">
                             <!-- 表示自己发的内容 -->
@@ -100,6 +101,7 @@
 
                     this.stompClient.connect({}, () => {
                         console.log('Connected to server');
+                        console.log('stompClient:', this.stompClient);
                         //获取群名称
                         this.stompClient.subscribe('/user/queue/' + this.data.userID + '/groups', (data) => {
                             let response = JSON.parse(data.body);
@@ -121,7 +123,10 @@
                             let response = JSON.parse(data.body);
                             this.Messages.push(response);
                         });
-
+                        this.stompClient.subscribe('/user/queue/moreHistory/'+this.data.userID,(data) => {
+                            let response = JSON.parse(data.body);
+                            this.Messages.unshift(...response);
+                        });
                         // Send a request to get all friends
                         this.getAllGroups();
                     });
@@ -152,11 +157,13 @@
                 this.stompClient.send('/send/getGroupHistory', {}, groupId);
             },
             sendMessage() {
-                var data = {
-                    "messageContent": this.newMessage,
-                    "groupId": this.groupId,
-                };
-                this.stompClient.send('/send/sendMessages', {}, JSON.stringify(data));
+                if (this.stompClient) {
+                    var data = {
+                        "messageContent": this.newMessage,
+                        "groupId": this.groupId,
+                    };
+                    this.stompClient.send('/send/sendMessages', {}, JSON.stringify(data));
+                }
             },
             submitMessage() {
 
@@ -166,8 +173,10 @@
                 }
             },
             getGroupMembers(groupId) {
-                // 调用后端接口获取群成员
-                this.stompClient.send('/send/getGroupMembers', {}, groupId);
+                if (this.stompClient) {
+                    // 调用后端接口获取群成员
+                    this.stompClient.send('/send/getGroupMembers', {}, groupId);
+                }
             },
             showGroup(groupId) {
                 this.groupId = groupId;
@@ -176,7 +185,16 @@
                 // 将选中的群组的名称保存到变量中
                 const selectedGroup = this.Groups.find(group => group.groupId === groupId);
                 this.selectedGroupName = selectedGroup ? selectedGroup.groupName:'';
-            }
+            },
+            getMoreHistory(){
+                if (this.stompClient) {
+                    var data={
+                        "groupId":this.groupId,
+                        "currentMsg":this.Messages.length
+                    }
+                    this.stompClient.send('/send/getMoreHistory',{},JSON.stringify(data));
+                }
+            },
         },
     });
 </script>

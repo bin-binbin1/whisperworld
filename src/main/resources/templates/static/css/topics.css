@@ -25,7 +25,9 @@ section {
     position: absolute;
     top: 10px;
     left: 0;
+    color:#00000090;
     width: 250px;
+    font-weight: bold;
     height: 120px;
     border: 1px solid #d0e4e8;
     border-radius: 10px;
@@ -53,7 +55,18 @@ section {
     border-radius:10px;
     cursor: pointer;
 }
-
+.switch{
+    width: 90%;
+    margin-top: 50px;
+    bottom: 0;
+    background-color: #F7DE98;
+    border: 0;
+    height:30px;
+    color:#00000090;
+    font-weight: bold;
+    border-radius:10px;
+    cursor: pointer;
+}
 .right-sidebar{
     overflow: auto;
     margin-left: 250px;
@@ -144,7 +157,9 @@ section {
 .signature {
     padding: 0;
     background-color: #d0e4e8;
-    color: black;
+    color: #888888;
+    height:55px;
+    font-size: 16px;
     border-radius: 10px 10px 0 0;
     /* 设置文字颜色为白色 */
 }

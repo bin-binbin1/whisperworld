@@ -35,6 +35,6 @@ public interface companionMapper {
     @Select("(SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{userID} AND ReceiverID=#{friendID})" +
             "UNION ALL" +
             "(SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{friendID} AND ReceiverID=#{userID})" +
-            "ORDER BY SendTime ASC LIMIT #{start_length},#{msg_length}")
+            "ORDER BY SendTime DESC LIMIT #{start_length},#{msg_length}")
     List<PrivateMessage> getMoreHistory(Integer userID,Integer friendID,int start_length,int msg_length);
 }

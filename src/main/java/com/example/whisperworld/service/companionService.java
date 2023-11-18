@@ -53,13 +53,11 @@ public class companionService {
 
         List<PrivateMessage> unReadMsg=mapper.getUnreadMsgs(userId,receiverId);
         mapper.setReceived(receiverId,userId);
-
         List<Map<String,Object>> responses = new ArrayList<>();
-        // 定义两个指针，分别指向两个列表的头部
         List<PrivateMessage> fiveReadMsg=mapper.getMoreHistory(userId,receiverId,0,5);
-        unReadMsg.addAll(fiveReadMsg);
-        for (PrivateMessage msg:unReadMsg) {
-            responses.add(getOneMessageResponse(msg,userId));
+        fiveReadMsg.addAll(unReadMsg);
+        for (int i = fiveReadMsg.size() - 1; i >= 0; i--) {
+            responses.add(getOneMessageResponse(fiveReadMsg.get(i),userId));
         }
 
         String json="";
@@ -112,8 +110,8 @@ public class companionService {
         Integer friendID=mapper.getIDByName(friendName);
         List<PrivateMessage> messages=mapper.getMoreHistory(userID,friendID,start_length,50);
         List<Map<String,Object>> responses = new ArrayList<>();
-        for (PrivateMessage msg:messages) {
-            responses.add(getOneMessageResponse(msg,userID));
+        for(int i=messages.size()-1;i>=0;i--){
+            responses.add(getOneMessageResponse(messages.get(i),userID));
         }
         String json="";
         try {
