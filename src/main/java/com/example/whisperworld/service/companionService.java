@@ -119,5 +119,10 @@ public class companionService {
         }
         return json;
     }
-
+    public void setReceived(Integer userID,Integer friendID){//user receive the msg
+        mapper.setReceived(friendID,userID);
+    }
+    public String getNameByID(Integer userID){
+        return mapper.getNameByID(userID);
+    }
 }
