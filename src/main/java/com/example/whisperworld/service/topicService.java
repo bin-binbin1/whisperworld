@@ -18,8 +18,8 @@ public class topicService {
         this.topicsMapper = topicsMapper;
     }
 
-    public List<topics> showTopics(){//获取所有话题
-        return topicsMapper.topics();
+    public List<topics> showTopics(int start,int length){//获取所有话题
+        return topicsMapper.topics(start,length);
     }
     public List<TopicReplies> showTopicReplies(Topics topics){//获取话题所有评论
         return topicsMapper.topicReplies(topics);

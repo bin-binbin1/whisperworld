@@ -14,16 +14,14 @@ import java.util.List;
 
 @Mapper
 public interface topicsMapper {
-    @Select("SELECT userName FROM users WHERE UserID=#{userid}")
-    String topicName(int userid);//查找话题用户
-
-    @Select("select userName,TopicLaunchTime,TopicContent,TopicID,LikeNum from topics JOIN users ON users.userID = topics.UserID ORDER BY LikeNum DESC, TopicLaunchTime DESC")
-    List<topics> topics();//查询所有话题信息并按照发布时间和点赞数降序排序
-
+    @Select("select userName,TopicLaunchTime,TopicContent,TopicID,LikeNum from topics JOIN users ON users.userID = topics.UserID " +
+            "ORDER BY LikeNum ASC, TopicLaunchTime ASC " +
+            "LIMIT #{start},#{length}")
+    List<topics> topics(int start,int length);//查询所有话题信息并按照发布时间和点赞数降序排序
     @Select("SELECT MAX(TopicID) FROM topics ")
     Integer countTopics();//查找话题数目
 
-    @Select("SELECT * FROM topic_replies WHERE TopicID=#{topicId} ORDER BY CommentTime ")
+    @Select("SELECT * FROM topic_replies WHERE TopicID=#{topicId} ORDER BY CommentTime DESC")
     List<TopicReplies> topicReplies(Topics topics);//查找话题的所有评论并按照发表时间降序排序
 
     @Insert("INSERT INTO topics VALUES(#{topicId},#{userId},#{topicCommentNum},#{topicLaunchTime},#{topicContent},#{likeNum})")
