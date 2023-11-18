@@ -44,12 +44,8 @@ public class companionService {
         mapper.deleteFriends(userID,friendID);
         mapper.deleteFriends(friendID,userID);
     }
-    public boolean sendMessage(String content,Integer userId,Integer friendId){
-        PrivateMessage msg = new PrivateMessage();
-        msg.setMessageContent(content);
+    public boolean sendMessage(PrivateMessage msg){
         msg.setSendTime(new Date());
-        msg.setUserId(userId);
-        msg.setReceiverId(friendId);//后期优化
         msg.setMessageContentId(mapper.getMsgCount(msg));
         return mapper.insertMessage(msg)!=0;
     }
@@ -74,8 +70,9 @@ public class companionService {
         }
         return json;
     }
-    public Map<String,Object> getOneMessageResponse(PrivateMessage msg,int userID){
-        boolean self=msg.getUserId()==userID;
+    public Map<String,Object> getOneMessageResponse(PrivateMessage msg,Integer userID){
+        boolean self= msg.getUserId().equals(userID);
+        System.out.println(self);
         Map<String,Object> response;
         response= new HashMap<>();
         response.put("content",msg.getMessageContent());

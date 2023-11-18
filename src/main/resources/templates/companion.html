@@ -65,7 +65,7 @@
         </div>
         <div class="main-content">
             <header>{{ friendName }}</header>
-            <div class="upper-content" id="chat-content">
+            <div ref="scrollContainer"  class="upper-content" id="chat-content">
                 <button @click="getMoreHistory()">更多历史记录</button>
                 <div v-for="message in Messages" :key="message.id" class="message-container">
                     <div v-if="message.self" id="self" class="message">
@@ -146,12 +146,15 @@
                             if(response.self){
                                 delete response.friendName;
                                 this.Messages.push(response);
+                                setTimeout(() => this.scrollToBottom(), 150);//延迟
+
                             }else{
                                 if(response.friendName===this.friendName) {
                                     this.isRead();
                                     delete response.friendName;
                                     response.receiveState = true;
                                     this.Messages.push(response);
+                                    setTimeout(() => this.scrollToBottom(), 150);
                                 }
                             }
 
@@ -261,7 +264,27 @@
                     "currentMsg":this.Messages.length
                 }
                 this.stompClient.send('/send/getMoreHistory',{},JSON.stringify(data));
+            },
+            scrollToBottom() {
+                const container = this.$refs.scrollContainer;
+                const distanceToBottom = container.scrollHeight - (container.scrollTop + container.clientHeight);
+
+                if (distanceToBottom < 150) { // 如果距离底部小于150像素
+                    const totalScrollDistance = container.scrollHeight - container.scrollTop;
+                    const totalScrollTime = 1000; // T时间，单位为毫秒
+                    const scrollStep = totalScrollDistance / (totalScrollTime / 16.67); // 每一帧的滚动距离
+
+                    const scroll = () => {
+                        if (container.scrollTop < container.scrollHeight - container.clientHeight) {
+                            container.scrollTop += scrollStep;
+                            window.requestAnimationFrame(scroll);
+                        }
+                    };
+
+                    window.requestAnimationFrame(scroll);
+                }
             }
+
         },
     });
 

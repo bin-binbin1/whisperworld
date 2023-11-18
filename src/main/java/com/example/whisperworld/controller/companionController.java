@@ -103,15 +103,15 @@ public class companionController extends TextWebSocketHandler {
         }
         Integer friendId = service.getNameByID(name);
         Integer userId =Integer.parseInt(principal.getName());
-        if(!service.sendMessage(content
-                ,userId
-                ,friendId
-        )){
-            return;
-        }
+
         PrivateMessage privateMessage = new PrivateMessage();
         privateMessage.setMessageContent(content);
         privateMessage.setSendTime(new Date());
+        privateMessage.setUserId(userId);
+        privateMessage.setReceiverId(friendId);
+        if(!service.sendMessage(privateMessage)){
+            return;
+        }
         Map<String,Object> response = service.getOneMessageResponse(privateMessage,userId);
         response.put("friendName",name);
         ObjectMapper mapper = new ObjectMapper();
