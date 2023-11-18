@@ -15,6 +15,7 @@ import java.util.*;
 @Service
 public class companionService {
     private final companionMapper mapper;
+    ObjectMapper Jsonmapper = new ObjectMapper();
     @Autowired
     public companionService(companionMapper mapper){
         this.mapper=mapper;
@@ -43,52 +44,35 @@ public class companionService {
         mapper.deleteFriends(userID,friendID);
         mapper.deleteFriends(friendID,userID);
     }
-    public boolean sendMessage(String content,Integer userId,Integer friendId){
-        PrivateMessage msg = new PrivateMessage();
-        msg.setMessageContent(content);
+    public boolean sendMessage(PrivateMessage msg){
         msg.setSendTime(new Date());
-        msg.setUserId(userId);
-        msg.setReceiverId(friendId);//后期优化
         msg.setMessageContentId(mapper.getMsgCount(msg));
         return mapper.insertMessage(msg)!=0;
     }
     public String getMessages(Integer userId, Integer receiverId){
 
+        List<PrivateMessage> unReadMsg=mapper.getUnreadMsgs(userId,receiverId);
         mapper.setReceived(receiverId,userId);
-        List<PrivateMessage> getMsg=mapper.getMessagesFromA2B(receiverId,userId);
-        List<PrivateMessage> sendMsg=mapper.getMessagesFromA2B(userId,receiverId);
 
         List<Map<String,Object>> responses = new ArrayList<>();
         // 定义两个指针，分别指向两个列表的头部
-        int i = 0;
-        int j = 0;
-        // 循环遍历两个列表，将较小的元素添加到新列表中
-        while (i < getMsg.size() && j < sendMsg.size()) {
-            if (getMsg.get(i).getSendTime().compareTo(sendMsg.get(j).getSendTime()) < 0) {
-                responses.add(getOneMessageResponse(getMsg.get(i++),false));
-            } else {
-                responses.add(getOneMessageResponse(sendMsg.get(j++),true));
-            }
+        List<PrivateMessage> fiveReadMsg=mapper.getMoreHistory(userId,receiverId,0,5);
+        unReadMsg.addAll(fiveReadMsg);
+        for (PrivateMessage msg:unReadMsg) {
+            responses.add(getOneMessageResponse(msg,userId));
         }
 
-        // 将剩余元素添加到新列表中
-        while (i < getMsg.size()) {
-            responses.add(getOneMessageResponse(getMsg.get(i++),false));
-        }
-
-        while (j < sendMsg.size()) {
-            responses.add(getOneMessageResponse(sendMsg.get(j++),true));
-        }
-        ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
-            json = mapper.writeValueAsString(responses);
+            json = Jsonmapper.writeValueAsString(responses);
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
         return json;
     }
-    public Map<String,Object> getOneMessageResponse(PrivateMessage msg,boolean self){
+    public Map<String,Object> getOneMessageResponse(PrivateMessage msg,Integer userID){
+        boolean self= msg.getUserId().equals(userID);
+        System.out.println(self);
         Map<String,Object> response;
         response= new HashMap<>();
         response.put("content",msg.getMessageContent());
@@ -110,10 +94,9 @@ public class companionService {
             responses.add(response);
             System.out.println("friendsname"+name);
         }
-        ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
-            json = mapper.writeValueAsString(responses);
+            json = Jsonmapper.writeValueAsString(responses);
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
@@ -124,5 +107,20 @@ public class companionService {
     }
     public String getNameByID(Integer userID){
         return mapper.getNameByID(userID);
+    }
+    public String getMoreHistory(Integer userID, String friendName,int start_length){
+        Integer friendID=mapper.getIDByName(friendName);
+        List<PrivateMessage> messages=mapper.getMoreHistory(userID,friendID,start_length,50);
+        List<Map<String,Object>> responses = new ArrayList<>();
+        for (PrivateMessage msg:messages) {
+            responses.add(getOneMessageResponse(msg,userID));
+        }
+        String json="";
+        try {
+            json = Jsonmapper.writeValueAsString(responses);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        return json;
     }
 }

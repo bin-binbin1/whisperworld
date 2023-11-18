@@ -12,20 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 
 import java.security.Principal;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 public class companionController extends TextWebSocketHandler {
     private final SimpMessagingTemplate messagingTemplate;
-    private final Map<String, WebSocketSession> userSessions = new ConcurrentHashMap<>();
-    private final Map<Integer,String> userIDToName = new ConcurrentHashMap<>();
-    private final Map<String,Integer> nameToUser = new ConcurrentHashMap<>();
     @Autowired
     companionService service;
     public companionController(SimpMessagingTemplate messagingTemplate) {
@@ -108,16 +103,16 @@ public class companionController extends TextWebSocketHandler {
         }
         Integer friendId = service.getNameByID(name);
         Integer userId =Integer.parseInt(principal.getName());
-        if(!service.sendMessage(content
-                ,userId
-                ,friendId
-        )){
-            return;
-        }
+
         PrivateMessage privateMessage = new PrivateMessage();
         privateMessage.setMessageContent(content);
         privateMessage.setSendTime(new Date());
-        Map<String,Object> response = service.getOneMessageResponse(privateMessage,true);
+        privateMessage.setUserId(userId);
+        privateMessage.setReceiverId(friendId);
+        if(!service.sendMessage(privateMessage)){
+            return;
+        }
+        Map<String,Object> response = service.getOneMessageResponse(privateMessage,userId);
         response.put("friendName",name);
         ObjectMapper mapper = new ObjectMapper();
         String json="";
@@ -127,7 +122,7 @@ public class companionController extends TextWebSocketHandler {
             e.printStackTrace();
         }
         messagingTemplate.convertAndSend("/user/queue/Msg/"+principal.getName(),json);//发送给自己
-        response = service.getOneMessageResponse(privateMessage,false);
+        response = service.getOneMessageResponse(privateMessage,friendId);
         response.put("friendName",service.getNameByID(userId));
         try {
             json = mapper.writeValueAsString(response);
@@ -145,5 +140,21 @@ public class companionController extends TextWebSocketHandler {
         service.setReceived(userID,friendID);
         System.out.println("/user/queue/setState/"+friendID);
         messagingTemplate.convertAndSend("/user/queue/setState/"+friendID,service.getNameByID(userID)+"1");
+    }
+    @MessageMapping("/getMoreHistory")
+    public void getMoreHistory(@RequestParam String data,Principal principal){
+        System.out.println("data="+data);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String friendName ="";
+        int start_length=0;
+        try {
+            JsonNode jsonNode = objectMapper.readTree(data);
+            friendName = jsonNode.get("friendName").asText();
+            start_length =jsonNode.get("currentMsg").asInt();
+        } catch (JsonProcessingException e1){
+            e1.printStackTrace();
+        }
+        String json=service.getMoreHistory(Integer.parseInt(principal.getName()),friendName,start_length);
+        messagingTemplate.convertAndSend("/user/queue/moreHistory/"+principal.getName(),json);
     }
 }
