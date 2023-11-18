@@ -50,15 +50,29 @@ section {
     margin: 0;
     list-style: none;
     padding: 0;
+    #background-color: #F1939C;
 }
 
 .group-list li {
+    display: flex;
+    align-items: center;
     margin-bottom: 2px;
-    #background-color: #F1939C;
+    background-color: #B2DFEE;
     height:36px;
+    width: 96%;
+    margin-left: 2%;
+    border-radius: 6px;
 }
-
+.group-list li a{
+    color:#ffffff;
+    flex: 8;
+    font-weight: bold;
+}
+.group-list li a:hover{
+    color:#F7DE98;
+}
 .group-list button {
+    flex: 2;
     padding: 8px 12px;
     font-size: 16px;
     font-weight: bold;
@@ -66,11 +80,11 @@ section {
     background-color: #cccccc;
     color: #fff;
     border: none;
-    border-radius: 6px;
     cursor: pointer;
-    display: block; /* 让按钮变成块级元素，占据整个列表项的宽度 */
-    width: 96%; /* 让按钮的宽度充满整个列表项 */
-    margin-left: 2%;
+    #display: block; /* 让按钮变成块级元素，占据整个列表项的宽度 */
+    width: 30%; /* 让按钮的宽度充满整个列表项 */
+    display: inline;
+    border-radius: 0 6px 6px 0;
 }
 
 button:hover {
@@ -101,7 +115,7 @@ button:hover {
 }
 .search-input {
     width: 60%;
-    height: 28px;
+    height: 30px;
     border-radius: 3px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
     border:none;
@@ -111,17 +125,17 @@ button:hover {
 }
 .search-button {
     width: 23%;
-    height: 30px;
-    font-size: 14px;
+    height: 33px;
+    font-size: 15px;
     font-weight: bold;
-    background-color: #75c8d8;
+    background-color: #b6d9d9;
     color: white;
     border: 0;
     border-radius:5px;
     cursor: pointer;
 }
 .search-button:hover{
-    background-color: #B2DFEE;
+    background-color: #75c8d8;
 }
 .search-result {
     margin-top: 1px; /* Add space between the search box and the friend list */
@@ -144,7 +158,6 @@ button:hover {
     width: 0.1em;
 }
 .group-list2 li {
-    margin-bottom: 1px;
     height:40px;
     display: flex;
     align-items: center;
@@ -157,7 +170,7 @@ button:hover {
     display: flex;
     align-items: center;
     background-color: #b6d9d9;
-    height: 33px;
+    height: 30px;
     color: #888888;
     border-radius: 5px;
     text-align: left;
@@ -175,7 +188,7 @@ button:hover {
     margin-right: 13px;
     border: none;
     cursor: pointer;
-    height: 33px;
+    height: 30px;
     width: 26%; /* Make the buttons fill the container width */
     text-align: center; /* Align text to the left */
     #display: block;
@@ -238,7 +251,7 @@ label {
 }
 .right textarea{
     margin: 2px;
-    font-size: 15px;
+    font-size: 16px;
     vertical-align: middle;
     width: 220px;
     border:0;

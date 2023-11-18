@@ -53,7 +53,18 @@ section {
     border-radius:10px;
     cursor: pointer;
 }
-
+.switch{
+    width: 90%;
+    margin-top: 50px;
+    bottom: 0;
+    background-color: #F7DE98;
+    border: 0;
+    height:30px;
+    color:#ffffff;
+    font-weight: bold;
+    border-radius:10px;
+    cursor: pointer;
+}
 .right-sidebar{
     overflow: auto;
     margin-left: 250px;
