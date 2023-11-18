@@ -66,6 +66,7 @@ CREATE TABLE crowds (
 CREATE  TABLE crowds_members(
  GroupID INT NOT NULL,
  MemberID INT NOT NULL,
+ isApproved TINYINT(1),
  PRIMARY KEY (GroupID, MemberID),
  FOREIGN KEY (GroupID) REFERENCES crowds(GroupID) ON DELETE CASCADE,
  FOREIGN KEY (MemberID) REFERENCES users(userID)
