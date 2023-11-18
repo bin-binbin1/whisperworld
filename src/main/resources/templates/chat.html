@@ -49,7 +49,7 @@
 
         <div class="right">
             <div class="main-content">
-                <header>{{ groupName }}</header>
+                <header>{{ selectedGroupName }}</header>
                 <div class="upper-content" id="chat-content">
                     <div v-for="message in Messages" :key="message.id" class="message-container">
                         <div v-if="message.self" id="self" class="message">
@@ -78,19 +78,22 @@
         el: '#app',
         data: {
             stompClient: null,
-            Groups: [],
+            Groups: [{groupName:'test'}],
             groupMembers: null,
             Messages: [
                 {userName: 'lcl', content: '有点冷', time: '2021-10-11'}
             ],
             newMessage: '',
             userID: '',
-            groupId: ''
+            groupId: '',
+            selectedGroupName: '' // 新增一个变量来保存选中的群组的名称
         },
         created() {
             axios.get('/api/getCurrentID')
                 .then(response => {
-                    this.userID = response.data;
+                    this.data = response.data;
+                    //console.log("useId:" +this.userID);
+                    console.log("useID:" +this.data.userID);
                     const socket = new SockJS(`http://localhost:8080/websocket-endpoint/` + this.data.userID);
                     // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
                     this.stompClient = Stomp.over(socket);
@@ -169,7 +172,10 @@
             showGroup(groupId) {
                 this.groupId = groupId;
                 this.getGroupMembers(this.groupId);
-                this.showGroupHistory(this.groupId)
+                this.showGroupHistory(this.groupId);
+                // 将选中的群组的名称保存到变量中
+                const selectedGroup = this.Groups.find(group => group.groupId === groupId);
+                this.selectedGroupName = selectedGroup ? selectedGroup.groupName:'';
             }
         },
     });

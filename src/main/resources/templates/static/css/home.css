@@ -14,40 +14,38 @@ h2 {
 }
 .outer-container1 {
     #position: absolute;
-    #width:90%;
     height:200px;
-    background-color:#d0e4e8;
+    background-color:#D1EEEE;
     border: 1px solid #ccc;
     border-radius: 10px;
     max-width: 800px;
-    top: 10px;
+    margin-top: 30px;
     text-align: center;
-    align-items: flex-start;
+    #align-items: flex-start;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     padding: 10px;
-    #display: flex;
+    display: flex;
+    align-content: center;
     flex-direction: column;
-    overflow: auto;
+    #overflow-y: scroll;
     max-height: 400px;
-
 }
 .outer-container2 {
-    background-color: #d0e4e8;
+    background-color: #D1EEEE;
     border: 1px solid #ccc;
     border-radius: 10px;
-    height:200px;
+    height:220px;
     max-width: 800px;
     text-align: center;
-    margin-top:20px;
-    #align-items: flex-end;
+    margin-top:30px;
+    top: 20px;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    #position: absolute;
     padding: 10px;
-    #display: flex;
+    display: flex;
     flex-direction: column;
-    overflow: auto;
+    #overflow-y: scroll;
     max-height: 400px;
 
 }
@@ -69,13 +67,23 @@ section {
 }
 
 .announcement-container {
-    margin-bottom: 0;
+    margin-top: 0;
+    height:70px;
+    padding-top: 0;
+    #margin-bottom: 0;
     text-align: center;
+    #background-color: #b6d9d9;
 }
 
 .scrollable-text {
-    overflow: auto;
+    top: 0;
+    flex: auto;
+    overflow-y:scroll;
     max-height: 400px;
-    width: 90%;
-    padding: 20px;
+    #width:740px;
+    padding: 0;
+    #background-color: #F1939C;
+}
+.scrollable-text::-webkit-scrollbar {
+    width: 0.1em;
 }

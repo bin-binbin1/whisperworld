@@ -23,7 +23,7 @@ h2{
     font-size: 16px;
     font-weight: bold;
     color:#ffffff;
-    background-color: #b6d9d9;
+    background-color: #d0e4e8;
 }
 section {
     position: fixed;
@@ -39,16 +39,16 @@ section {
     align-items: center;
     justify-content: center;
 }
-.announcement-container {
-    margin-top: 30px;
-    height: 550px;
-    background-color: #F1939C;
-}
 .scrollable-text {
     #color:#ffffff;
     margin-top: 10px;
     overflow: auto;
     height: 320px;
     width: 500px;
-    padding-top: 10px;
+    padding-top: 15px;
+    line-height: 2.5;
+    background-color: #B2DFEE;
+}
+.scrollable-text::-webkit-scrollbar {
+    width: 0.1em;
 }
