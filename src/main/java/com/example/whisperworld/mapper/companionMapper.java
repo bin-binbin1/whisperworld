@@ -22,7 +22,7 @@ public interface companionMapper {
     List<String> getPeopleByNAME(Integer userId, String prefix);
     @Update("UPDATE private_messages SET ReceiveState=true WHERE userID=#{userId} AND ReceiverID=#{receiverId}")
     void setReceived(Integer userId,Integer receiverId);
-    @Select("SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{receiverID} and ReceiverID=#{uesrID} and STATE=false")
+    @Select("SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{receiverID} and ReceiverID=#{userID} and ReceiveState=false")
     List<PrivateMessage> getUnreadMsgs(Integer userID,Integer receiverID);
     @Insert("INSERT INTO private_messages VALUES(#{userId},#{receiverId},#{messageContent},#{messageContentId},#{sendTime},#{receiveState})")
     int insertMessage(PrivateMessage msg);
@@ -36,5 +36,5 @@ public interface companionMapper {
             "UNION ALL" +
             "(SELECT MessageContent,SendTime,ReceiveState,UserID FROM private_messages WHERE UserID=#{friendID} AND ReceiverID=#{userID})" +
             "ORDER BY SendTime ASC LIMIT #{start_length},#{msg_length}")
-    List<PrivateMessage> getMoreHistory(Integer userID,Integer friendid,int start_length,int msg_length);
+    List<PrivateMessage> getMoreHistory(Integer userID,Integer friendID,int start_length,int msg_length);
 }

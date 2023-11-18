@@ -143,13 +143,14 @@ public class companionController extends TextWebSocketHandler {
     }
     @MessageMapping("/getMoreHistory")
     public void getMoreHistory(@RequestParam String data,Principal principal){
+        System.out.println("data="+data);
         ObjectMapper objectMapper = new ObjectMapper();
         String friendName ="";
         int start_length=0;
         try {
             JsonNode jsonNode = objectMapper.readTree(data);
             friendName = jsonNode.get("friendName").asText();
-            start_length =jsonNode.get("messageContent").asInt();
+            start_length =jsonNode.get("currentMsg").asInt();
         } catch (JsonProcessingException e1){
             e1.printStackTrace();
         }
