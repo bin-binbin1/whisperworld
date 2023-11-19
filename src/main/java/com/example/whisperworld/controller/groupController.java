@@ -1,6 +1,7 @@
 package com.example.whisperworld.controller;
 
 import com.example.whisperworld.entity.Crowds;
+import com.example.whisperworld.entity.CrowdsMembers;
 import com.example.whisperworld.service.groupService;
 import com.example.whisperworld.service.groupsService;
 import com.example.whisperworld.specialClasses.crowdCreate;
@@ -113,6 +114,21 @@ public class groupController extends TextWebSocketHandler {
         System.out.println("退出群聊");
         System.out.println(crowd.getGroupId());
         Boolean response = service.leaveGroup(crowd.getGroupId(),userID);
+        String json="";
+        try {
+            json = mapper.writeValueAsString(response); // 将Map对象转换为JSON字符串
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
+    @PostMapping("/api/groupApply")//申请加群
+    public ResponseEntity<String> joinCrowdRequest(@RequestBody CrowdsMembers crowdsMembers, @SessionAttribute("loginID") Integer userID){
+        crowdsMembers.setMemberID(userID);
+        System.out.println("申请加群");
+        System.out.println(crowdsMembers.getGroupID());
+        System.out.println(crowdsMembers.getMemberID());
+        Boolean response = service.joinCrowdRequest(crowdsMembers);
         String json="";
         try {
             json = mapper.writeValueAsString(response); // 将Map对象转换为JSON字符串

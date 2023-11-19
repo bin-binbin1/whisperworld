@@ -168,6 +168,17 @@ BEGIN
     WHERE GroupID = OLD.GroupID;
 END;$$
 
+CREATE TRIGGER update_in_group_num
+AFTER UPDATE ON crowds_members
+FOR EACH ROW
+BEGIN
+    IF NEW.STATE = true AND OLD.STATE = false THEN
+        UPDATE crowds
+        SET GroupNum = GroupNum + 1
+        WHERE GroupID = NEW.GroupID;
+    END IF;
+END;$$
+
 CREATE TRIGGER crowds_messages_trigger
 AFTER INSERT ON crowds_messages
 FOR EACH ROW

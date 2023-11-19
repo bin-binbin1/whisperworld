@@ -44,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/handleGroupRequest",
                 "/api/createGroup",
                 "/api/dismissGroup",
-                "/api/leaveGroup"
+                "/api/leaveGroup",
+                "/api/groupApply"
                 );//Post
     }
 

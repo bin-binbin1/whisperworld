@@ -52,7 +52,7 @@
                 <ul class="group-list2">
                     <li v-for="result in searchResults" :key="result.groupId">
                         <div class="p">{{ result.groupName }} - {{result.groupId}}</div>
-                        <button @click="sendGroupRequest(result.groupName,result.masterId)">申请加群</button>
+                        <button @click="sendGroupRequest(result.groupId)">申请加群</button>
                     </li>
                 </ul>
             </div>
@@ -111,16 +111,6 @@
                         console.error('Error getting current user ID:', error);
                     });
             },
-            // handleGroup(groupId) {
-            //     const group = this.Groups.find(group => group.groupId === groupId);
-            //     if (group.masterId === this.userId) {
-            //         // 当前用户是群组的创建者，执行解散群聊的操作
-            //         this.dismissGroup(groupId);
-            //     } else {
-            //         // 当前用户不是群组的创建者，执行退出群聊的操作
-            //         this.leaveGroup(groupId);
-            //     }
-            // },
             dismissGroup(groupId){
                 console.log("解散群ID:"+groupId)
                 axios.post('/api/dismissGroup', {groupId })
@@ -158,8 +148,8 @@
                         console.error('Error searching groups:', error);
                     });
             },
-            sendGroupRequest(groupName,masterId) {
-                axios.post('/api/groupApply', { groupName ,masterId})
+            sendGroupRequest(groupID) {
+                axios.post('/api/groupApply', { groupID})
                     .then(response => {
                         // 处理后端响应，如果需要的话
                         alert("已发送申请！");

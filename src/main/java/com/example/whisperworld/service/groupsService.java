@@ -1,6 +1,7 @@
 package com.example.whisperworld.service;
 
 import com.example.whisperworld.entity.Crowds;
+import com.example.whisperworld.entity.CrowdsMembers;
 import com.example.whisperworld.mapper.groupMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Block;
@@ -36,7 +37,10 @@ public class groupsService {
     private Integer countGroups(){//查询最大群ID
         return groupMapper.countCrowds();
     }
-
+    public Boolean joinCrowdRequest(CrowdsMembers crowdsMembers){
+        crowdsMembers.setSTATE(false);
+        return groupMapper.joinCrowdRequest(crowdsMembers);
+    }
     public Boolean dismissCrowd(Integer groupId){//解散群
         return groupMapper.dismissCrowd(groupId);
     }

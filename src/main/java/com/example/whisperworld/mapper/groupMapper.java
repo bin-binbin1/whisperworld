@@ -1,6 +1,7 @@
 package com.example.whisperworld.mapper;
 
 import com.example.whisperworld.entity.Crowds;
+import com.example.whisperworld.entity.CrowdsMembers;
 import com.example.whisperworld.specialClasses.groups;
 import lombok.Data;
 import org.apache.ibatis.annotations.*;
@@ -20,6 +21,8 @@ public interface groupMapper {
     Boolean insertMember(Integer GroupID,Integer MemberID,Boolean state);//添加成员
     @Select("SELECT MAX(GroupID) FROM crowds ")
     Integer countCrowds();
+    @Insert("INSERT INTO crowds_members VALUES (#{GroupID},#{MemberID},#{STATE})")
+    Boolean joinCrowdRequest(CrowdsMembers crowdsMembers);//申请加群
 
     @Delete("DELETE FROM crowds WHERE GroupID=#{groupId}")
     Boolean dismissCrowd(Integer groupId);//解散群
