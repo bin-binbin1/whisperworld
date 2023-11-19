@@ -32,12 +32,11 @@ public class groupService {
         crowdsMessage.setGroupMessageId(groupChatMapper.countGroupMsg(crowdsMessage.getGroupId()));
         return groupChatMapper.sendMessage(crowdsMessage);
     }
+    public String getName(Integer userID){
+        return groupChatMapper.getName(userID);
+    }
     public List<Integer> toOthers(Integer userID){
         return groupChatMapper.toOtherMembers(userID);
-    }
-
-    public List<String> userMessage(Integer userID,Integer groupID){//查询用户自己发送的消息
-        return groupChatMapper.userMessage(groupID,userID);
     }
 
     public  List<historyMsg> historyMsgs(Integer userID,Integer groupID,Integer num){//查询群聊历史消息

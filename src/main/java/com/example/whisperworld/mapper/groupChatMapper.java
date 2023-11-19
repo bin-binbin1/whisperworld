@@ -22,13 +22,12 @@ public interface groupChatMapper {
     @Insert("INSERT INTO crowds_messages VALUES (#{groupId},#{groupMessageId},#{messageContent},#{userId},#{sendTime})")
     Boolean sendMessage(CrowdsMessage crowdsMessage);//发送信息
 
+    @Select("SELECT userName FROM users WHERE userID=#{userID}")
+    String getName(Integer userID);
     @Select("SELECT MemberID FROM crowds_members WHERE MemberID <> #{userID};")
     List<Integer> toOtherMembers(Integer userID);//将信息发送给其他群组成员
 
-    @Select("SELECT ConversationContent FROM cowds_messages WHERE GroupID=#{groupID} AND UserID=#{userID}")
-    List<String> userMessage(Integer groupId, Integer userID);//查询用户自己的消息
-
-    @Select("SELECT ConversationContent AS content,userName,SendTime AS time,CASE WHEN users.userID=#{userID} THEN 'true' ELSE 'false' END AS self FROM crowds_messages JOIN users ON crowds_messages.UserID=users.userID WHERE GroupID=#{groupID} ORDER BY SendTime DESC LIMIT 50 OFFSET #{num}")
+    @Select("SELECT ConversationContent AS content,userName,SendTime AS time,CASE WHEN users.userID=#{userID} THEN 'true' ELSE 'false' END AS self FROM crowds_messages JOIN users ON crowds_messages.UserID=users.userID WHERE GroupID=#{groupID} ORDER BY SendTime DESC LIMIT 2 OFFSET #{num}")
     List<historyMsg> historyMsg(Integer userID,Integer groupID,Integer num);//查询群聊历史消息
 
     @Select("SELECT COUNT(*) FROM crowds_messages WHERE GroupID=#{groupID}")

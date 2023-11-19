@@ -82,7 +82,7 @@
             Groups: [{groupName:'test',groupId:0 }],
             groupMembers: [{userName:''}],
             Messages: [
-                {userName: 'lcl', content: '有点冷', time: '2021-10-11'}
+                {userName: 'lcl', content: '有点冷', time: '2021-10-11',self:true}
             ],
             newMessage: '',
             userID: '',
@@ -125,7 +125,7 @@
                             console.log("response"+response);
                             this.Messages.push(response);
                         });
-                        this.stompClient.subscribe('/user/queue/moreHistory/'+this.data.userID,(data) => {
+                        this.stompClient.subscribe('/user/queue/moreChatHistory/'+this.data.userID,(data) => {
                             let response = JSON.parse(data.body);
                             this.Messages.unshift(...response);
                         });
@@ -194,7 +194,7 @@
                         "groupId":this.groupId,
                         "currentMsg":this.Messages.length
                     }
-                    this.stompClient.send('/send/getMoreHistory',{},JSON.stringify(data));
+                    this.stompClient.send('/send/getMoreChatHistory',{},JSON.stringify(data));
                 }
             },
         },
