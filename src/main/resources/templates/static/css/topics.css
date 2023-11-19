@@ -163,7 +163,7 @@ section {
     border-radius: 10px 10px 0 0;
     /* 设置文字颜色为白色 */
 }
-.right-sidebar button{
+.history-button{
     border: none;
     background: none;
     padding: 0;
@@ -173,6 +173,6 @@ section {
     cursor: pointer; /* 鼠标悬停时显示手型 */
     text-decoration: none;
 }
-.right-sidebar button:hover {
+.history-button:hover {
     text-decoration: underline;
 }

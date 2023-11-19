@@ -26,6 +26,7 @@
     </div>
 </aside>
 <section>
+   <div id="all">
     <div id="left">
         <div class="signature">个性签名</div>
         <div> 万事都要全力以赴，包括开心</div>
@@ -34,11 +35,10 @@
         <div>
             <p>留言板</p>
             <form @submit.prevent="handleSubmit">
-                <textarea v-model="topicContent" name="topicContent" rows="10" cols="20"
-                          placeholder="写点话题吧"></textarea><br>
-                <button type="submit" class="send-button">发送</button><br>
-                <button class="switch">切换话题排列方式</button>
+                <textarea v-model="topicContent" name="topicContent" rows="10" cols="20" placeholder="写点话题吧"></textarea><br>
+                <button type="submit" class="send-button" >发送</button><br>
             </form>
+            <button class="switch" @click="sortmethod()">切换话题排列方式</button>
         </div>
     </div>
 
@@ -69,24 +69,60 @@
 
                 </div>
             </div>
-            <button @click="getMoreHistory()">更多历史记录</button>
-        </div>
-    </div>
 
+        </div>
+        <button @click="getMoreHistory()" class="history-button">更多历史记录</button>
+    </div>
+</div>
 </section>
 <div class="footer">欢迎使用社交网络系统</div>
-<script src="static/vue/left_topic.js"></script>
 <script>
     new Vue({
-        el: '#right',
+        el: '#all',
         data: {
+            topicContent:'',
             topics: [],
+            sortByLike: true, // 初始值为 true，表示按点赞排序
         },
 		mounted(){
 			// 在组件挂载后，发送请求获取话题数据
 			this.getTopics();
 		},
 		methods:{
+            handleSubmit: function() {
+                const topicContent = this.topicContent; // 获取textarea的值
+                // 使用Axios将数据发送到后端
+                axios.post('/api/sendtopic' , {topicContent:topicContent})
+                    .then(response => {
+                        // 处理成功的响应
+                        if (response.data) {
+                            this.topicContent = '';
+                            alert('消息发送成功！');
+                        }else {
+                            alert('消息发送失败！');
+                        }
+                    })
+                    .catch(error => {
+                        // 处理错误
+                        console.error('Error sending message:', error);
+                    });
+            },
+            sortmethod() {
+                this.sortByLike = !this.sortByLike; // 切换布尔值
+
+                // 根据布尔值选择发送不同的请求
+                const apiEndpoint = this.sortByLike ? '/api/getTopics' : '/api/getTopicsByTime';
+
+                axios.get(apiEndpoint)
+                    .then(response => {
+                        // 处理响应，更新话题数据
+                        this.topics = response.data;
+                        this.getComments();
+                    })
+                    .catch(error => {
+                        console.error('获取话题时发生错误:', error);
+                    });
+            },
 			formatDate: function(date) {
 				// 检查日期是否有效
 				if (date) {
