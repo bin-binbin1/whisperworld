@@ -159,6 +159,15 @@ BEGIN
     INSERT INTO audit_logs (Table_Name, Action, Action_Time) VALUES ('crowds', 'insert', NOW());
 END;$$
 
+CREATE TRIGGER update_out_group_num
+AFTER DELETE ON crowds_members
+FOR EACH ROW
+BEGIN
+    UPDATE crowds
+    SET GroupNum = GroupNum - 1
+    WHERE GroupID = OLD.GroupID;
+END;$$
+
 CREATE TRIGGER crowds_messages_trigger
 AFTER INSERT ON crowds_messages
 FOR EACH ROW

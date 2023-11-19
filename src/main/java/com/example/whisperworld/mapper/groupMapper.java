@@ -2,9 +2,8 @@ package com.example.whisperworld.mapper;
 
 import com.example.whisperworld.entity.Crowds;
 import com.example.whisperworld.specialClasses.groups;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import lombok.Data;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +16,15 @@ public interface groupMapper {
     List<Map<String,Object>> searchGroups(String input);//检索群聊
     @Insert("INSERT INTO crowds VALUES (#{groupId},#{masterId},#{managerId},#{groupName},#{createDate},#{groupNum},#{groupBackground})")
     Boolean createGroup(Crowds crowd);//创建群组
-    @Insert("INSERT INTO crowds_members VALUES (#{GroupID},#{MemberID})")
-    Boolean insertMember(Integer GroupID,Integer MemberID);//添加成员
+    @Insert("INSERT INTO crowds_members VALUES (#{GroupID},#{MemberID},#{sate})")
+    Boolean insertMember(Integer GroupID,Integer MemberID,Boolean state);//添加成员
     @Select("SELECT MAX(GroupID) FROM crowds ")
-    Integer countCrowds();//查找话题数目
+    Integer countCrowds();
 
+    @Delete("DELETE FROM crowds WHERE GroupID=#{groupId}")
+    Boolean dismissCrowd(Integer groupId);//解散群
 
+    @Delete("DELETE FROM crowds_members WHERE GroupID=#{groupId} AND MemberID=#{userId}")
+    Boolean leaveGroup(Integer groupId,Integer userId);//退群
 
 }

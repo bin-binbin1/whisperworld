@@ -3,8 +3,7 @@ package com.example.whisperworld.specialClasses;
 import lombok.Data;
 
 @Data
-public class crowdRequest {
+public class crowdCreate {
     String groupName;
-    Integer masterId;
-    Integer groupId;
+    String groupIntro;
 }

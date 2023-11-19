@@ -25,14 +25,19 @@
     </div>
 </aside>
 <section>
-    <div id="app">
+    <div id="ap">
         <div class="left" th:inline="none">
             <div class="signature">群组</div>
             <div class="group">
                 <ul class="group-list">
                     <li v-for="group in Groups" :key="group.groupId">
-                        <a href="/chat">{{group.groupName }}</a>
-                        <button @click="handleGroup(group.groupId)">退出</button>
+                        <a href="/chat">{{ group.groupName }}</a>
+                        <div v-if="group.masterId === userId">
+                            <button @click="dismissGroup(group.groupId)">解散</button>
+                        </div>
+                        <div v-else>
+                            <button @click="leaveGroup(group.groupId)">退出</button>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -70,14 +75,14 @@
 <div class="footer">欢迎使用社交网络系统</div>
 <script>
     new Vue({
-        el: '#app',
+        el: '#ap',
         data: {
-            Groups:[{groupName:'工作群',groupId:1},{groupName:'玩乐群',groupId:2}],
+            Groups:[{ masterId:1, groupName:'工作群',groupId:1}],
             searchInput: '',
-            searchResults: [{groupName:'工作群',groupId:1,masterId:1}],
+            searchResults: [{masterId:1,groupName:'工作群',groupId:1}],
             groupName: '',
             groupIntro: '',
-            userId: ''
+            userId: 0
         },
         created() {
             this.getAllGroups();
@@ -89,33 +94,36 @@
                     .then(response => {
                         // 成功获取数据后，设置到 Groups 中
                         this.Groups = response.data;
+                        console.log(this.Groups);
                     })
                     .catch(error => {
                         console.error('Error fetching groups data:', error);
                     });
+
             },
             getCurrentUserId() {
                 axios.get('/api/currentUserId')
                     .then(response => {
                         // 假设后端返回的数据包含当前用户的 ID，你需要根据实际情况进行修改
-                        this.userId = response.data.userId;
+                        this.userId = response.data;
                     })
                     .catch(error => {
                         console.error('Error getting current user ID:', error);
                     });
             },
-            handleGroup(groupId) {
-                const group = this.Groups.find(group => group.groupId === groupId);
-                if (group.masterId === this.userId) {
-                    // 当前用户是群组的创建者，执行解散群聊的操作
-                    this.dismissGroup(groupId);
-                } else {
-                    // 当前用户不是群组的创建者，执行退出群聊的操作
-                    this.leaveGroup(groupId);
-                }
-            },
-            dismissGroup(){
-                axios.post('/api/dismissGroup', { groupId })
+            // handleGroup(groupId) {
+            //     const group = this.Groups.find(group => group.groupId === groupId);
+            //     if (group.masterId === this.userId) {
+            //         // 当前用户是群组的创建者，执行解散群聊的操作
+            //         this.dismissGroup(groupId);
+            //     } else {
+            //         // 当前用户不是群组的创建者，执行退出群聊的操作
+            //         this.leaveGroup(groupId);
+            //     }
+            // },
+            dismissGroup(groupId){
+                console.log("解散群ID:"+groupId)
+                axios.post('/api/dismissGroup', {groupId })
                     .then(response => {
                         alert('群组解散成功！');
                         // 重新获取群组列表
@@ -144,6 +152,7 @@
                     .then(response => {
                         // 处理后端返回的群组搜索结果
                         this.searchResults = response.data;
+                        console.log(this.searchResults);
                     })
                     .catch(error => {
                         console.error('Error searching groups:', error);

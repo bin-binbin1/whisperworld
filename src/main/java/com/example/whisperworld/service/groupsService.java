@@ -3,6 +3,7 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.Crowds;
 import com.example.whisperworld.mapper.groupMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Block;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class groupsService {
     public Boolean createGroups(Crowds crowds){//创建群聊
         crowds.setGroupId(countGroups()+1);
         if(groupMapper.createGroup(crowds)){
-            return groupMapper.insertMember(crowds.getGroupId(),crowds.getMasterId());
+            return groupMapper.insertMember(crowds.getGroupId(),crowds.getMasterId(),true);
         }
         else{
             return false;
@@ -34,5 +35,12 @@ public class groupsService {
     }
     private Integer countGroups(){//查询最大群ID
         return groupMapper.countCrowds();
+    }
+
+    public Boolean dismissCrowd(Integer groupId){//解散群
+        return groupMapper.dismissCrowd(groupId);
+    }
+    public Boolean leaveGroup(Integer groupId,Integer userId){//退群
+        return groupMapper.leaveGroup(groupId,userId);
     }
 }
