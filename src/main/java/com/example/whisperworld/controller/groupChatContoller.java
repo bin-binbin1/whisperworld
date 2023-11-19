@@ -82,24 +82,32 @@ public class groupChatContoller extends TextWebSocketHandler {
     }
 
     @MessageMapping("/groupMsg")//发送消息
-    public void sendMessage(Principal principal,@Payload String jsonData){
+    public void sendMessage(Principal principal,@RequestParam String jsonData){
         System.out.println("发送消息");
         try {
             // 将JSON字符串映射到crowdsMessage对象
             ObjectMapper objectMapper = new ObjectMapper();
             CrowdsMessage crowdsMessage = objectMapper.readValue(jsonData, CrowdsMessage.class);
             Integer userID = Integer.parseInt(principal.getName());
+            System.out.println(crowdsMessage.getMessageContent());
+            System.out.println(crowdsMessage.getGroupId());
+
             crowdsMessage.setUserId(userID);
             crowdsMessage.setSendTime(new Date());
-            Boolean response = true;
+
+            Boolean send = service.message(crowdsMessage);
+            List<Integer> others = service.toOthers(userID);
+            if(!send) {//发送失败
+                return;
+            }
             ObjectMapper mapper = new ObjectMapper();
             String json="";
             try {
-                json = mapper.writeValueAsString(response);
+                json = mapper.writeValueAsString(send);
             }catch (JsonProcessingException e){
                 e.printStackTrace();
             }
-            messagingTemplate.convertAndSend("/user/queue/"+userID+"/groupMsg",json);
+            messagingTemplate.convertAndSend("/user/queue/groupMsg/"+userID,json);//发送给自己
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -122,6 +122,7 @@
                         //获取消息
                         this.stompClient.subscribe('/user/queue/groupMsg/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
+                            console.log("response"+response);
                             this.Messages.push(response);
                         });
                         this.stompClient.subscribe('/user/queue/moreHistory/'+this.data.userID,(data) => {
@@ -163,7 +164,7 @@
                         "messageContent": this.newMessage,
                         "groupId": this.groupId,
                     };
-                    this.stompClient.send('/send/sendMessages', {}, JSON.stringify(data));
+                    this.stompClient.send('/send/groupMsg', {}, JSON.stringify(data));
                 }
             },
             submitMessage() {

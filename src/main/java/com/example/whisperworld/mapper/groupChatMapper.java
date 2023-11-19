@@ -22,6 +22,9 @@ public interface groupChatMapper {
     @Insert("INSERT INTO crowds_messages VALUES (#{groupId},#{groupMessageId},#{messageContent},#{userId},#{sendTime})")
     Boolean sendMessage(CrowdsMessage crowdsMessage);//发送信息
 
+    @Select("SELECT MemberID FROM crowds_members WHERE MemberID <> #{userID};")
+    List<Integer> toOtherMembers(Integer userID);//将信息发送给其他群组成员
+
     @Select("SELECT ConversationContent FROM cowds_messages WHERE GroupID=#{groupID} AND UserID=#{userID}")
     List<String> userMessage(Integer groupId, Integer userID);//查询用户自己的消息
 
