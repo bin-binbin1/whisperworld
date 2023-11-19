@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class historyMsg {
     String content;
-    String username;
+    String userName;
     String time;
     Boolean self;
 }

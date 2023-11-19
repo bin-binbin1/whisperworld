@@ -25,7 +25,7 @@ public interface groupChatMapper {
     @Select("SELECT ConversationContent FROM cowds_messages WHERE GroupID=#{groupID} AND UserID=#{userID}")
     List<String> userMessage(Integer groupId, Integer userID);//查询用户自己的消息
 
-    @Select("SELECT ConversationContent,userName,SendTime,CASE WHEN users.userID=#{userID} THEN 'true' ELSE 'false' END AS self FROM crowds_messages JOIN users ON crowds_messages.UserID=users.userID WHERE GroupID=#{groupID} ORDER BY SendTime DESC LIMIT 50 OFFSET #{num}")
+    @Select("SELECT ConversationContent AS content,userName,SendTime AS time,CASE WHEN users.userID=#{userID} THEN 'true' ELSE 'false' END AS self FROM crowds_messages JOIN users ON crowds_messages.UserID=users.userID WHERE GroupID=#{groupID} ORDER BY SendTime DESC LIMIT 50 OFFSET #{num}")
     List<historyMsg> historyMsg(Integer userID,Integer groupID,Integer num);//查询群聊历史消息
 
     @Select("SELECT COUNT(*) FROM crowds_messages WHERE GroupID=#{groupID}")
