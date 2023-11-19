@@ -42,8 +42,12 @@
         </div>
         <div class="left1">
             <div class="signature">群成员</div>
-            <div v-for="groupMember in groupMembers" :key="groupMember">
-                <p>{{ groupMember.userName }}</p>
+            <div class="member">
+                <ul class="member-list">
+                    <li v-for="groupMember in groupMembers" :key="groupMember">
+                        <p>{{ groupMember.userName }}</p>
+                    </li>
+                </ul>
             </div>
         </div>
 

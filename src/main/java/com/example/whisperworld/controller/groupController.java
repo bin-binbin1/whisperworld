@@ -74,9 +74,6 @@ public class groupController extends TextWebSocketHandler {
     }
     @PostMapping("/api/createGroup")//创建群聊
     public ResponseEntity<String> createGroups(@RequestBody crowdCreate crowdCreate, @SessionAttribute("loginID") Integer userID){
-        System.out.println("创建群聊");
-        System.out.println("群名："+crowdCreate.getGroupName());
-        System.out.println("群公告："+crowdCreate.getGroupIntro());
         Crowds crowds = new Crowds();
         crowds.setGroupName(crowdCreate.getGroupName());
         crowds.setMasterId(userID);

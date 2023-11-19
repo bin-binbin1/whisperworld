@@ -72,8 +72,8 @@ section {
     margin-left: 250px;
     margin-top:10px;
     /* 调整 #right 元素的左边距 */
-    width: calc(100% - 270px);
-    height: calc(100% - 60px);
+    width: 1000px;
+    height: 550px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

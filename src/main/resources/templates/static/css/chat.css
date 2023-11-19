@@ -36,24 +36,29 @@ section {
     height: 200px; /* 设置group容器的最大高度，可以根据实际情况调整 */
     overflow-y: auto; /* 当内容溢出时显示垂直滚动条 */
 }
+.group::-webkit-scrollbar {
+    width: 0.1em;
+}
 .group-list {
-    margin: 0;
+    margin-top: 3px;
+    width:96%;
+    margin-left: 2%;
     list-style: none;
     padding: 0;
+    #background-color: #F1939C;
 }
 
 .group-list li {
     margin-bottom: 2px;
     #background-color: #75c8d8;
 }
-
 .group-list button {
     padding: 8px 12px;
-    font-size: 14px;
+    font-size: 15px;
     background-color: #cccccc;
     color: #fff;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
     display: block; /* 让按钮变成块级元素，占据整个列表项的宽度 */
     width: 100%; /* 让按钮的宽度充满整个列表项 */
@@ -76,9 +81,39 @@ button:hover {
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
     #background-color: #75c8d8;
 }
-#groupmenber {
-
+.member{
+    overflow: auto;
+    top:2px;
+    margin-top: 0;
+    padding-top: 0;
+    height: 200px; /* 设置group容器的最大高度，可以根据实际情况调整 */
+    overflow-y: auto; /* 当内容溢出时显示垂直滚动条 */
+    #background-color: #F1939C;
 }
+.member::-webkit-scrollbar {
+    width: 0.1em;
+}
+.member-list {
+    margin-top: 4px;
+    width:96%;
+    margin-left: 2%;
+    list-style: none;
+    padding: 0;
+    #background-color: #F1939C;
+}
+
+.member-list li {
+    padding-left: 3px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+    font-size: 15px;
+    height:33px;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #B2DFEE;
+}
+
 .right{
     overflow: auto;
     position: fixed; /* 使用绝对定位 */

@@ -46,6 +46,9 @@ section {
     height: 200px; /* 设置group容器的最大高度，可以根据实际情况调整 */
     overflow-y: auto; /* 当内容溢出时显示垂直滚动条 */
 }
+.group::-webkit-scrollbar {
+    width: 0.1em;
+}
 .group-list {
     margin: 0;
     list-style: none;
@@ -71,8 +74,18 @@ section {
 .group-list li a:hover{
     color:#F7DE98;
 }
-.group-list button {
+.group-actions {
+    #margin-left: auto; /* 将按钮推到右侧 */
     flex: 2;
+    #background-color: #F1939C;
+    height:36px;
+    position: relative;
+    border-radius: 0 6px 6px 0;
+}
+.group-list button {
+    position: absolute;
+    top: 0;
+    left:0;
     padding: 8px 12px;
     font-size: 16px;
     font-weight: bold;
@@ -81,9 +94,7 @@ section {
     color: #fff;
     border: none;
     cursor: pointer;
-    #display: block; /* 让按钮变成块级元素，占据整个列表项的宽度 */
-    width: 30%; /* 让按钮的宽度充满整个列表项 */
-    display: inline;
+    width: 100%; /* 让按钮的宽度充满整个列表项 */
     border-radius: 0 6px 6px 0;
 }
 
@@ -154,6 +165,9 @@ button:hover {
      margin-left: 7%;
      #background-color: #F1939C;
  }
+.group-list2::-webkit-scrollbar {
+    width: 0.1em;
+}
 .group-list2::-webkit-scrollbar {
     width: 0.1em;
 }

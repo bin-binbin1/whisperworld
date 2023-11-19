@@ -13,7 +13,6 @@ import java.util.Map;
 @Service
 public class groupsService {
     private final groupMapper groupMapper;
-
     @Autowired
     public groupsService( groupMapper groupMapper){
         this.groupMapper = groupMapper;
@@ -25,17 +24,14 @@ public class groupsService {
     public List<Map<String,Object>> searchGroups(String input){//检索群聊
         return groupMapper.searchGroups(input);
     }
-    public Boolean createGroups(Crowds crowds){//创建群聊
-        crowds.setGroupId(countGroups()+1);
+    public synchronized Boolean createGroups(Crowds crowds){//创建群聊
+        crowds.setGroupId(groupMapper.countCrowds()+1);
         if(groupMapper.createGroup(crowds)){
             return groupMapper.insertMember(crowds.getGroupId(),crowds.getMasterId(),true);
         }
         else{
             return false;
         }
-    }
-    private Integer countGroups(){//查询最大群ID
-        return groupMapper.countCrowds();
     }
     public Boolean joinCrowdRequest(CrowdsMembers crowdsMembers){
         crowdsMembers.setSTATE(false);

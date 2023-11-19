@@ -32,10 +32,10 @@
                 <ul class="group-list">
                     <li v-for="group in Groups" :key="group.groupId">
                         <a href="/chat">{{ group.groupName }}</a>
-                        <div v-if="group.masterId === userId">
+                        <div v-if="group.masterId === userId" class="group-actions">
                             <button @click="dismissGroup(group.groupId)">解散</button>
                         </div>
-                        <div v-else>
+                        <div v-else class="group-actions">
                             <button @click="leaveGroup(group.groupId)">退出</button>
                         </div>
                     </li>

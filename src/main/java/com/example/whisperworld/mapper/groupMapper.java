@@ -17,10 +17,10 @@ public interface groupMapper {
     List<Map<String,Object>> searchGroups(String input);//检索群聊
     @Insert("INSERT INTO crowds VALUES (#{groupId},#{masterId},#{managerId},#{groupName},#{createDate},#{groupNum},#{groupBackground})")
     Boolean createGroup(Crowds crowd);//创建群组
-    @Insert("INSERT INTO crowds_members VALUES (#{GroupID},#{MemberID},#{sate})")
+    @Insert("INSERT INTO crowds_members VALUES (#{GroupID},#{MemberID},#{state})")
     Boolean insertMember(Integer GroupID,Integer MemberID,Boolean state);//添加成员
     @Select("SELECT MAX(GroupID) FROM crowds ")
-    Integer countCrowds();
+    int countCrowds();
     @Insert("INSERT INTO crowds_members VALUES (#{GroupID},#{MemberID},#{STATE})")
     Boolean joinCrowdRequest(CrowdsMembers crowdsMembers);//申请加群
 

@@ -240,3 +240,4 @@ insert into users values(0,"fun",123456,'m',CURDATE(),18114803454,false,0,CURDAT
 insert into supervisors values(0,CURDATE());
 insert into notifications values (0,"今天我最帅",CURDATE(),0);
 insert into topics values(0,0,0,curdate(),"欢迎来到低语世界",0);
+insert into crowds values(0,0,0,"低语世界",curdate(),1,"低语世界专用群");
