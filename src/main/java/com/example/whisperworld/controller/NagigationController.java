@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Service;
 
 @Controller
 public class NagigationController {
@@ -36,6 +37,8 @@ public class NagigationController {
     public String companion(Model model){
         return "companion";
     }
+    @GetMapping("/chat")
+    public String chat(Model model){return "chat";}
 
     @GetMapping("/topics")
     public String topics(Model model){
