@@ -41,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/friendApply",
                 "/api/handleFriendRequest",
                 "/admin_announce/post_note",
-                "/api/handleGroupRequest"
+                "/api/handleGroupRequest",
+                "/api/createGroup"
                 );//Post
     }
 

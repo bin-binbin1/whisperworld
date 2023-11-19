@@ -19,7 +19,6 @@ public class groupService {
     public groupService(groupChatMapper groupChatMapper){
         this.groupChatMapper = groupChatMapper;
     }
-
     public List<groups>crowds(Integer userID){//查询用户所有群组
         return groupChatMapper.groups(userID);
     }
@@ -39,7 +38,7 @@ public class groupService {
         return groupChatMapper.toOtherMembers(userID);
     }
 
-    public  List<historyMsg> historyMsgs(Integer userID,Integer groupID,Integer num){//查询群聊历史消息
+    public List<historyMsg> historyMsgs(Integer userID,Integer groupID,Integer num){//查询群聊历史消息
         List<historyMsg> historyMsgs = groupChatMapper.historyMsg(userID,groupID,num);
         List<historyMsg> historyMsgs1 = new ArrayList<>();
         for(int i = historyMsgs.size()-1;i >= 0;i--)
@@ -48,12 +47,6 @@ public class groupService {
         }
         return historyMsgs1;
     }
-
-
-
-
-
-
 
     public String namesToJSON(List<String> names, String keys){
         List<Map<String,Object>> responses = new ArrayList<>();

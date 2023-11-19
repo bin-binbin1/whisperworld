@@ -161,6 +161,9 @@
                     });
             },
             createGroup() {
+                console.log("创建群组")
+                console.log("群名："+this.groupName);
+                console.log("群公告："+this.groupIntro);
                 // 检查群名称和群介绍是否为空
                 if (!this.groupName || !this.groupIntro) {
                     alert('请填写群名称和群介绍');

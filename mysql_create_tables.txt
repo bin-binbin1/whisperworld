@@ -79,7 +79,7 @@ CREATE TABLE crowds_messages (
   UserID INT NOT NULL,
   SendTime DATETIME NOT NULL,
   PRIMARY KEY (GroupID, GroupMessageID),
-  FOREIGN KEY (GroupID) REFERENCES crowds(GroupID),
+  FOREIGN KEY (GroupID) REFERENCES crowds(GroupID) ON DELETE CASCADE,
   FOREIGN KEY (UserID) REFERENCES users(UserID)
 );
 
