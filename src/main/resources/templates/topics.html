@@ -82,12 +82,12 @@
         data: {
             topicContent:'',
             topics: [],
-            sortByLike: true, // 初始值为 true，表示按点赞排序
+            sortByLike: true, // 默认按点赞排序
         },
-		mounted(){
-			// 在组件挂载后，发送请求获取话题数据
-			this.getTopics();
-		},
+        created() {
+                // 在组件创建时获取默认排序的话题
+                this.getTopics();
+        },
 		methods:{
             handleSubmit: function() {
                 const topicContent = this.topicContent; // 获取textarea的值
