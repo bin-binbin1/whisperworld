@@ -32,7 +32,7 @@ public class registerService {
         String encodedPassword = passwordEncoder.encode(user.getUserPassword());
         user.setUserPassword(encodedPassword);
 
-        user.setUserState("Online");
+        user.setUserState(false);
         user.setUserLevel(1);
         user.setUrDate(new Date());
 

@@ -16,7 +16,7 @@ public class User{
     private String userSex;
     private Date urDate;
     private String userPhone;
-    private String userState;
+    private boolean userState;
     private Integer userLevel;
     private Date userBDate;
 }
