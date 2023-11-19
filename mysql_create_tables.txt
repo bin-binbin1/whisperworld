@@ -9,7 +9,7 @@ CREATE TABLE users (
   userSex CHAR(1) NOT NULL,
   urDate DATE NOT NULL,
   userPhone VARCHAR(11) NOT NULL,
-  userState VARCHAR(10) NOT NULL,
+  userState BOOL NOT NULL,
   userLevel INT NOT NULL,
   userBDate DATE NOT NULL
 );

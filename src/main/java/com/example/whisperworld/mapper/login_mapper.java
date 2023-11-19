@@ -5,6 +5,7 @@ import com.example.whisperworld.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface login_mapper {
@@ -16,4 +17,9 @@ public interface login_mapper {
 
     @Select("SELECT * FROM supervisors WHERE supervisorId=#{userID}")
     Supervisor loginSuper(Integer userID);//获取管理员信息
+
+    @Update("UPDATE users SET userState=true WHERE userName=#{username}")
+    void onlineState(String username);
+    @Update("UPDATE users SET userState=false WHERE userID=#{userId}")
+    void offlineState(Integer userId);
 }

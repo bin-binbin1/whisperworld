@@ -57,7 +57,7 @@ public class login_service implements UserDetailsService {
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
+        loginMapper.onlineState(username);
         if(supervisor != null){
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }

@@ -1,5 +1,7 @@
 package com.example.whisperworld.controller;
 
+import com.example.whisperworld.mapper.login_mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,11 @@ import javax.xml.ws.Service;
 
 @Controller
 public class NagigationController {
+    login_mapper mapper;
+    @Autowired
+    public NagigationController(login_mapper mapper){
+        this.mapper = mapper;
+    }
     @GetMapping(value = {"/welcome","/"})
     public String welcome(Model model) {
         model.addAttribute("name", "World");
@@ -57,6 +64,8 @@ public class NagigationController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
+        Integer loginId = (Integer)session.getAttribute("loginID");
+        mapper.offlineState(loginId);
         //将状态设置为登出
         session.invalidate();//清空session
         return "public/welcome";
