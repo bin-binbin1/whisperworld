@@ -3,9 +3,12 @@ package com.example.whisperworld.controller;
 import com.example.whisperworld.entity.Notification;
 import com.example.whisperworld.service.homeService;
 import com.example.whisperworld.specialClasses.friendRequest;
+import com.example.whisperworld.specialClasses.groupApply;
+import com.example.whisperworld.specialClasses.groupRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +27,7 @@ public class homeController {
     public homeController(homeService service){
         this.service=service;
     }
-
+    private ObjectMapper mapper = new ObjectMapper();
     @GetMapping("/api/getNotices")
     public ResponseEntity<String> Login(){
         List<Map<String, Object>> responses = new ArrayList<>();
@@ -39,7 +42,6 @@ public class homeController {
 
             responses.add(response);
         }
-        ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
             json = mapper.writeValueAsString(responses); // 将Map对象转换为JSON字符串
@@ -52,25 +54,19 @@ public class homeController {
 
     @PostMapping("/api/handleFriendRequest")
     public ResponseEntity<String> solveFriendRequests(@SessionAttribute("loginID") Integer userId, @RequestBody friendRequest request){
-
         boolean result= service.setFriendApply(userId,request.getSenderUsername(),request.isDecision());
         return  ResponseEntity.ok(""+result);
 
     }
     @GetMapping("/api/getFriendRequests")
     public ResponseEntity<String> getFriendRequests(@SessionAttribute("loginID") Integer userId){
-
-
         List<Map<String, Object>> responses = new ArrayList<>();
-
         List<String> names=service.getAllRequestFriendName(userId);
         for (String name : names) {
             Map<String, Object> response = new HashMap<>();
             response.put("senderUsername",name);
             responses.add(response);
         }
-
-        ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
             json = mapper.writeValueAsString(responses); // 将Map对象转换为JSON字符串
@@ -79,5 +75,21 @@ public class homeController {
         }
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
-
+    @GetMapping("/api/getGroupRequests")
+    public ResponseEntity<String> getGroupRequests(@SessionAttribute("loginID") Integer userId){
+        List<groupRequest> names=service.getAllGroupRequest(userId);
+        String json="";
+        try {
+            json = mapper.writeValueAsString(names); // 将Map对象转换为JSON字符串
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(json);
+    }
+    @PostMapping("/api/handleGroupRequest")
+    public ResponseEntity<String> handleGroupRequest(@RequestBody groupApply request){
+        System.out.println(request);
+        boolean result=service.setGroupApply(request);
+        return ResponseEntity.ok(""+result);
+    }
 }

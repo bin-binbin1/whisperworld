@@ -52,10 +52,10 @@
                     <button @click="handleDecision(request.senderUsername, false)">拒绝</button>
                     <hr>
                 </div>
-                <div v-for="grouprequest in groupRequests" :key="grouprequest.requestID">
-                    <p> {{ grouprequest.senderUsername }} 申请加入{{ grouprequest.groupName }}</p>
-                    <button @click="handleGroupRequest(grouprequest.senderUsername, true)">添加</button>
-                    <button @click="handleGroupRequest(grouprequest.senderUsername, false)">拒绝</button>
+                <div v-for="grouprequest in groupRequests" :key="grouprequest.groupId">
+                    <p> {{ grouprequest.userName }} 申请加入{{ grouprequest.groupName }}</p>
+                    <button @click="handleGroupRequest(grouprequest.userName,grouprequest.groupId , true)">添加</button>
+                    <button @click="handleGroupRequest(grouprequest.userName,grouprequest.groupId , false)">拒绝</button>
                     <hr>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     requestID: 1,
                 },
                 {
-                    senderUsername: 'lcl', // 这个值是字符串
+                    userName: 'lcl', // 这个值是字符串
                     decision: null, // 这个值是bool，要么给true/false，要么就null
                     requestID: 2,
                 }
@@ -87,13 +87,13 @@
                     senderUsername: 'fun',
                     groupName:'工作群',
                     decision: null,
-                    requestID: 1,
+                    groupId: 1,
                 },
                 {
                     senderUsername: 'lcl',
                     groupName:'玩乐群',
                     decision: null,
-                    requestID: 2,
+                    groupId: 2,
                 }
             ],
         },
@@ -132,7 +132,6 @@
                     .then(response => {
                         // 获取到加好友请求数据后更新 friendRequests
                         this.friendRequests = response.data;
-                        console.log(this.friendRequests);
                     })
                     .catch(error => {
                         console.error('Error getting friend requests:', error);
@@ -143,7 +142,6 @@
                     .then(response => {
                         // 获取到加好友请求数据后更新 groupRequests
                         this.groupRequests = response.data;
-                        console.log(this.groupRequests);
                     })
                     .catch(error => {
                         console.error('Error getting friend requests:', error);
@@ -159,13 +157,8 @@
                     }
                 })
                     .then(response => {
-                        console.log('Handle friend request:', senderUsername, decision);
-                        // 根据后端响应来更新前端数据
                         if (response.data) {
-                            // 示例：在前端删除已处理的好友请求
-
                             this.friendRequests = this.friendRequests.filter(request => request.senderUsername !== senderUsername);
-                            console.log(this.friendRequests);
                         } else {
                             console.error('Failed to handle friend request:', response.data.error);
                         }
@@ -174,9 +167,9 @@
                         console.error('Error handling friend request:', error);
                     });
             },
-            handleGroupRequest(senderUsername, decision) {
+            handleGroupRequest(userName,groupId , decision) {
                 // 发送请求给后端，处理添加/拒绝好友请求的逻辑
-                let grouprequest=JSON.stringify({ 'senderUsername':senderUsername, 'decision':decision });
+                let grouprequest=JSON.stringify({ 'userName':userName,'groupId':groupId ,'decision':decision });
                 console.log(grouprequest);
                 axios.post('/api/handleGroupRequest', grouprequest,{
                     headers: {
@@ -184,12 +177,9 @@
                     }
                 })
                     .then(response => {
-                        console.log('Handle group request:', senderUsername, decision);
-                        // 根据后端响应来更新前端数据
-                        if (response.data) {
-                            // 示例：在前端删除已处理的好友请求
 
-                            this.groupRequests = this.groupRequests.filter(grouprequest => grouprequest.senderUsername !== senderUsername);
+                        if (response.data) {
+                            this.groupRequests = this.groupRequests.filter(grouprequest => grouprequest.userName !== userName);
                             console.log(this.groupRequests);
                         } else {
                             console.error('Failed to handle group request:', response.data.error);

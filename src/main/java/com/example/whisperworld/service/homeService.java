@@ -1,8 +1,11 @@
 package com.example.whisperworld.service;
 
+import com.example.whisperworld.entity.CrowdsMembers;
 import com.example.whisperworld.entity.Friends;
 import com.example.whisperworld.entity.Notification;
 import com.example.whisperworld.mapper.homeMapper;
+import com.example.whisperworld.specialClasses.groupApply;
+import com.example.whisperworld.specialClasses.groupRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +37,19 @@ public class homeService {
         }else{
             return mapper.deleteFriendApply(friends)==1;
         }
+    }
+
+    public List<groupRequest> getAllGroupRequest(Integer userId) {
+        return mapper.getAllGroupRequest(userId);
+
+    }
+
+    public boolean setGroupApply(groupApply request) {
+        System.out.println(request.getUserName());
+        if(request.isDecision()){
+
+            return 1==mapper.setGroupMemberPass(request.getGroupId(),mapper.getIDByName(request.getUserName()));
+        }
+        return 1==mapper.setGroupMemberUnpass(request.getGroupId(),mapper.getIDByName(request.getUserName()));
     }
 }

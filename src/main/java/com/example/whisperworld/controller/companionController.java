@@ -23,6 +23,7 @@ public class companionController extends TextWebSocketHandler {
     private final SimpMessagingTemplate messagingTemplate;
     @Autowired
     companionService service;
+    private ObjectMapper mapper = new ObjectMapper();
     public companionController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
@@ -31,7 +32,6 @@ public class companionController extends TextWebSocketHandler {
         System.out.println("userID:"+userID.toString());
         Map<String,Object> response = new HashMap<>();
         response.put("userID",userID);
-        ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
             json = mapper.writeValueAsString(response); // 将Map对象转换为JSON字符串
@@ -71,7 +71,6 @@ public class companionController extends TextWebSocketHandler {
             response.put("friendNames",name);
             responses.add(response);
         }
-        ObjectMapper mapper = new ObjectMapper();
         String json="";
         try {
             json = mapper.writeValueAsString(responses);
@@ -91,11 +90,10 @@ public class companionController extends TextWebSocketHandler {
     }
     @MessageMapping("/sendMessages")
     public void sendMessage(@RequestParam String message, Principal principal){
-        ObjectMapper objectMapper = new ObjectMapper();
         String name="";
         String content="";
         try {
-            JsonNode jsonNode = objectMapper.readTree(message);
+            JsonNode jsonNode = mapper.readTree(message);
             name = jsonNode.get("friendName").asText();
             content = jsonNode.get("messageContent").asText();
         } catch (JsonProcessingException e1){
@@ -138,17 +136,15 @@ public class companionController extends TextWebSocketHandler {
         Integer friendID=service.getNameByID(friendName);
         Integer userID=Integer.parseInt( principal.getName());
         service.setReceived(userID,friendID);
-        System.out.println("/user/queue/setState/"+friendID);
         messagingTemplate.convertAndSend("/user/queue/setState/"+friendID,service.getNameByID(userID)+"1");
     }
     @MessageMapping("/getMoreHistory")
     public void getMoreHistory(@RequestParam String data,Principal principal){
         System.out.println("data="+data);
-        ObjectMapper objectMapper = new ObjectMapper();
         String friendName ="";
         int start_length=0;
         try {
-            JsonNode jsonNode = objectMapper.readTree(data);
+            JsonNode jsonNode = mapper.readTree(data);
             friendName = jsonNode.get("friendName").asText();
             start_length =jsonNode.get("currentMsg").asInt();
         } catch (JsonProcessingException e1){

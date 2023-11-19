@@ -56,6 +56,10 @@ public class companionService {
         List<Map<String,Object>> responses = new ArrayList<>();
         List<PrivateMessage> fiveReadMsg=mapper.getMoreHistory(userId,receiverId,0,5);
         fiveReadMsg.addAll(unReadMsg);
+        return getString(userId, responses, fiveReadMsg);
+    }
+
+    private String getString(Integer userId, List<Map<String, Object>> responses, List<PrivateMessage> fiveReadMsg) {
         for (int i = fiveReadMsg.size() - 1; i >= 0; i--) {
             responses.add(getOneMessageResponse(fiveReadMsg.get(i),userId));
         }
@@ -68,6 +72,7 @@ public class companionService {
         }
         return json;
     }
+
     public Map<String,Object> getOneMessageResponse(PrivateMessage msg,Integer userID){
         boolean self= msg.getUserId().equals(userID);
         System.out.println(self);
@@ -110,15 +115,6 @@ public class companionService {
         Integer friendID=mapper.getIDByName(friendName);
         List<PrivateMessage> messages=mapper.getMoreHistory(userID,friendID,start_length,50);
         List<Map<String,Object>> responses = new ArrayList<>();
-        for(int i=messages.size()-1;i>=0;i--){
-            responses.add(getOneMessageResponse(messages.get(i),userID));
-        }
-        String json="";
-        try {
-            json = Jsonmapper.writeValueAsString(responses);
-        }catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-        return json;
+        return getString(userID, responses, messages);
     }
 }

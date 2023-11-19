@@ -2,6 +2,7 @@ package com.example.whisperworld.mapper;
 
 import com.example.whisperworld.entity.Friends;
 import com.example.whisperworld.entity.Notification;
+import com.example.whisperworld.specialClasses.groupRequest;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -24,5 +25,14 @@ public interface homeMapper {
 
     @Delete("DELETE FROM friends WHERE userID=#{userId} AND friendID=#{friendId}")
     int deleteFriendApply(Friends friends);
-
+    @Select("SELECT c.GroupName,c.GroupID,u.userName " +
+            "FROM crowds c " +
+            "INNER JOIN crowds_members m ON c.GroupID = m.GroupID " +
+            "INNER JOIN users u ON m.MemberID = u.userID WHERE c.MasterID IN " +
+            "(SELECT GroupID from crowds WHERE MasterID=#{userId})")
+    List<groupRequest> getAllGroupRequest(Integer userId);
+    @Update("UPDATE crowds_members set STATE=true WHERE GroupID=#{groupId} AND MemberID=#{userId}")
+    int setGroupMemberPass(Integer groupId,Integer userId);
+    @Delete("DELETE FROM crowds_members WHERE GroupID=#{groupId} AND MemberID=#{userId}")
+    int setGroupMemberUnpass(Integer groupId,Integer userId);
 }
