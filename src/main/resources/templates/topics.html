@@ -69,6 +69,7 @@
 
                 </div>
             </div>
+            <button @click="getMoreHistory()">更多历史记录</button>
         </div>
     </div>
 
@@ -179,6 +180,15 @@
                         // 处理提交失败的情况，可能显示错误消息
                         alert('评论提交失败，请重试！');
                         console.error(error);
+                    });
+            },
+            getMoreHistory() {
+                axios.get( '/api/getMoreTopics')
+                    .then(response => {
+                        this.topics = this.topics.concat(response.data);
+                    })
+                    .catch(error => {
+                        console.error('获取更多历史记录时发生错误:', error);
                     });
             }
         }
