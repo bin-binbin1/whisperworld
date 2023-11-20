@@ -87,10 +87,10 @@
         el: '#app',
         data: {
             stompClient: null,
-            Groups: [{groupName:'test',groupId:0 }],
+            Groups: [{}],
             groupMembers: [{userName:''}],
             Messages: [
-                {userName: 'lcl', content: '有点冷', time: '2021-10-11',self:true}
+                {}
             ],
             newMessage: '',
             userID: '',
@@ -103,7 +103,7 @@
                     this.data = response.data;
                     //console.log("useId:" +this.userID);
                     console.log("useID:" +this.data.userID);
-                    const socket = new SockJS(`http://localhost:8080/websocket-endpoint/` + this.data.userID);
+                    const socket = new SockJS(`https://whisperworld.cn/websocket-endpoint/` + this.data.userID);
                     // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
                     this.stompClient = Stomp.over(socket);
 
