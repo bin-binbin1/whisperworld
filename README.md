@@ -13,4 +13,10 @@
 ```
 mysql_create_tables.txt
 ```
-
+---
+### 项目成员
+* **bin-binbin1**:后端
+* **Linlincode**:后端
+* **ronnienini**:前端布局
+* **Lin-chenlu**:前端交互
+* **pouy-w**:项目部署

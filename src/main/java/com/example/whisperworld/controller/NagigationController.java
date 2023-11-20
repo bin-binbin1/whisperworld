@@ -23,7 +23,10 @@ public class NagigationController {
         model.addAttribute("name", "World");
         return "public/welcome";
     }
-
+    @GetMapping("/public/help")
+    public String help(Model model){
+        return "/public/help";
+    }
     @GetMapping("/login")
     public String login(Model model){
         //处理 session
