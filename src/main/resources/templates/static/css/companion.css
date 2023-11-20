@@ -1,13 +1,13 @@
 .main-content {
     position: fixed;
-    height: 550px;
-    width:800px;
+    height: 80%;
+    width:auto;
     margin: 0 auto;
     top: 60px;
     /* 调整内容区域的上边距 */
-    right: 380px;
+    right: 28%;
     /* 调整内容区域的右边距，与右侧栏的宽度保持一致 */
-    left: 245px;
+    left: 260px;
     /* 调整内容区域的左边距，与左侧栏的宽度保持一致 */
     border: 2px solid #ccc;
     text-align: center;
@@ -57,7 +57,7 @@
     #background-color: #9face6;
 }
 .input-box{
-    width:500px;
+    width:400px;
     border: 1px solid #ccc;
     #display: flex;
     #background-color: #b6d9d9;
@@ -93,12 +93,13 @@
 .right-sidebar {
     position: fixed;
     overflow: auto;
-    width: 390px;
+    width: 25%;
     /* 减小右侧栏的宽度为 375px */
     height: 585px;
     /* 调整右侧栏的高度 */
     top: 55px;
-    right: 0;
+    #left:1200px;
+    right: 2px;
     margin-bottom: 30px;
     margin-left: auto;
     background-color: #f0f0f0;

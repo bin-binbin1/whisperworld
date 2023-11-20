@@ -12,38 +12,47 @@ section {
     right: 0px;
     bottom: 30px;
     left: 250px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     text-align: center;
     line-height: 4;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
+    overflow-x: scroll;
 }
 
 #left {
     position: absolute;
+    overflow: auto;
     top: 10px;
     left: 0;
     color:#00000090;
-    width: 250px;
+    width: 20%;
     font-weight: bold;
     height: 120px;
     border: 1px solid #d0e4e8;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
-
+#left::-webkit-scrollbar {
+    width: 0.1em;
+}
 #left1 {
+    overflow: auto;
     position: absolute;
     top: 140px;
-    bottom: 10px;
+    bottom: 5px;
     left: 0;
-    width: 250px;
-    height: calc(100% - 190px);
+    right:2%;
+    width: 20%;
+    height: 70%;
     border: 1px solid #d0e4e8;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
+}
+#left1::-webkit-scrollbar {
+    width: 0.1em;
 }
 .send-button {
     width: 80px;
@@ -58,7 +67,7 @@ section {
 .switch{
     width: 90%;
     margin-top: 50px;
-    bottom: 0;
+    bottom: 2px;
     background-color: #F7DE98;
     border: 0;
     height:30px;
@@ -68,11 +77,12 @@ section {
     cursor: pointer;
 }
 .right-sidebar{
+    position: absolute;
     overflow: auto;
-    margin-left: 250px;
+    left: 22%;
     margin-top:10px;
     /* 调整 #right 元素的左边距 */
-    width: 1000px;
+    width: 78%;
     height: 550px;
     border: 1px solid #ccc;
     border-radius: 10px;

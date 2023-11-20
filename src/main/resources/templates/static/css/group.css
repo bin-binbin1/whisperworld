@@ -211,7 +211,7 @@ button:hover {
     background-color: #75c8d8;
 }
 .right{
-    #overflow: auto;
+    overflow: auto;
     position: fixed; /* 使用绝对定位 */
     top: 90px; /* 距离顶部的距离 */
     right: 100px; /* 距离右侧的距离 */
