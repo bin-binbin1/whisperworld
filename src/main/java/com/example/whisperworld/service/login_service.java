@@ -48,7 +48,6 @@ public class login_service implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println(username);//username是ID
         // 通过用户名获取用户信息
         User user = loginMapper.login_pwd(Integer.parseInt(username));//密码&ID
         Supervisor supervisor = loginMapper.loginSuper(Integer.parseInt(username));//判断是否为管理员

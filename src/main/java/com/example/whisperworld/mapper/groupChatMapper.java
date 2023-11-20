@@ -13,10 +13,10 @@ import java.util.List;
 @Mapper
 public interface groupChatMapper {
 
-    @Select(" SELECT GroupName,crowds.GroupID FROM crowds JOIN crowds_members ON crowds.GroupID=crowds_members.GroupID WHERE MemberID=#{userID};")
+    @Select(" SELECT GroupName,crowds.GroupID FROM crowds JOIN crowds_members ON crowds.GroupID=crowds_members.GroupID WHERE MemberID=#{userID} AND STATE=TRUE;")
     List<groups> groups(Integer userID);//查询用户所属组
 
-    @Select("SELECT userName FROM users JOIN crowds_members ON crowds_members.MemberID=users.userID JOIN crowds ON crowds.GroupID=crowds_members.GroupID WHERE crowds.GroupID=#{groupID}")
+    @Select("SELECT userName FROM users JOIN crowds_members ON crowds_members.MemberID=users.userID JOIN crowds ON crowds.GroupID=crowds_members.GroupID WHERE crowds.GroupID=#{groupID} AND crowds_members.STATE=TRUE")
     List<String> members(Integer groupID);//查找群组内的所有成员
 
     @Insert("INSERT INTO crowds_messages VALUES (#{groupId},#{groupMessageId},#{messageContent},#{userId},#{sendTime})")

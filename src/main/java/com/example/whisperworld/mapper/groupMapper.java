@@ -11,10 +11,10 @@ import java.util.Map;
 
 @Mapper
 public interface groupMapper {
-    @Select(" SELECT GroupName AS groupName,crowds.GroupID AS groupId,MasterID AS masterId FROM crowds JOIN crowds_members ON crowds.GroupID=crowds_members.GroupID WHERE MemberID=#{userID};")
+    @Select(" SELECT GroupName AS groupName,crowds.GroupID AS groupId,MasterID AS masterId FROM crowds JOIN crowds_members ON crowds.GroupID=crowds_members.GroupID WHERE MemberID=#{userID} AND STATE=TRUE;")
     List<Map<String,Object>> groups(Integer userID);//查询用户所属组
-    @Select("SELECT GroupName AS groupName, GroupID AS groupId,MasterID AS masterId FROM crowds WHERE GroupName LIKE CONCAT('%',#{input},'%')")
-    List<Map<String,Object>> searchGroups(String input);//检索群聊
+    @Select("SELECT GroupName AS groupName, GroupID AS groupId,MasterID AS masterId FROM crowds WHERE GroupName LIKE CONCAT('%',#{input},'%') AND GroupID NOT IN (SELECT GroupID FROM crowds_members WHERE MemberID=#{userID})")
+    List<Map<String,Object>> searchGroups(String input,Integer userID);//检索群聊
     @Insert("INSERT INTO crowds VALUES (#{groupId},#{masterId},#{managerId},#{groupName},#{createDate},#{groupNum},#{groupBackground})")
     Boolean createGroup(Crowds crowd);//创建群组
     @Insert("INSERT INTO crowds_members VALUES (#{GroupID},#{MemberID},#{state})")

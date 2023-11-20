@@ -24,7 +24,6 @@ public class registerService {
     private PasswordEncoder passwordEncoder;
 
     public int insertUser(User user) {
-        System.out.println("user="+user);
         if(Mapper.getSameNameCount(user)>0)
             return 0;
 

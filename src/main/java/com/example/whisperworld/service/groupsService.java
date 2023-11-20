@@ -21,8 +21,8 @@ public class groupsService {
     public List<Map<String,Object>> groups(Integer userID){//查询用户所属组
         return groupMapper.groups(userID);
     }
-    public List<Map<String,Object>> searchGroups(String input){//检索群聊
-        return groupMapper.searchGroups(input);
+    public List<Map<String,Object>> searchGroups(String input,Integer userID){//检索群聊
+        return groupMapper.searchGroups(input,userID);
     }
     public synchronized Boolean createGroups(Crowds crowds){//创建群聊
         crowds.setGroupId(groupMapper.countCrowds()+1);

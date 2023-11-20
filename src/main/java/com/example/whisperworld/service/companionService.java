@@ -75,7 +75,6 @@ public class companionService {
 
     public Map<String,Object> getOneMessageResponse(PrivateMessage msg,Integer userID){
         boolean self= msg.getUserId().equals(userID);
-        System.out.println(self);
         Map<String,Object> response;
         response= new HashMap<>();
         response.put("content",msg.getMessageContent());
@@ -95,7 +94,6 @@ public class companionService {
             Map<String,Object> response = new HashMap<>();
             response.put("friendNames",name);
             responses.add(response);
-            System.out.println("friendsname"+name);
         }
         String json="";
         try {

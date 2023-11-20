@@ -29,7 +29,6 @@ public class companionController extends TextWebSocketHandler {
     }
     @GetMapping("/api/getCurrentID")
     public ResponseEntity<String> getUserID(@SessionAttribute("loginID") Integer userID){
-        System.out.println("userID:"+userID.toString());
         Map<String,Object> response = new HashMap<>();
         response.put("userID",userID);
         String json="";
@@ -63,7 +62,6 @@ public class companionController extends TextWebSocketHandler {
     @MessageMapping("/getFriends")
     public void getFriendByName(@RequestParam String prefix,Principal principal){
         Integer loginID = Integer.parseInt(principal.getName());
-        System.out.println("loginID"+loginID);
         List<String> names=service.getFriendsByName(loginID,prefix);
         List<Map<String,Object>> responses = new ArrayList<>();
         for(String name : names){
@@ -140,7 +138,6 @@ public class companionController extends TextWebSocketHandler {
     }
     @MessageMapping("/getMoreHistory")
     public void getMoreHistory(@RequestParam String data,Principal principal){
-        System.out.println("data="+data);
         String friendName ="";
         int start_length=0;
         try {

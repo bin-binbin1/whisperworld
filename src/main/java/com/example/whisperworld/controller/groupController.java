@@ -42,10 +42,7 @@ public class groupController extends TextWebSocketHandler {
     }
     @GetMapping("/api/getAllgroups")//获取全部群组
     public ResponseEntity<String> showGroups(@SessionAttribute("loginID") Integer userID){
-        System.out.println("获取群组");
-        System.out.println("userId:"+userID);
         List<Map<String,Object>> crowds = service.groups(userID);
-        System.out.println(crowds);
         String json="";
         try {
             json = mapper.writeValueAsString(crowds); // 将Map对象转换为JSON字符串
@@ -55,15 +52,11 @@ public class groupController extends TextWebSocketHandler {
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
     @GetMapping("/api/searchGroups")//检索群聊
-    public ResponseEntity<String> searchGroups(@RequestParam("searchInput") String searchInput){
-        System.out.println("检索群聊");
-        System.out.println("输入："+searchInput);
+    public ResponseEntity<String> searchGroups(@RequestParam("searchInput") String searchInput,@SessionAttribute("loginID") Integer userID){
         if(searchInput == ""){
             searchInput = " ";
         }
-        List<Map<String,Object>> groups = service.searchGroups(searchInput);
-        System.out.println(groups);
-        System.out.println(groups);
+        List<Map<String,Object>> groups = service.searchGroups(searchInput,userID);
         String json="";
         try {
             json = mapper.writeValueAsString(groups); // 将Map对象转换为JSON字符串
@@ -94,8 +87,6 @@ public class groupController extends TextWebSocketHandler {
 
     @PostMapping("/api/dismissGroup")//解散群聊
     public ResponseEntity<String> dismissGroup(@RequestBody Crowds crowd){
-        System.out.println("解散群聊");
-        System.out.println(crowd.getGroupId());
         Boolean response = service.dismissCrowd(crowd.getGroupId());
         String json="";
         try {
@@ -108,8 +99,6 @@ public class groupController extends TextWebSocketHandler {
 
     @PostMapping("/api/leaveGroup")//退出群聊
     public ResponseEntity<String> leaveGroup(@RequestBody Crowds crowd,@SessionAttribute("loginID") Integer userID){
-        System.out.println("退出群聊");
-        System.out.println(crowd.getGroupId());
         Boolean response = service.leaveGroup(crowd.getGroupId(),userID);
         String json="";
         try {
@@ -122,9 +111,6 @@ public class groupController extends TextWebSocketHandler {
     @PostMapping("/api/groupApply")//申请加群
     public ResponseEntity<String> joinCrowdRequest(@RequestBody CrowdsMembers crowdsMembers, @SessionAttribute("loginID") Integer userID){
         crowdsMembers.setMemberID(userID);
-        System.out.println("申请加群");
-        System.out.println(crowdsMembers.getGroupID());
-        System.out.println(crowdsMembers.getMemberID());
         Boolean response = service.joinCrowdRequest(crowdsMembers);
         String json="";
         try {

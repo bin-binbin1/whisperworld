@@ -40,7 +40,6 @@ public class login_controller {
     @PostMapping("/login/submit")
     public ResponseEntity<String> Login(@RequestBody User user, HttpSession session){
         user.setUserID(loginService.getLoginID(user.getUserName()));
-        System.out.println(user);
 
         Map<String,Object> response = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();

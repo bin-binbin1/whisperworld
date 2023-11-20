@@ -45,7 +45,7 @@ public class homeService {
     }
 
     public boolean setGroupApply(groupApply request) {
-        System.out.println(request.getUserName());
+
         if(request.isDecision()){
 
             return 1==mapper.setGroupMemberPass(request.getGroupId(),mapper.getIDByName(request.getUserName()));
