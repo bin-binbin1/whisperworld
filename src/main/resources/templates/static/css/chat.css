@@ -143,6 +143,69 @@ button:hover {
     #margin-bottom: 10px;
     #background-color: #b6d9d9;
 }
+.message-container {
+    display: flex;
+    flex-direction: column;
+    #justify-content: flex-end; /* Align messages to the right side */
+    margin-bottom: 10px; /* Add some space between message containers */
+}
+.message {
+    padding: 2px;
+    margin: 4px;
+    border-radius: 8px;
+    max-width: 70%; /* Limit the maximum width of the message box */
+    position: relative;
+}
+#self {
+    /* 样式定义，自己发的消息 */
+    background-color: #b3e6cc;
+    width:50%;
+    align-self: flex-end;
+    #padding: 10px;
+    margin: 5px;
+}
+#friend {
+    /* 样式定义，对方发的消息 */
+    background-color: #e6e6e6;
+    align-self: flex-start;
+    width:50%;
+    #padding: 10px;
+    margin: 5px;
+}
+.message .username {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    font-weight: bold;
+    margin: 5px;
+    #color: #888;
+}
+
+.message .time {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    font-size: 0.8em;
+    color: #666;
+    margin: 5px;
+}
+.message .username2 {
+    position: absolute;
+    top: -45px;
+    left: 0;
+    font-weight: bold;
+    margin: 5px;
+    #color: #888;
+}
+
+.message .time2 {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 0.8em;
+    color: #666;
+    margin: 5px;
+}
 .lower-content {
     flex-grow: 1;
     margin-top:0;

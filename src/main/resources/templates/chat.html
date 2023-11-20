@@ -59,11 +59,15 @@
                     <div v-for="message in Messages" :key="message.id" class="message-container">
                         <div v-if="message.self" id="self" class="message">
                             <!-- 表示自己发的内容 -->
-                            {{ message.userName }} - {{ message.content }} - {{ formatDate(message.time) }}
+                            <div class="username">{{ message.userName }}</div>
+                            {{ message.content }}
+                            <div class="time">{{ formatDate(message.time) }}</div>
                         </div>
                         <div v-else id="friend" class="message">
                             <!-- 表示对方发的内容 -->
-                            {{ message.userName }} - {{ message.content }} - {{ formatDate(message.time) }}
+                            <div class="username2">{{ message.userName }}</div>
+                            {{ message.content }}
+                            <div class="time2">{{ formatDate(message.time) }}</div>
                         </div>
                     </div>
                 </div>
