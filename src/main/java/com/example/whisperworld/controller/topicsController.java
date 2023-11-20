@@ -25,36 +25,46 @@ public class topicsController {
         List<topics> responses = topicService.showTopics(0,5);
         return new ResponseEntity<>(topicsToJson(responses), HttpStatus.OK);
     }
-    @GetMapping("/api/getMoreTopics/{length}")
+    @GetMapping("/api/getMoreLikeTopics/{length}")
     public ResponseEntity<String> showMoreTopics(@PathVariable int length){
         List<topics> responses = topicService.showTopics(length,10);
         return new ResponseEntity<>(topicsToJson(responses), HttpStatus.OK);
     }
-    @GetMapping("/api/getComments/{topicId}")//获取全部评论
-    public ResponseEntity<String> showComments(@PathVariable Integer topicId){
-        Topics topic = new Topics();
-        topic.setTopicId(topicId);
-        List<TopicReplies> topicReplies = topicService.showTopicReplies(topic);
-        List<Map<String, Object>> responses = new ArrayList<>();
-        // 遍历通知对象数组，并将每个对象的值添加到 Map 中
-        for (TopicReplies topicReply : topicReplies) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("commentId", topicReply.getCommentId());
-            response.put("topicCommentusername", topicService.getNameByID(topicReply.getCommentUserId()));
-            response.put("commentContent", topicReply.getCommentContent());
-            response.put("commentTime", topicReply.getCommentTime());
-
-            responses.add(response);
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        String json="";
-        try {
-            json = mapper.writeValueAsString(responses); // 将Map对象转换为JSON字符串
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(json, HttpStatus.OK);
+    @GetMapping("/api/getTopicsByTime")
+    public ResponseEntity<String> showTopicsByLatest(){
+        List<topics> responses = topicService.showTopicsByLatest(0,5);
+        return new ResponseEntity<>(topicsToJson(responses), HttpStatus.OK);
     }
+    @GetMapping("/api/getMoreLatestTopics/{length}")
+    public ResponseEntity<String> showTopicsByLatest(@PathVariable int length){
+        List<topics> responses = topicService.showTopicsByLatest(length,10);
+        return new ResponseEntity<>(topicsToJson(responses), HttpStatus.OK);
+    }
+//    @GetMapping("/api/getComments/{topicId}")//获取全部评论
+//    public ResponseEntity<String> showComments(@PathVariable Integer topicId){
+//        Topics topic = new Topics();
+//        topic.setTopicId(topicId);
+//        List<TopicReplies> topicReplies = topicService.showTopicReplies(topic);
+//        List<Map<String, Object>> responses = new ArrayList<>();
+//        // 遍历通知对象数组，并将每个对象的值添加到 Map 中
+//        for (TopicReplies topicReply : topicReplies) {
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("commentId", topicReply.getCommentId());
+//            response.put("topicCommentusername", topicService.getNameByID(topicReply.getCommentUserId()));
+//            response.put("commentContent", topicReply.getCommentContent());
+//            response.put("commentTime", topicReply.getCommentTime());
+//
+//            responses.add(response);
+//        }
+//        ObjectMapper mapper = new ObjectMapper();
+//        String json="";
+//        try {
+//            json = mapper.writeValueAsString(responses); // 将Map对象转换为JSON字符串
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<>(json, HttpStatus.OK);
+//    }
 
 
     @PostMapping("/api/sendtopic")//发布话题

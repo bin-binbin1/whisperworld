@@ -3,6 +3,7 @@ package com.example.whisperworld.service;
 import com.example.whisperworld.entity.TopicReplies;
 import com.example.whisperworld.entity.Topics;
 import com.example.whisperworld.mapper.topicsMapper;
+import com.example.whisperworld.specialClasses.Comments;
 import com.example.whisperworld.specialClasses.topics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,15 @@ public class topicService {
     }
 
     public List<topics> showTopics(int start,int length){//获取所有话题
-        return topicsMapper.topics(start,length);
+        List<topics> tp=topicsMapper.topics(start,length);
+        for(topics t:tp){
+            t.setComments(showTopicReplies(t.getTopicId()));
+        }
+        Collections.reverse(tp);
+        return tp;
     }
-    public List<TopicReplies> showTopicReplies(Topics topics){//获取话题所有评论
-        return topicsMapper.topicReplies(topics);
+    public List<Comments> showTopicReplies(Integer topicId){//获取话题所有评论
+        return topicsMapper.topicReplies(topicId);
     }
     public boolean postTopic(Topics topics){//发布话题
         topics.setTopicLaunchTime(new Date());
@@ -33,11 +39,9 @@ public class topicService {
     private synchronized boolean postTopicId(Topics topics){//生成话题号
         if(topicsMapper.countTopics() == null)
         {
-            System.out.println("当前无话题");
             topics.setTopicId(0);
         }
         else{
-            System.out.println("yyyyyy");
             topics.setTopicId(topicsMapper.countTopics()+1);
         }
         topicsMapper.postTopic(topics);
@@ -67,5 +71,14 @@ public class topicService {
 
     public String getNameByID(Integer userId){
         return topicsMapper.getNameByID(userId);
+    }
+
+    public List<topics> showTopicsByLatest(int start, int length) {
+        List<topics> tp=topicsMapper.topicsByLatest(start,length);
+        for(topics t:tp){
+            t.setComments(showTopicReplies(t.getTopicId()));
+        }
+        Collections.reverse(tp);
+        return tp;
     }
 }

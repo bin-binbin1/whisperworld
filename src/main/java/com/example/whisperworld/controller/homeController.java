@@ -88,7 +88,6 @@ public class homeController {
     }
     @PostMapping("/api/handleGroupRequest")
     public ResponseEntity<String> handleGroupRequest(@RequestBody groupApply request){
-        System.out.println(request);
         boolean result=service.setGroupApply(request);
         return ResponseEntity.ok(""+result);
     }

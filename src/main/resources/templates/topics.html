@@ -115,9 +115,8 @@
 
                 axios.get(apiEndpoint)
                     .then(response => {
-                        // 处理响应，更新话题数据
-                        this.topics = response.data;
-                        this.getComments();
+                        this.$set(this, 'topics', response.data);
+
                     })
                     .catch(error => {
                         console.error('获取话题时发生错误:', error);
@@ -140,7 +139,7 @@
 						.then(response => {
 							// 为每个话题对象指定唯一的 topicId
 							this.topics = response.data;
-							this.getComments();
+							// this.getComments();
 						})
 						.catch(error => {
 							console.error('Error getting notices:', error);
@@ -165,20 +164,20 @@
                     });
             },
             //评论
-            getComments() {
-                // 创建一个 promises 数组，每个元素是一个 Axios 请求
-                const promises = this.topics.map(topic => {
-                    // 返回每个请求的 Promise
-                    return axios.get('/api/getComments/' + topic.topicId)
-                        .then(response => {
-                            // 获取到评论数据后更新话题的评论列表
-                            //topic.comments = response.data;
-                            this.$set(topic, 'comments', response.data);
-                        });
-
-
-                })
-            },
+            // getComments() {
+            //     // 创建一个 promises 数组，每个元素是一个 Axios 请求
+            //     const promises = this.topics.map(topic => {
+            //         // 返回每个请求的 Promise
+            //         return axios.get('/api/getComments/' + topic.topicId)
+            //             .then(response => {
+            //                 // 获取到评论数据后更新话题的评论列表
+            //                 //topic.comments = response.data;
+            //                 this.$set(topic, 'comments', response.data);
+            //             });
+            //
+            //
+            //     })
+            // },
             // 提交评论
             submitComment(topicId) {
                 // 获取评论内容
@@ -210,7 +209,7 @@
                         this.topics[topicid].commentContent = '';
 
                         // 刷新评论数据
-                        this.getComments();
+                        // this.getComments();
                     })
                     .catch(error => {
                         // 处理提交失败的情况，可能显示错误消息
@@ -219,7 +218,8 @@
                     });
             },
             getMoreHistory() {
-                axios.get( '/api/getMoreTopics')
+                const apiEndpoint = this.sortByLike ? '/api/getMoreLikeTopics/' : '/api/getMoreLatestTopics/';
+                axios.get(apiEndpoint+this.topics.length)
                     .then(response => {
                         this.topics = this.topics.concat(response.data);
                     })

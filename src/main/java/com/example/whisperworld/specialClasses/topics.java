@@ -2,6 +2,8 @@ package com.example.whisperworld.specialClasses;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class topics {
     String username;
@@ -9,4 +11,5 @@ public class topics {
     String topicContent;
     Integer topicId;
     Integer likeNum;
+    List<Comments> comments;
 }
