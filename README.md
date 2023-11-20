@@ -20,3 +20,7 @@ mysql_create_tables.txt
 * **ronnienini**:前端布局
 * **Lin-chenlu**:前端交互
 * **pouy-w**:项目部署
+
+----
+# 网站v1.0正式上线!
+有问题请在pull requests中提出
