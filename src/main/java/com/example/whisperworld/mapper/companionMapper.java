@@ -8,17 +8,17 @@ import java.util.List;
 
 @Mapper
 public interface companionMapper {
-    @Select("SELECT userName FROM users WHERE userID in (SELECT friendId FROM Friends WHERE userId=#{userId} AND STATE=true )")
+    @Select("SELECT userName FROM users WHERE userID in (SELECT friendId FROM friends WHERE userId=#{userId} AND STATE=true )")
     List<String> getAllFriends(Integer userId);
-    @Insert("INSERT INTO friends VALUES(#{userId},#{friendId},false)")
+    @Insert("INSERT INTO friends VALUES(#{userId},#{friendId},false,false)")
     int applyFriend(Friends friends);
     @Delete("DELETE FROM friends WHERE userID=#{userID} AND FriendID=#{friendID}")
     void deleteFriends(Integer userID,Integer friendID);
     @Delete("DELETE FROM private_messages WHERE userID=#{userID} AND ReceiverID=#{friendID}")
     void deleteMsgs(Integer userID,Integer friendID);
-    @Select("SELECT userName FROM users WHERE userID IN (SELECT friendID FROM Friends WHERE userID = #{userId} AND STATE=true ) AND userName LIKE CONCAT(#{prefix}, '%')")
+    @Select("SELECT userName FROM users WHERE userID IN (SELECT friendID FROM friends WHERE userID = #{userId} AND STATE=true ) AND userName LIKE CONCAT(#{prefix}, '%')")
     List<String> getFriendsByNAME(Integer userId, String prefix);
-    @Select("SELECT userName FROM users WHERE userID NOT IN (SELECT userID FROM Friends WHERE friendID = #{userId} ) AND userName LIKE CONCAT(#{prefix}, '%') AND userID NOT IN (#{userId})")
+    @Select("SELECT userName FROM users WHERE userID NOT IN (SELECT userID FROM friends WHERE friendID = #{userId} ) AND userName LIKE CONCAT(#{prefix}, '%') AND userID NOT IN (#{userId})")
     List<String> getPeopleByNAME(Integer userId, String prefix);
     @Update("UPDATE private_messages SET ReceiveState=true WHERE userID=#{userId} AND ReceiverID=#{receiverId}")
     void setReceived(Integer userId,Integer receiverId);

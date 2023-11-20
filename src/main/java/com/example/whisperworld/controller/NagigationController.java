@@ -25,7 +25,7 @@ public class NagigationController {
     }
     @GetMapping("/public/help")
     public String help(Model model){
-        return "/public/help";
+        return "public/help";
     }
     @GetMapping("/login")
     public String login(Model model){

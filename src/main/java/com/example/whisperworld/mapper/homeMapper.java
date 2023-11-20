@@ -17,7 +17,7 @@ public interface homeMapper {
     @Update("UPDATE friends set STATE=true WHERE UserID=#{userId} AND friendID=#{friendId}")
     int setFriendPass(Friends friends);
 
-    @Insert("INSERT INTO friends VALUES (#{friendId}, #{userId}, true)")
+    @Insert("INSERT INTO friends VALUES (#{friendId}, #{userId}, true, false)")
     int insertFriend(Friends friends);
 
     @Select("SELECT userID FROM users WHERE userName=#{name}")
