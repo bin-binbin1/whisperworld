@@ -53,7 +53,7 @@
                     <hr>
                 </div>
                 <div v-for="grouprequest in groupRequests" :key="grouprequest.groupId">
-                    <p> {{ grouprequest.userName }} 申请加入{{ grouprequest.groupName }}</p>
+                    <p> {{ grouprequest.userName }} 申请加入 {{ grouprequest.groupName }} </p>
                     <button @click="handleGroupRequest(grouprequest.userName,grouprequest.groupId , true)">添加</button>
                     <button @click="handleGroupRequest(grouprequest.userName,grouprequest.groupId , false)">拒绝</button>
                     <hr>
