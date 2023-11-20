@@ -102,15 +102,11 @@
                 .then(response => {
                     this.data = response.data;
                     //console.log("useId:" +this.userID);
-                    console.log("useID:" +this.data.userID);
                     const socket = new SockJS(`https://whisperworld.cn/websocket-endpoint`);
                     // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
                     this.stompClient = Stomp.over(socket);
 
                     this.stompClient.connect({}, () => {
-                        console.log('Connected to server');
-                        console.log('stompClient:', this.stompClient);
-                        console.log("userID:"+this.data.userID);
                         //获取群名称
                         this.stompClient.subscribe('/user/queue/groups/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
@@ -125,13 +121,13 @@
                         this.stompClient.subscribe('/user/queue/receiveHistory/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.$set(this, 'Messages', response);
-                            console.log("History" + response);
                         });
                         //获取消息
                         this.stompClient.subscribe('/user/queue/groupMsg/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
-                            console.log("response"+response);
-                            this.Messages.push(response);
+                            if(response.GroupID===this.groupID) {
+                                this.Messages.push(response);
+                            }
                         });
                         this.stompClient.subscribe('/user/queue/moreChatHistory/'+this.data.userID,(data) => {
                             let response = JSON.parse(data.body);

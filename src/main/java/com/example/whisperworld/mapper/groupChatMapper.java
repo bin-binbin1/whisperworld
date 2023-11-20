@@ -27,7 +27,7 @@ public interface groupChatMapper {
     @Select("SELECT MemberID FROM crowds_members WHERE MemberID <> #{userID};")
     List<Integer> toOtherMembers(Integer userID);//将信息发送给其他群组成员
 
-    @Select("SELECT ConversationContent AS content,userName,SendTime AS time,CASE WHEN users.userID=#{userID} THEN 'true' ELSE 'false' END AS self FROM crowds_messages JOIN users ON crowds_messages.UserID=users.userID WHERE GroupID=#{groupID} ORDER BY SendTime DESC LIMIT 50 OFFSET #{num}")
+    @Select("SELECT GroupID, ConversationContent AS content,userName,SendTime AS time,CASE WHEN users.userID=#{userID} THEN 'true' ELSE 'false' END AS self FROM crowds_messages JOIN users ON crowds_messages.UserID=users.userID WHERE GroupID=#{groupID} ORDER BY SendTime DESC LIMIT 50 OFFSET #{num}")
     List<historyMsg> historyMsg(Integer userID,Integer groupID,Integer num);//查询群聊历史消息
 
     @Select("SELECT COUNT(*) FROM crowds_messages WHERE GroupID=#{groupID}")

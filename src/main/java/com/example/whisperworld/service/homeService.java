@@ -28,14 +28,15 @@ public class homeService {
     }
 
     public boolean setFriendApply(Integer userId,String friendName,boolean state){
-
-        Friends friends = new Friends();
-        friends.setFriendId(mapper.getIDByName(friendName));
-        friends.setUserId(userId);
+        Integer friendId=mapper.getIDByName(friendName);
         if(state){
-            return mapper.setFriendPass(friends)+mapper.insertFriend(friends)==2;
+            mapper.setFriendPass(userId,friendId);
+            if(mapper.setFriendPass(friendId,userId)==0){
+                mapper.insertFriend(userId,friendId);
+            }
+            return true;
         }else{
-            return mapper.deleteFriendApply(friends)==1;
+            return mapper.deleteFriendApply(userId,friendId)==1;
         }
     }
 
