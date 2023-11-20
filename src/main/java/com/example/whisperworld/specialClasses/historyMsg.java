@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class historyMsg {
+    Integer GroupID;
     String content;
     String userName;
     Date time;

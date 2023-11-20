@@ -121,9 +121,13 @@ public class groupChatContoller extends TextWebSocketHandler {
                 e.printStackTrace();
             }
             messagingTemplate.convertAndSend("/user/queue/groupMsg/"+userID,json);//发送给自己
-
+            message.setSelf(false);
+            try {
+                json = mapper.writeValueAsString(message);
+            }catch (JsonProcessingException e){
+                e.printStackTrace();
+            }
             for(Integer otherID : others){
-                message.setSelf(false);
                 messagingTemplate.convertAndSend("/user/queue/groupMsg/"+otherID,json);//发送给其他群组成员
             }
 

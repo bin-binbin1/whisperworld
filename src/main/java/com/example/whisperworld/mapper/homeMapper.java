@@ -15,16 +15,16 @@ public interface homeMapper {
     @Select("SELECT userName FROM users WHERE userID in (SELECT FriendID FROM friends WHERE userID=#{userId} AND STATE=false)")
     List<String> getFriendNames(Integer userId);
     @Update("UPDATE friends set STATE=true WHERE UserID=#{userId} AND friendID=#{friendId}")
-    int setFriendPass(Friends friends);
+    int setFriendPass(Integer userId,Integer friendId);
 
-    @Insert("INSERT INTO friends VALUES (#{friendId}, #{userId}, true)")
-    int insertFriend(Friends friends);
+    @Insert("INSERT INTO friends VALUES (#{friendId}, #{userId}, true, false)")
+    int insertFriend(Integer userId,Integer friendId);
 
     @Select("SELECT userID FROM users WHERE userName=#{name}")
     Integer getIDByName(String name);
 
     @Delete("DELETE FROM friends WHERE userID=#{userId} AND friendID=#{friendId}")
-    int deleteFriendApply(Friends friends);
+    int deleteFriendApply(Integer userId,Integer friendId);
     @Select("SELECT c.GroupName,c.GroupID,u.userName " +
             "FROM crowds c " +
             "INNER JOIN crowds_members m ON c.GroupID = m.GroupID " +

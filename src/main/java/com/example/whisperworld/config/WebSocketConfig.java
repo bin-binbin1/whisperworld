@@ -15,7 +15,7 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
 
     @Override
     protected void configureStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket-endpoint/{userID}").withSockJS();
+        registry.addEndpoint("/websocket-endpoint").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
