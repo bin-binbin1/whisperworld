@@ -4,7 +4,7 @@ section {
     height: auto;
     top: 55px; /* 调整内容区域的上边距 */
     right: 0;
-    bottom: 30px;
+    bottom: 55px;
     left: 250px;
     background-color: #FFFFFF;
     text-align: center;
@@ -15,13 +15,13 @@ section {
     justify-content: center;
 }
 .left{
-    overflow: auto;
+    #overflow: auto;
     position: absolute; /* 使用绝对定位 */
-    top: 10px; /* 距离顶部的距离 */
+    top: 3%; /* 距离顶部的距离 */
     left: 20px; /* 距离左侧的距离 */
     float:left;
-    width:300px;
-    height: 260px;
+    width:24%;
+    height: 43%;
     border: 1px solid #ccc;
     border-radius:10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
@@ -71,11 +71,11 @@ button:hover {
     overflow: auto;
     position: absolute;
     float:left;
-    #top: 140px;
-    bottom: 50px;
+    top:49%;
+    #bottom: 50px;
     left: 20px;
-    width: 300px;
-    height: 260px;
+    width: 24%;
+    height: 43%;
     border: 1px solid #d0e4e8;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
@@ -116,17 +116,20 @@ button:hover {
 
 .right{
     overflow: auto;
-    position: fixed; /* 使用绝对定位 */
-    top: 70px; /* 距离顶部的距离 */
-    right: 30px; /* 距离右侧的距离 */
-    width:840px;
-    height:550px;
+    position: absolute; /* 使用绝对定位 */
+    top: 3%; /* 距离顶部的距离 */
+    right: 3%; /* 距离右侧的距离 */
+    width:66%;
+    height:90%;
     border: 1px solid #ccc;
     border-radius:10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
 }
 .right header{
-    height:50px;
+    #position: relative;
+    height:55px;
     border: 2px solid #ccc;
     background-color: #b6d9d9;
     padding-bottom: 10px;
@@ -135,6 +138,7 @@ button:hover {
     color:#ffffff;
 }
 .upper-content {
+
     flex-grow: 2;
     height: 380px;
     border: 1px solid #ccc;
@@ -208,6 +212,7 @@ button:hover {
 }
 .lower-content {
     flex-grow: 1;
+    position: relative;
     margin-top:0;
     display: flex;
     flex-direction: column;

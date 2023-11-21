@@ -3,23 +3,24 @@ h2 {
     text-align: center;
 }
 .container{
-    position: fixed;
+    position: absolute;
     display: flex;
-    top:55px;
-    width:800px;
-    height:550px;
+    top:1%;
+    left:15%;
+    width:70%;
+    height:90%;
     flex-direction: column;
     justify-content: center;
-    #background-color: #F1939C;
+    background-color: #F1939C;
 }
 .outer-container1 {
     #position: absolute;
-    height:200px;
+    height:40%;
     background-color: rgba(199, 238, 238, 0.5);
     border: 1px solid #ccc;
     border-radius: 10px;
-    max-width: 800px;
-    margin-top: 30px;
+    #width: 600px;
+    margin-top: 4%;
     text-align: center;
     #align-items: flex-start;
     justify-content: center;
@@ -29,17 +30,17 @@ h2 {
     align-content: center;
     flex-direction: column;
     #overflow-y: scroll;
-    max-height: 400px;
+    #max-height: 400px;
 }
 .outer-container2 {
     background-color: rgba(199, 238, 238, 0.5);
     border: 1px solid #ccc;
     border-radius: 10px;
-    height:220px;
-    max-width: 800px;
+    height:40%;
+    #max-width: 800px;
     text-align: center;
     margin-top:30px;
-    top: 20px;
+    top: 3%;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     padding: 10px;
@@ -52,18 +53,21 @@ h2 {
 
 section {
     position: fixed;
-    width: 1000px;
-    height:600px;
+    overflow-y: auto;
+    #width: auto;
+    #height:auto;
     top: 55px;
     /* 调整内容区域的上边距 */
     bottom: 30px;
-    margin-left: 400px;
+    left: 250px;
+    right:0;
     text-align: center;
     line-height: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    #background-color: #F1939C;
 }
 
 .announcement-container {

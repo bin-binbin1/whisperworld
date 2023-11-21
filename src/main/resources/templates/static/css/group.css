@@ -28,11 +28,11 @@ section {
 .left{
     #overflow: auto;
     position: absolute; /* 使用绝对定位 */
-    top: 10px; /* 距离顶部的距离 */
-    left: 100px; /* 距离左侧的距离 */
+    top: 2%; /* 距离顶部的距离 */
+    left: 8%; /* 距离左侧的距离 */
     float:left;
-    width:400px;
-    height: 270px;
+    width:32%;
+    height: 45%;
     border: 1px solid #ccc;
     border-radius:10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
@@ -105,10 +105,10 @@ button:hover {
     #overflow: auto;
     position: absolute;
     #float:left;
-    bottom: 45px;
-    left: 100px;
-    width: 400px;
-    height: 275px;
+    top: 49%;
+    left: 8%;
+    width: 32%;
+    height: 44%;
     border: 1px solid #d0e4e8;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
@@ -161,13 +161,10 @@ button:hover {
      margin-top: 0;
      height:160px;
      overflow-y: scroll;
-     width: 370px;
+     width: 92%;
      margin-left: 7%;
      #background-color: #F1939C;
  }
-.group-list2::-webkit-scrollbar {
-    width: 0.1em;
-}
 .group-list2::-webkit-scrollbar {
     width: 0.1em;
 }
@@ -180,7 +177,7 @@ button:hover {
     #background-color: #F1939C;
 }
 .p {
-    width: 242px;
+    width: 68%;
     display: flex;
     align-items: center;
     background-color: #b6d9d9;
@@ -212,11 +209,11 @@ button:hover {
 }
 .right{
     overflow: auto;
-    position: fixed; /* 使用绝对定位 */
-    top: 90px; /* 距离顶部的距离 */
-    right: 100px; /* 距离右侧的距离 */
-    width:550px;
-    height:500px;
+    position: absolute; /* 使用绝对定位 */
+    top: 10%; /* 距离顶部的距离 */
+    right: 7%; /* 距离右侧的距离 */
+    width:44%;
+    height:75%;
     border: 1px solid #ccc;
     border-radius:10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

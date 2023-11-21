@@ -9,7 +9,9 @@ h2{
     border-radius: 15px;
     max-width: 600px;
     #margin: 0 auto;
-    top: 20px;
+    top: 8%;
+    left:30%;
+    width:40%;
     text-align:center;
     #align-items: center;
     justify-content: center;
@@ -27,11 +29,13 @@ h2{
 }
 section {
     position: fixed;
-    width: 600px;
-    height: 550px;
-    top: 80px; /* 调整内容区域的上边距 */
-    left: 550px;
-    #background-color: #9face6;
+    #width: 600px;
+    #height: 550px;
+    top: 55px; /* 调整内容区域的上边距 */
+    left: 250px;
+    right:0;
+    bottom: 55px;
+    background-color: #9face6;
     text-align: center;
     line-height: 2;
     display: flex;
@@ -44,7 +48,7 @@ section {
     margin-top: 10px;
     overflow: auto;
     height: 320px;
-    width: 500px;
+    width: 100%;
     padding-top: 15px;
     line-height: 2.5;
     background-color: #B2DFEE;
