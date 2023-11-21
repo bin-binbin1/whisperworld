@@ -88,7 +88,7 @@
         data: {
             stompClient: null,
             Groups: [{}],
-            groupMembers: [{userName:''}],
+            groupMembers: [{userName: ''}],
             Messages: [
                 {}
             ],
@@ -125,11 +125,12 @@
                         //获取消息
                         this.stompClient.subscribe('/user/queue/groupMsg/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
-                            if(response.GroupID===this.groupID) {
+                            if (response.GroupID === this.groupId) {
                                 this.Messages.push(response);
+                                setTimeout(() => this.scrollToBottom(), 150);
                             }
                         });
-                        this.stompClient.subscribe('/user/queue/moreChatHistory/'+this.data.userID,(data) => {
+                        this.stompClient.subscribe('/user/queue/moreChatHistory/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
                             this.Messages.unshift(...response);
                         });
@@ -190,17 +191,36 @@
                 this.showGroupHistory(this.groupId);
                 // 将选中的群组的名称保存到变量中
                 const selectedGroup = this.Groups.find(group => group.groupId === groupId);
-                this.selectedGroupName = selectedGroup ? selectedGroup.groupName:'';
+                this.selectedGroupName = selectedGroup ? selectedGroup.groupName : '';
             },
-            getMoreHistory(){
+            getMoreHistory() {
                 if (this.stompClient) {
-                    var data={
-                        "groupId":this.groupId,
-                        "currentMsg":this.Messages.length
+                    var data = {
+                        "groupId": this.groupId,
+                        "currentMsg": this.Messages.length
                     }
-                    this.stompClient.send('/send/getMoreChatHistory',{},JSON.stringify(data));
+                    this.stompClient.send('/send/getMoreChatHistory', {}, JSON.stringify(data));
                 }
             },
+            scrollToBottom() {
+                const container = this.$refs.scrollContainer;
+                const distanceToBottom = container.scrollHeight - (container.scrollTop + container.clientHeight);
+
+                if (distanceToBottom < 100) { // 如果距离底部小于150像素
+                    const totalScrollDistance = container.scrollHeight - container.scrollTop;
+                    const totalScrollTime = 1000; // T时间，单位为毫秒
+                    const scrollStep = totalScrollDistance / (totalScrollTime / 16.67); // 每一帧的滚动距离
+
+                    const scroll = () => {
+                        if (container.scrollTop < container.scrollHeight - container.clientHeight) {
+                            container.scrollTop += scrollStep;
+                            window.requestAnimationFrame(scroll);
+                        }
+                    };
+
+                    window.requestAnimationFrame(scroll);
+                }
+            }
         },
     });
 </script>

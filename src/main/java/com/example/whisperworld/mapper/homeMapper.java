@@ -29,7 +29,7 @@ public interface homeMapper {
             "FROM crowds c " +
             "INNER JOIN crowds_members m ON c.GroupID = m.GroupID " +
             "INNER JOIN users u ON m.MemberID = u.userID WHERE c.MasterID IN " +
-            "(SELECT GroupID from crowds WHERE MasterID=#{userId} AND STATE=FALSE)")
+            "(SELECT GroupID from crowds WHERE MasterID=#{userId}) AND STATE=FALSE")
     List<groupRequest> getAllGroupRequest(Integer userId);
     @Update("UPDATE crowds_members set STATE=true WHERE GroupID=#{groupId} AND MemberID=#{userId}")
     int setGroupMemberPass(Integer groupId,Integer userId);
