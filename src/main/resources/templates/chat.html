@@ -125,7 +125,7 @@
                         //获取消息
                         this.stompClient.subscribe('/user/queue/groupMsg/' + this.data.userID, (data) => {
                             let response = JSON.parse(data.body);
-                            if (response.GroupID === this.groupId) {
+                            if (response.groupID === this.groupId) {
                                 this.Messages.push(response);
                                 setTimeout(() => this.scrollToBottom(), 150);
                             }

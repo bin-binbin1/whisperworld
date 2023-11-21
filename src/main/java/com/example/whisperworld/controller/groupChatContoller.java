@@ -113,6 +113,7 @@ public class groupChatContoller extends TextWebSocketHandler {
             message.setContent(crowdsMessage.getMessageContent());
             message.setTime(crowdsMessage.getSendTime());
             message.setSelf(true);
+            message.setGroupID(crowdsMessage.getGroupId());
 //            ObjectMapper mapper = new ObjectMapper();
             String json="";
             try {
