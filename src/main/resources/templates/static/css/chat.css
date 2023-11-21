@@ -68,7 +68,7 @@ button:hover {
     background-color: #d0e4e8;
 }
 .left1{
-    overflow: auto;
+    #overflow: auto;
     position: absolute;
     float:left;
     top:49%;
