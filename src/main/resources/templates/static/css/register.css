@@ -102,3 +102,20 @@ form b{
 .foot{
     text-align:center;
 }
+.footer{
+    position: fixed;
+    width: 100%;
+    height: auto;
+    /* 调整页脚的高度 */
+    top: auto;
+    bottom: 3px;
+    right: 0;
+    left: 0;
+    color: #000000;
+    #background-color: #75c8d8;
+    text-align: center;
+    font-size: 14px;
+}
+.footer a{
+    color: white;
+}
