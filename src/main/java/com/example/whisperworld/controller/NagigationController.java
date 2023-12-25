@@ -73,6 +73,10 @@ public class NagigationController {
         session.invalidate();//清空session
         return "public/welcome";
     }
+    @GetMapping("/novel")
+    public String novel(Model model){
+        return "public/novel";
+    }
 
     @GetMapping("/asdfsdarfsrawerawrwaerwer")
     public String admin(Model model){
