@@ -1,12 +1,23 @@
 package com.example.whisperworld.controller;
 
+import com.example.whisperworld.entity.Novel;
+import com.example.whisperworld.entity.bookmark;
+import com.example.whisperworld.entity.bookmarks;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.whisperworld.service.novelService;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class novelController {
@@ -15,52 +26,51 @@ public class novelController {
     public novelController(novelService service){
         this.service=service;
     }
-
-    @GetMapping("/novel/{id}/content")
-    public String getNovelContentById(@PathVariable int id, Model model) throws IOException {
-        String content = service.getNovelContentById(id);
-        model.addAttribute("content", content);
-        return "novelDetail";
+    @GetMapping("/novel/getAll")
+    public ResponseEntity getAllnovels(){
+        List<Novel> novel= service.getNovels();
+        ObjectMapper mapper=new ObjectMapper();
+        String json="";
+        try{
+            json = mapper.writeValueAsString(novel);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(json);
     }
-
-    @GetMapping("/novel/{id}/nextPage")
-    public String getNextPage(@PathVariable int id, Model model) throws IOException {
-        String content = service.getNextPage(id);
-        model.addAttribute("content", content);
-        return "novelDetail";
+    @GetMapping("/novel/content/{id}/{chapter}/{page}")
+    public ResponseEntity getNovelContentById(@PathVariable int id
+            ,@PathVariable int chapter
+            ,@PathVariable int page) throws IOException {
+        String content = service.getContent(id,chapter,page);
+        Map<String,Object> m=new HashMap<>();
+        m.put("content",content);
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try {
+            json = mapper.writeValueAsString(m); // 将Map对象转换为JSON字符串
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(json, HttpStatus.OK);
     }
-
-    @GetMapping("/novel/{id}/nextChapter")
-    public String getNextChapter(@PathVariable int id, Model model) throws IOException {
-        String content = service.getNextChapter(id);
-        model.addAttribute("content", content);
-        return "novelDetail";
+    @GetMapping("/novel/getBookmark")
+    public ResponseEntity getBookmark(Principal principal){
+        List<bookmark> mark=service.getBookmark(principal.getName());
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        try{
+            json  = mapper.writeValueAsString(mark);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(json);
     }
+    @PostMapping("/novel/addBookmark")
+    public ResponseEntity addBookmark(@RequestBody bookmarks marks){
+        service.addmark(marks);
 
-    @GetMapping("/novel/{id}/jumpPage/{pageNumber}")
-    public String jumpToPage(@PathVariable int id, @PathVariable int pageNumber, Model model) throws IOException {
-        String content = service.jumpToPage(id, pageNumber);
-        model.addAttribute("content", content);
-        return "novelDetail";
-    }
-
-    @PostMapping("/novel/{id}/addBookmark")
-    public String addBookmark(@PathVariable int id, @RequestParam int pageNumber, Model model) {
-        String message = service.addBookmark(id, pageNumber);
-        model.addAttribute("message", message);
-        return "bookmarkAdded";
-    }
-
-    @GetMapping("/novel/{id}/download")
-    public String downloadNovel(@PathVariable int id, Model model) {
-        String downloadLink = service.downloadNovel(id);
-        model.addAttribute("downloadLink", downloadLink);
-        return "downloadNovel";
-    }
-
-    @GetMapping("/novel/{id}/close")
-    public String closeNovel(@PathVariable int id) {
-        return service.closeNovel(id);
+        return ResponseEntity.ok("");
     }
 
 }

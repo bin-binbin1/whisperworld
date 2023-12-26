@@ -242,3 +242,24 @@ insert into supervisors values(0,CURDATE());
 insert into notifications values (0,"欢迎来到低语世界",CURDATE(),0);
 insert into topics values(0,0,0,curdate(),"欢迎来到低语世界",0);
 insert into crowds values(0,0,0,"低语世界",curdate(),1,"低语世界专用群");
+
+
+CREATE TABLE novels (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    author VARCHAR(50),
+    description VARCHAR(255),
+    chapter INT NOT NULL
+);
+
+CREATE TABLE bookmarks (
+    userID INT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    novel_id INT,
+    page_number INT,
+    chapter INT,
+    FOREIGN KEY (novel_id) REFERENCES novels(id),
+    FOREIGN KEY (userID) REFERENCES users(userID)
+);
+
+
