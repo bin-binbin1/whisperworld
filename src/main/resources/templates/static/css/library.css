@@ -1,0 +1,105 @@
+
+section {
+    position: fixed;
+    width: auto;
+    height: auto;
+    top: 55px;
+    /* 调整内容区域的上边距 */
+    right: 0px;
+    bottom: 30px;
+    left: 250px;
+    background-color: #ffffff;
+    /*text-align: center;*/
+    /*line-height: 2;*/
+    display: flex;
+    flex-direction: row;
+    /*align-items: flex-start;*/
+    /*justify-content: center;*/
+
+}
+.container {
+    position: absolute;
+    overflow: auto;
+    left: 4%;
+    margin-top:10px;
+    /* 调整 #right 元素的左边距 */
+    width: 55%;
+    height: 91%;
+    text-align: left;
+    line-height: 2;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    border: 1px solid #d0e4e8;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
+}
+.bookmark {
+    position: absolute;
+    overflow: auto;
+    width: 35%;
+    height: 91%;
+    margin-top:10px;
+    right:4%;
+    background-color: #e7efef;
+
+    line-height: 2;
+    overflow-y: scroll;
+    border: 1px solid #d0e4e8;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
+}
+.novel-info {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column; /* Change to column to make the buttons stack vertically */
+    align-items: center;
+}
+.title{
+    color:#00000090;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: left;
+}
+.author, .description, .chapter {
+    margin-top: 5px; /* 调整作者、简介和章节之间的垂直间距 */
+}
+
+.download-button {
+    width: 80px;
+    background-color: #75c8d8;
+    border: 0;
+    height:30px;
+    color:#ffffff;
+    font-weight: bold;
+    border-radius:10px;
+    cursor: pointer;
+}
+.signature {
+    padding: 10px;
+    background-color: #d0e4e8;
+    color: #181818;
+    height:55px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+    text-align: center ;
+    /* 设置文字颜色为白色 */
+}
+.bookmark-button{
+    width: 100%;
+    background-color: #75c8d8;
+    border: 0;
+    height:50px;
+    color:#ffffff;
+    font-weight: bold;
+    border-radius:10px;
+    cursor: pointer;
+}
+.bookmark_title{
+    font-size: 18px;
+    margin-right: 40px;
+}

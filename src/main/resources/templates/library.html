@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="static/vue/logout.js"></script>
+    <title>图书</title>
+    <link href="static/css/library.css" rel="stylesheet" type="text/css">
+    <link href="static/css/navigation.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="header">
+    <span style="margin-left: 10px;font-weight: bold;">whisperworld</span>
+</div>
+<aside>
+    <div class="nav" id="out">
+        <span style="font-size: 20px;  letter-spacing: 2px;">功能列表</span>
+        <a href="/home">首页</a>
+        <a href="/companion">好友</a>
+        <a href="/group">群组</a>
+        <a href="/topics">话题</a>
+        <a href="/library" class="active">图书</a>
+        <a href="/profile">个人中心</a>
+        <a href="/logout" @click.prevent="logout">退出登录</a>
+    </div>
+</aside>
+<section>
+    <div id="app" th:inline="none">
+        <div class="container">
+            <ul >
+                <div v-for="novel in novels" class="novel-container":key="novel.id">
+                    <div class="novel-info">
+
+                        <a href="`/novel/${novel.id}/${novel.chapter}/1`">
+                            <p class="title">{{ novel.title }}</p>
+                        </a>
+                        <p class="author">作者:{{ novel.author }}</p>
+                        <p class="description">简介:{{novel.description }}</p>
+                        <p class="chapter">章节:{{novel.chapter}}</p>
+
+                        <button class="download-button" @click="download(novel.id, novel.chapter,novel.title)">Download</button>
+                        </div>
+
+                </div>
+            </ul>
+        </div>
+        <div class="bookmark">
+            <div class="signature">书签</div>
+            <ul class="bookmark-container">
+                <li v-for="bookmark in bookmarks" :key="bookmark.title">
+                    <div class="mark">
+                        <button class="bookmark-button" @click="getPage(bookmark.title)">
+                            <span class="bookmark_title"> {{ bookmark.title }}</span>
+                            <span class="bookmark_chapter">章节:{{bookmark.chapter}} 页数:{{bookmark.page}}</span>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<div class="footer">欢迎使用社交网络系统</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            bookmarks:[{
+                title: 'Novel 1',
+                chapter: 5,
+                page: 1
+            }],
+            novels: [
+                {
+                    id: 1,
+                    title: 'Novel 1',
+                    author: 'Author 1',
+                    description: '《百年孤独》写的是布恩地亚一家七代人充满神奇色彩的坎坷经历和马贡多这个小镇一百多年来从兴建、发展、鼎盛及至消亡的历史。作品内容复杂，人物众多，情节离奇，手法新颖，它汇集了不可思议的奇迹和最纯粹的现实生活，深刻反映了歌伦比亚乃至整个拉美大陆的历',
+                    chapter: 5,
+                    page: 1
+                },
+                {
+                    id: 1,
+                    title: 'Novel 1',
+                    author: 'Author 1',
+                    description: 'Description 1',
+                    chapter: 5,
+                    page: 1
+                },
+                {
+                    id: 2,
+                    title: 'Novel 2',
+                    author: 'Author 2',
+                    description: 'Description 2',
+                    chapter: 8,
+                    page: 2
+                },
+                // Add more novels as needed
+            ],
+            content:null
+            // novels:[]
+        },
+        created(){
+            this.getAll();
+            this.getBookmark();
+        },
+        methods:{
+            getAll() {
+               axios.get('/novel/getAll')
+                   .then(response => {
+                       this.novels = response.data;
+                   })
+                   .catch(error => {
+                       console.error('Error getting novels:', error);
+                   });
+            },
+            getBookmark() {
+                axios.get('/novel/getBookmark')
+                    .then(response => {
+                        this.bookmarks = response.data;
+                    })
+                    .catch(error => {
+                    console.error('Error getting bookmarks:', error);
+                });
+            },
+            // getPage(id,chapter,page){
+            //     this.$router.push({
+            //         name: 'ContentPage', // 用你实际的内容页面路由名替代
+            //         params: { id, chapter, page },
+            //     });
+            // },
+            download(id, chapter, title) {
+                // Make a GET request to the /novel/download endpoint
+                axios.get('/novel/download', {
+                    responseType: 'blob', // Set the response type to blob
+                    params: {
+                        id,
+                        chapter,
+                    },
+                })
+                    .then(response => {
+                        // Create a Blob from the response data
+                        const blob = new Blob([response.data], { type: 'text/plain' });
+
+                        // Create a temporary link element
+                        const link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+
+                        // Set the download file name to the novel's title
+                        link.download = `${title}.txt`;
+
+                        document.body.appendChild(link);
+
+                        // Simulate a click to trigger the download
+                        link.click();
+
+                        // Remove the temporary link
+                        document.body.removeChild(link);
+                    })
+                    .catch(error => {
+                        // Log an error if there's an issue with the request
+                        console.error('Error downloading TXT file:', error);
+                    });
+            },
+        }
+    })
+</script>
+</body>
+</html>
