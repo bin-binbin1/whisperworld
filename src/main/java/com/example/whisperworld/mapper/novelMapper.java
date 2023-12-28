@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper
 public interface novelMapper {
-    @Select("SELECT id,author,description,chapter FROM novels")
+    @Select("SELECT id,title,author,description,picture,chapter FROM novels")
     List<Novel> getAllNovels();
     @Select("SELECT path FROM novels WHERE id=#{id}")
     String getPathByID(int id);
