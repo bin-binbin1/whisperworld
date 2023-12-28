@@ -10,7 +10,7 @@ section {
     left: 250px;
     background-color: #ffffff;
     /*text-align: center;*/
-    /*line-height: 2;*/
+    line-height: 2;
     display: flex;
     flex-direction: row;
     /*align-items: flex-start;*/
@@ -23,7 +23,7 @@ section {
     left: 4%;
     margin-top:10px;
     /* 调整 #right 元素的左边距 */
-    width: 55%;
+    width: 60%;
     height: 91%;
     text-align: left;
     line-height: 2;
@@ -35,14 +35,13 @@ section {
     box-shadow: 0 2px 4px rgba(39, 127, 145, 0.2);
 }
 .bookmark {
-    position: absolute;
+    position: fixed;
     overflow: auto;
-    width: 35%;
-    height: 91%;
-    margin-top:10px;
-    right:4%;
+    width: 25%;
+    height: 85%;
+    margin-top:8px;
+    right:3%;
     background-color: #e7efef;
-
     line-height: 2;
     overflow-y: scroll;
     border: 1px solid #d0e4e8;
@@ -54,29 +53,43 @@ section {
     padding: 10px;
     margin-bottom: 5px;
     border-radius: 5px;
-    display: flex;
+    /*display: flex;*/
     flex-direction: column; /* Change to column to make the buttons stack vertically */
     align-items: center;
 }
-.title{
+.title-button{
+    border: none;
+    background: none;
     color:#00000090;
     font-weight: bold;
-    font-size: 20px;
+    font-size:25px;
     text-align: left;
+    cursor: pointer;
 }
-.author, .description, .chapter {
-    margin-top: 5px; /* 调整作者、简介和章节之间的垂直间距 */
+.title-button:hover{
+   color:  #75c8d8; /* 鼠标悬停时的按钮颜色 */
+}
+.author{
+    margin-bottom: 2px;
+    color:#00000090;
+}
+.description, .chapter {
+    margin: 0;
+    color:#00000090;
 }
 
 .download-button {
     width: 80px;
-    background-color: #75c8d8;
+    background-color:#75c8d8 ;
     border: 0;
     height:30px;
     color:#ffffff;
     font-weight: bold;
     border-radius:10px;
     cursor: pointer;
+}
+.download-button:hover{
+    background-color:#bfe7f5 ;
 }
 .signature {
     padding: 10px;
@@ -87,11 +100,10 @@ section {
     font-weight: bold;
     border-radius: 10px 10px 0 0;
     text-align: center ;
-    /* 设置文字颜色为白色 */
 }
 .bookmark-button{
     width: 100%;
-    background-color: #75c8d8;
+    background-color: #92d6e5;
     border: 0;
     height:50px;
     color:#ffffff;
@@ -99,7 +111,44 @@ section {
     border-radius:10px;
     cursor: pointer;
 }
+.bookmark-button:hover{
+    background-color:#75c8d8 ;
+}
 .bookmark_title{
     font-size: 18px;
     margin-right: 40px;
+}
+.chapter-title{
+    margin-top: 10px;
+    background-color:  #75c8d8;
+    color: #f9f9f9;
+    display: block;
+    text-align: center;
+    /*font-weight: bold;*/
+}
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 25px;
+    justify-content: flex-start; /* 设置元素沿着主轴的起始边对齐 */
+}
+
+.button-container div {
+    flex: 0 0 25%;
+    color: black;
+}
+.button-container button {
+    flex: 0 0 25%;
+    background-color:#92d6e5;
+    color: white; /* 文字颜色 */
+    padding: 14px 20px; /* 内边距 */
+    margin: 8px 0; /* 外边距 */
+    border: 0; /* 无边框 */
+    cursor: pointer; /* 鼠标悬停时变为手形 */
+    text-align: center; /* 文字居中 */
+    border-radius:10px;
+}
+
+.button-container button:hover {
+    background-color: #bfe7f5; /* 鼠标悬停时的按钮颜色 */
 }
