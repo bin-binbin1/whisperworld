@@ -15,12 +15,14 @@ public interface novelMapper {
     List<Novel> getAllNovels();
     @Select("SELECT path FROM novels WHERE id=#{id}")
     String getPathByID(int id);
-    @Select("SELECT novels.title, bookmarks.chapter, bookmarks.page " +
+    @Select("SELECT novels.title, bookmarks.chapter, bookmarks.page_number " +
             "FROM bookmarks " +
             "JOIN novels ON bookmarks.novel_id = novels.id WHERE " +
-            "bookmark.userID=#{userID};")
+            "bookmarks.userID=#{userID};")
     List<bookmark> getBookmarkByID(int userID);
     @Insert("INSERT INTO bookmarks (userID,novel_id,page_number,chapter) " +
             "VALUES(#{userID},#{novel_id},#{page_number},#{chapter})")
     void addmark(bookmarks marks);
+    @Select("SELECT title FROM novels WHERE id=#{id}")
+    String getTitleByID(int id);
 }
