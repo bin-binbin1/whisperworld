@@ -33,7 +33,7 @@
                  class="novel-container" :key="novel.id">
                 <div v-show="!selectedChapter">
                     <div class="top-part">
-                    <img src="static/pictures/novel/秘密花园.jpg" alt="Image description" class="info-image">
+                        <img v-bind:src="'static/pictures/novel/' + novel.picture"  class="info-image">
                     <div class="novel-info">
                         <button @click="toggleChapters(novel)" class="title-button">{{novel.title}}</button>
                         <p class="author">作者:{{ novel.author }}</p>
@@ -99,33 +99,7 @@
                 chapter: 5,
                 page: 1
             }],
-            novels: [
-                {
-                    id: 1,
-                    title: 'Novel 1',
-                    author: 'Author 1',
-                    description: '《百年孤独》写的是布恩地亚一家七代人充满神奇色彩的坎坷经历和马贡多这个小镇一百多年来从兴建、发展、鼎盛及至消亡的历史。作品内容复杂，人物众多，情节离奇，手法新颖，它汇集了不可思议的奇迹和最纯粹的现实生活，深刻反映了歌伦比亚乃至整个拉美大陆的历',
-                    chapter: 5,
-                    showChapters: false,//未进入目录
-                },
-                {
-                    id: 2,
-                    title: 'Novel 2',
-                    author: 'Author 1',
-                    description: 'Description 1',
-                    chapter: 6,
-                    showChapters: false,
-                },
-                {
-                    id: 3,
-                    title: 'Novel 3',
-                    author: 'Author 2',
-                    description: 'Description 2',
-                    chapter: 8,
-                    showChapters: false,
-                },
-                // Add more novels as needed
-            ],
+            novels: [],
             Content: null,
             selectedNovel: null,
             selectedChapter: null
