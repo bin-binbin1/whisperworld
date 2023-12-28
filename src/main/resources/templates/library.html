@@ -31,14 +31,18 @@
 
             <div v-if="selectedNovel === null || selectedNovel === novel" v-for="novel in novels"
                  class="novel-container" :key="novel.id">
-                <div class="novel-info"  v-show="!selectedChapter">
-                    <button @click="toggleChapters(novel)" class="title-button">{{novel.title}}</button>
-                    <p class="author">作者:{{ novel.author }}</p>
-                    <p class="chapter">章节:共{{novel.chapter}}章</p>
-                    <p class="description">简介:{{novel.description }}</p>
-                    <button class="download-button" @click="download(novel.id,novel.title)">Download
-                    </button>
-                    <div v-if="selectedNovel == novel && novel.showChapters">
+                <div v-show="!selectedChapter">
+                    <div class="top-part">
+                    <img src="static/pictures/novel/秘密花园.jpg" alt="Image description" class="info-image">
+                    <div class="novel-info">
+                        <button @click="toggleChapters(novel)" class="title-button">{{novel.title}}</button>
+                        <p class="author">作者:{{ novel.author }}</p>
+                        <p class="chapter">章节:共{{novel.chapter}}章</p>
+                        <p class="description">简介:{{novel.description }}</p>
+                        <button class="download-button" @click="download(novel.id,novel.title)">Download</button>
+                    </div>
+                    </div>
+                    <div v-if="selectedNovel == novel && novel.showChapters" class="bottom-part">
                         <div class="chapter-title">章节目录</div>
                         <div class="button-container">
                             <div v-for="chapter in  getChapterArray(novel.chapter)" :key="chapter">
@@ -49,7 +53,7 @@
                 </div>
                 <div v-if="selectedNovel && selectedChapter" class="content">
                     <h2>{{selectedNovel.title}}&nbsp; 第{{selectedChapter}}章</h2>
-                    <p  style="white-space: pre-line;">{{Content}}</p>
+                    <p style="white-space: pre-line;">{{Content}}</p>
                     <div class="content-button">
                         <button @click="getPreviousChapter()">上一章</button>
                         <button @click="getPreviousPage()">上一页</button>
@@ -60,7 +64,7 @@
                     </div>
                     <div class="search-box">
                         <input type="text" class="search-input" v-model="searchPage" placeholder="输入页数">
-                        <button  @click="getPage(selectedNovel.id,selectedChapter,searchPage)">跳转</button>
+                        <button @click="getPage(selectedNovel.id,selectedChapter,searchPage)">跳转</button>
                     </div>
                 </div>
 
@@ -89,7 +93,7 @@
         el: '#app',
         data: {
             currentPage: 1,
-            searchPage:null,
+            searchPage: null,
             bookmarks: [{
                 title: 'Novel 1',
                 chapter: 5,
@@ -176,33 +180,33 @@
             },
             getPreviousChapter() {
                 if (this.selectedChapter > 1) {
-                    this.getPage(this.selectedNovel.id, this.selectedChapter - 1,1);
-                }else {
+                    this.getPage(this.selectedNovel.id, this.selectedChapter - 1, 1);
+                } else {
                     alert('已是第一章');
                 }
             },
             getNextChapter() {
                 if (this.selectedChapter < this.selectedNovel.chapter) {
-                    this.getPage(this.selectedNovel.id, this.selectedChapter + 1,1);
-                }else {
+                    this.getPage(this.selectedNovel.id, this.selectedChapter + 1, 1);
+                } else {
                     alert('小说到这结束了，谢谢观看');
                 }
             },
             getPreviousPage() {
                 if (this.currentPage > 1) {
                     this.getPage(this.selectedNovel.id, this.selectedChapter, this.currentPage - 1);
-                } else  {
+                } else {
                     this.getPreviousChapter();
                 }
             },
-            getNextPage(){
+            getNextPage() {
                 if (!this.isEnd) {
                     this.getPage(this.selectedNovel.id, this.selectedChapter, this.currentPage + 1);
                 } else {
                     this.getNextChapter();
                 }
             },
-            goBack(){
+            goBack() {
                 this.selectedChapter = null;
                 this.Content = null;
             },
@@ -222,7 +226,7 @@
             },
             download(id, title) {
                 // Make a GET request to the /novel/download endpoint
-                axios.get('/novel/download/'+id, {
+                axios.get('/novel/download/' + id, {
                     responseType: 'blob', // Set the response type to blob
                 })
                     .then(response => {
