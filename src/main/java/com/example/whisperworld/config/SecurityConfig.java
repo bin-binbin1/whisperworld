@@ -46,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/dismissGroup",
                 "/api/leaveGroup",
                 "/api/groupApply",
-                "/websocket-endpoint/**"
+                "/websocket-endpoint/**",
+                "/novel/addBookmark"
         );//Post
     }
 
