@@ -5,17 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.Service;
 
 @Controller
-public class NagigationController {
+public class NavigationController {
     login_mapper mapper;
     @Autowired
-    public NagigationController(login_mapper mapper){
+    public NavigationController(login_mapper mapper){
         this.mapper = mapper;
     }
     @GetMapping(value = {"/welcome","/"})

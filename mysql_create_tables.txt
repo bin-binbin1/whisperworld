@@ -247,6 +247,7 @@ insert into crowds values(0,0,0,"低语世界",curdate(),1,"低语世界专用�
 CREATE TABLE novels (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
+    picture VARCHAR(20) NOT NULL,
     author VARCHAR(50),
     description VARCHAR(255),
     chapter INT NOT NULL

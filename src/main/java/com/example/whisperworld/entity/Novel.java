@@ -8,5 +8,6 @@ public class Novel {
     private String title;
     private String author;
     private String description;
+    private String picture;
     private int chapter;
 }
