@@ -54,13 +54,13 @@
                         <button @click="getPreviousChapter()">上一章</button>
                         <button @click="getPreviousPage()">上一页</button>
                         <button @click="getNextPage()">下一页</button>
-                        <button @click="getPreviousChapter()">下一章</button>
+                        <button @click="getNextChapter()">下一章</button>
                         <button @click="addBookmark()">添加书签</button>
                         <button @click="goBack()">返回上一步</button>
                     </div>
                     <div class="search-box">
                         <input type="text" class="search-input" v-model="searchPage" placeholder="输入页数">
-                        <button  @click="getPage()">跳转</button>
+                        <button  @click="getPage(selectedNovel.id,selectedChapter,searchPage)">跳转</button>
                     </div>
                 </div>
 
@@ -83,13 +83,13 @@
         </div>
     </div>
 </section>
-<div class="footer">欢迎使用社交网络系统</div>
+<div class="footer">本页面仅供个人学习，小说皆为网上搜索，若有侵权请发送邮箱联系3141254030@qq.com</div>
 <script>
     new Vue({
         el: '#app',
         data: {
             currentPage: 1,
-            searchPage:'',
+            searchPage:null,
             bookmarks: [{
                 title: 'Novel 1',
                 chapter: 5,
@@ -168,6 +168,7 @@
                 axios.get(`/novel/getPage/${id}/${chapter}/${page}`)
                     .then(response => {
                         this.Content = response.data.content;
+                        this.isEnd = response.data.isEnd;
                     })
                     .catch(error => {
                         console.error(error);
@@ -184,7 +185,7 @@
                 if (this.selectedChapter < this.selectedNovel.chapter) {
                     this.getPage(this.selectedNovel.id, this.selectedChapter + 1,1);
                 }else {
-                    alert('已是最后一章');
+                    alert('小说到这结束了，谢谢观看');
                 }
             },
             getPreviousPage() {
@@ -192,6 +193,13 @@
                     this.getPage(this.selectedNovel.id, this.selectedChapter, this.currentPage - 1);
                 } else  {
                     this.getPreviousChapter();
+                }
+            },
+            getNextPage(){
+                if (!this.isEnd) {
+                    this.getPage(this.selectedNovel.id, this.selectedChapter, this.currentPage + 1);
+                } else {
+                    this.getNextChapter();
                 }
             },
             goBack(){
