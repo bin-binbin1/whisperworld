@@ -29,24 +29,43 @@
     <div id="app" th:inline="none">
         <div class="container">
 
-            <div v-if="selectedNovel === null || selectedNovel === novel"  v-for="novel in novels" class="novel-container" :key="novel.id">
-                <div class="novel-info">
+            <div v-if="selectedNovel === null || selectedNovel === novel" v-for="novel in novels"
+                 class="novel-container" :key="novel.id">
+                <div class="novel-info"  v-show="!selectedChapter">
                     <button @click="toggleChapters(novel)" class="title-button">{{novel.title}}</button>
                     <p class="author">作者:{{ novel.author }}</p>
                     <p class="chapter">章节:共{{novel.chapter}}章</p>
                     <p class="description">简介:{{novel.description }}</p>
-                    <button class="download-button" @click="download(novel.id, novel.chapter,novel.title)">Download
+                    <button class="download-button" @click="download(novel.id,novel.title)">Download
                     </button>
                     <div v-if="selectedNovel == novel && novel.showChapters">
                         <div class="chapter-title">章节目录</div>
                         <div class="button-container">
                             <div v-for="chapter in  getChapterArray(novel.chapter)" :key="chapter">
-                                <button @click="getPage(novel.id,chapter.id)">第{{ chapter}}章</button>
+                                <button @click="getPage(novel.id,chapter,1)">第{{ chapter}}章</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div v-if="selectedNovel && selectedChapter" class="content">
+                    <h2>{{selectedNovel.title}}&nbsp; 第{{selectedChapter}}章</h2>
+                    <p>{{Content}}</p>
+                    <div class="content-button">
+                        <button @click="getPreviousChapter()">上一章</button>
+                        <button @click="getPreviousPage()">上一页</button>
+                        <button @click="getNextPage()">下一页</button>
+                        <button @click="getPreviousChapter()">下一章</button>
+                        <button @click="addBookmark()">添加书签</button>
+                        <button @click="goBack()">返回上一步</button>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" class="search-input" v-model="searchPage" placeholder="输入页数">
+                        <button  @click="getPage()">跳转</button>
+                    </div>
+                </div>
+
             </div>
+
             <div class="bookmark">
                 <div class="signature">书签</div>
                 <ul class="bookmark-container">
@@ -69,6 +88,8 @@
     new Vue({
         el: '#app',
         data: {
+            currentPage: 1,
+            searchPage:'',
             bookmarks: [{
                 title: 'Novel 1',
                 chapter: 5,
@@ -81,8 +102,7 @@
                     author: 'Author 1',
                     description: '《百年孤独》写的是布恩地亚一家七代人充满神奇色彩的坎坷经历和马贡多这个小镇一百多年来从兴建、发展、鼎盛及至消亡的历史。作品内容复杂，人物众多，情节离奇，手法新颖，它汇集了不可思议的奇迹和最纯粹的现实生活，深刻反映了歌伦比亚乃至整个拉美大陆的历',
                     chapter: 5,
-                    page: 1,
-                    showChapters: false,
+                    showChapters: false,//未进入目录
                 },
                 {
                     id: 2,
@@ -90,7 +110,6 @@
                     author: 'Author 1',
                     description: 'Description 1',
                     chapter: 6,
-                    page: 1,
                     showChapters: false,
                 },
                 {
@@ -99,13 +118,13 @@
                     author: 'Author 2',
                     description: 'Description 2',
                     chapter: 8,
-                    page: 2,
                     showChapters: false,
                 },
                 // Add more novels as needed
             ],
-            content: null,
-            selectedNovel:null
+            Content: null,
+            selectedNovel: null,
+            selectedChapter: null
         },
         created() {
             this.getAll();
@@ -135,23 +154,50 @@
                 this.selectedNovel = novel.showChapters ? novel : null; // 设置或清除选中的小说
                 // 如果需要显示章节，那么获取章节
                 if (novel.showChapters) {
-                    this. getChapterArray( novel.chapter);
+                    this.getChapterArray(novel.chapter);
                 }
             },
             getChapterArray(totalChapters) {
                 // Create an array of chapter numbers from 1 to totalChapters
                 return Array.from({length: totalChapters}, (_, index) => index + 1);
             },
-            getPage() {
-
+            getPage(id, chapter, page) {
+                this.selectedChapter = chapter;
+                this.currentPage = page;
+                this.Content = '《百年孤独》写的是布恩地亚一家七代人充满神奇色彩的坎坷经历和马贡多这个小镇一百多年来从兴建、发展、鼎盛及至消亡的历史。作品内容复杂，人物众多，情节离奇，手法新颖，它汇集了不可思议的奇迹和最纯粹的现实生活，深刻反映了歌伦比亚乃至整个拉美大陆的历';
+                axios.get(`/novel/getPage/${id}/${chapter}/${page}`)
+                    .then(response => {
+                        this.Content = response.data.content;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            },
+            getPreviousChapter() {
+                if (this.selectedChapter > 1) {
+                    this.getPage(this.selectedNovel.id, this.selectedChapter - 1,1);
+                }
+            },
+            getNextChapter() {
+                if (this.selectedChapter < this.selectedNovel.chapter) {
+                    this.getPage(this.selectedNovel.id, this.selectedChapter + 1,1);
+                }
+            },
+            getPreviousPage() {
+                if (this.currentPage > 1) {
+                    this.getPage(this.selectedNovel.id, this.selectedChapter, this.currentPage - 1);
+                } else if (this.selectedChapter > 1) {
+                    this.getPreviousChapter();
+                }
+            },
+            goBack(){
+                this.selectedChapter = null;
+                this.Content = null;
             },
             download(id, title) {
                 // Make a GET request to the /novel/download endpoint
-                axios.get('/novel/download', {
+                axios.get('/novel/download/${id}', {
                     responseType: 'blob', // Set the response type to blob
-                    params: {
-                        id
-                    },
                 })
                     .then(response => {
                         // Create a Blob from the response data
