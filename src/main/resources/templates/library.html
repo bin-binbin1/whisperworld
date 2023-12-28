@@ -212,9 +212,9 @@
             },
             addBookmark() {
                 const bookmark = {
-                    id: this.selectedNovel.id,
+                    novel_id: this.selectedNovel.id,
                     chapter: this.selectedChapter,
-                    page: this.currentPage
+                    page_number: this.currentPage
                 };
                 axios.post('/novel/addBookmark', bookmark)
                     .then(response => {

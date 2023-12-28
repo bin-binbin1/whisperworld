@@ -67,7 +67,8 @@ public class novelController {
         return ResponseEntity.ok(json);
     }
     @PostMapping("/novel/addBookmark")
-    public ResponseEntity addBookmark(@RequestBody bookmarks marks){
+    public ResponseEntity addBookmark(@RequestBody bookmarks marks,Principal principal){
+        marks.setUserID(Integer.parseInt(principal.getName()));
         service.addmark(marks);
         return ResponseEntity.ok("");
     }
