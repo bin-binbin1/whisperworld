@@ -206,6 +206,20 @@
                 this.selectedChapter = null;
                 this.Content = null;
             },
+            addBookmark() {
+                const bookmark = {
+                    id: this.selectedNovel.id,
+                    chapter: this.selectedChapter,
+                    page: this.currentPage
+                };
+                axios.post('/api/bookmarks', bookmark)
+                    .then(response => {
+                        alert('书签已添加');
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            },
             download(id, title) {
                 // Make a GET request to the /novel/download endpoint
                 axios.get('/novel/download/'+id, {
