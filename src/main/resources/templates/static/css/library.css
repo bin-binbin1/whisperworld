@@ -197,4 +197,5 @@ h2{
 }
 .info-image {
     margin-right: 20px; /* 调整图片和文本之间的距离 */
+    width:200px;
 }
