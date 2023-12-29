@@ -23,7 +23,7 @@ public class novelService {
     @Autowired
     novelMapper mapper;
     private int Lines=20;
-    private static final String NOVELS_DIRECTORY = "E:\\新建文件夹"; //"/home/fun/novels";
+    private static final String NOVELS_DIRECTORY = "/home/fun/novel"; //"/home/fun/novels";
     public List<Novel> getNovels() {
         return mapper.getAllNovels();
     }
