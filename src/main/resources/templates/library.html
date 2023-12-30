@@ -76,9 +76,9 @@
                     <li v-for="bookmark in bookmarks" :key="bookmark.title">
                         <div class="mark">
                             <button class="bookmark-button"
-                                    @click="getPage(bookmark.title,bookmark.chapter,bookmark.page)">
+                                    @click="Bookmark(bookmark)">
                                 <span class="bookmark_title"> {{ bookmark.title }}</span>
-                                <span class="bookmark_chapter">第{{bookmark.chapter}}章&nbsp第{{bookmark.page}}页</span>
+                                <span class="bookmark_chapter">第{{bookmark.chapter}}章&nbsp第{{bookmark.page_number}}页</span>
                             </button>
                         </div>
                     </li>
@@ -97,11 +97,12 @@
             bookmarks: [{
                 title: 'Novel 1',
                 chapter: 5,
-                page: 1
+                page_number: 1,
+                id: 1
             }],
             novels: [],
             Content: null,
-            selectedNovel: null,
+            selectedNovel:null,
             selectedChapter: null
         },
         created() {
@@ -139,10 +140,16 @@
                 // Create an array of chapter numbers from 1 to totalChapters
                 return Array.from({length: totalChapters}, (_, index) => index + 1);
             },
+            Bookmark(m) {
+                this.selectedNovel={
+                    id:m.id,
+                    title:m.title
+                }
+                this.getPage(m.id,m.chapter,m.page_number);
+            },
             getPage(id, chapter, page) {
                 this.selectedChapter = chapter;
                 this.currentPage = page;
-                this.Content = '《百年孤独》写的是布恩地亚一家七代人充满神奇色彩的坎坷经历和马贡多这个小镇一百多年来从兴建、发展、鼎盛及至消亡的历史。作品内容复杂，人物众多，情节离奇，手法新颖，它汇集了不可思议的奇迹和最纯粹的现实生活，深刻反映了歌伦比亚乃至整个拉美大陆的历';
                 axios.get(`/novel/getPage/${id}/${chapter}/${page}`)
                     .then(response => {
                         this.Content = response.data.content;

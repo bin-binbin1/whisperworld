@@ -7,5 +7,5 @@ public class bookmark {
     private String title;
     private int id;
     private int chapter;
-    private int page;
+    private int page_number;
 }

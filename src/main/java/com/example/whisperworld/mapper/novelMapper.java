@@ -15,7 +15,7 @@ public interface novelMapper {
     List<Novel> getAllNovels();
     @Select("SELECT path FROM novels WHERE id=#{id}")
     String getPathByID(int id);
-    @Select("SELECT novels.title, bookmarks.chapter, bookmarks.page_number " +
+    @Select("SELECT novels.title, bookmarks.chapter, bookmarks.page_number, novels.id    " +
             "FROM bookmarks " +
             "JOIN novels ON bookmarks.novel_id = novels.id WHERE " +
             "bookmarks.userID=#{userID};")
