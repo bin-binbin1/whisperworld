@@ -100,7 +100,32 @@
                 page_number: 1,
                 id: 1
             }],
-            novels: [],
+            novels: [
+                {
+                    id: 1,
+                    title: '百年孤独',
+                    author: 'Author 1',
+                    description: '《百年孤独》写的是布恩地亚一家七代人充满神奇色彩的坎坷经历和马贡多这个小镇一百多年来从兴建、发展、鼎盛及至消亡的历史。作品内容复杂，人物众多，情节离奇，手法新颖，它汇集了不可思议的奇迹和最纯粹的现实生活，深刻反映了歌伦比亚乃至整个拉美大陆的历',
+                    chapter: 5,
+                    showChapters: false,
+                },
+                {
+                    id: 2,
+                    title:'Novel 1',
+                    author: 'Author 1',
+                    description: 'Description 1',
+                    chapter: 5,
+                    showChapters: false,
+                },
+                {
+                    id:3,
+                    title:'Novel 1',
+                    author: 'Author 2',
+                    description: 'Description 2',
+                    chapter: 8,
+                    showChapters: false,
+    },
+            ],
             Content: null,
             selectedNovel:null,
             selectedChapter: null
@@ -140,12 +165,17 @@
                 // Create an array of chapter numbers from 1 to totalChapters
                 return Array.from({length: totalChapters}, (_, index) => index + 1);
             },
-            Bookmark(m) {
-                this.selectedNovel={
-                    id:m.id,
-                    title:m.title
+            Bookmark(bookmark) {
+                this.selectedNovel = this.getNovelByTitle(bookmark.title);
+                this.getPage(this.selectedNovel.id, bookmark.chapter, bookmark.page_number);
+            },
+            getNovelByTitle(title) {
+                for (let i = 0; i < this.novels.length; i++) {
+                    if (this.novels[i].title === title) {
+                        return this.novels[i];
+                    }
                 }
-                this.getPage(m.id,m.chapter,m.page_number);
+                return null; // 如果没有找到对应的小说，返回null
             },
             getPage(id, chapter, page) {
                 this.selectedChapter = chapter;
