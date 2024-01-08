@@ -103,7 +103,7 @@
                 .then(response => {
                     this.data = response.data;
                     //console.log("useId:" +this.userID);
-                    const socket = new SockJS(`http://localhost:8080/websocket-endpoint`);
+                    const socket = new SockJS(`https://whisperworld.cn/websocket-endpoint`);
                     // 第二个 Axios 请求，将用户ID与 WebSocketSession 关联
                     this.stompClient = Stomp.over(socket);
 
