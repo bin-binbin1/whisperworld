@@ -18,48 +18,48 @@ public class NavigationController {
     @GetMapping(value = {"/welcome","/"})
     public String welcome(Model model) {
         model.addAttribute("name", "World");
-        return "public/welcome";
+        return "forward:/public/welcome.html";
     }
     @GetMapping("/public/help")
     public String help(Model model){
-        return "public/help";
+        return "forward:/public/help.html";
     }
     @GetMapping("/login")
     public String login(Model model){
         //处理 session
-        return "public/login";
+        return "forward:/public/login.html";
     }
 
     @GetMapping("/public/register")
     public String register(Model model){
-        return "public/register";
+        return "forward:/public/register.html";
     }
 
     @GetMapping("/home")
     public String home(Model model){
-        return "home";
+        return "forward:/protected/home.html";
     }
 
     @GetMapping("/companion")
     public String companion(Model model){
-        return "companion";
+        return "forward:/protected/companion.html";
     }
     @GetMapping("/chat")
-    public String chat(Model model){return "chat";}
+    public String chat(Model model){return "forward:/protected/chat.html";}
 
     @GetMapping("/topics")
     public String topics(Model model){
-        return "topics";
+        return "forward:/protected/topics.html";
     }
 
     @GetMapping("/group")
     public String group(Model model){
-        return "group";
+        return "forward:/protected/group.html";
     }
 
     @GetMapping("/profile")
     public String profile(Model model){
-        return "profile";
+        return "forward:/protected/profile.html";
     }
 
     @GetMapping("/logout")
@@ -68,16 +68,16 @@ public class NavigationController {
         mapper.offlineState(loginId);
         //将状态设置为登出
         session.invalidate();//清空session
-        return "public/welcome";
+        return "forward:/public/welcome.html";
     }
     @GetMapping("/library")
     public String novel(Model model){
-        return "library";
+        return "forward:/protected/library.html";
     }
 
     @GetMapping("/asdfsdarfsrawerawrwaerwer")
     public String admin(Model model){
-        return "private/admin";
+        return "forward:/private/admin.html";
     }
 
 }
