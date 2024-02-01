@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/logout","/public/**","/","/welcome","/login", "/login/submit","/register_submit2","/websocket-endpoint/**","/css/**","/pictures/**").permitAll() // 允许公开访问的URL
+                .antMatchers("/logout","/public/**","/","/game","/welcome","/login", "/login/submit","/register_submit2","/websocket-endpoint/**","/css/**","/pictures/**").permitAll() // 允许公开访问的URL
                 //.antMatchers("/private/**").hasRole("ROLE_ADMIN")//只有管理员才能访问admin界面
                 .anyRequest().authenticated()
                 .and()

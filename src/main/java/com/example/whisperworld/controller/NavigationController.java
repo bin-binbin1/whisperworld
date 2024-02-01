@@ -79,6 +79,10 @@ public class NavigationController {
     public String admin(Model model){
         return "forward:/private/admin.html";
     }
+    @GetMapping("/game")
+    public String gameDownload(){
+        return "forward:/public/game.html";
+    }
 
 }
 
