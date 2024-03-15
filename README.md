@@ -21,4 +21,4 @@ mysql_create_tables.txt
 
 ----
 # 网站v1.0正式上线!
-有问题请在pull requests中提出
+有问题请发送邮件至fwj@njfu.edu.cn
