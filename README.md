@@ -1,8 +1,6 @@
 # WhisperWorld
 ### 网址：[whisperworld.cn](http://whisperworld.cn)
 
-**Linux 小组作业**
-
 版本:
 - Java 17
 - Spring 2.7.17
